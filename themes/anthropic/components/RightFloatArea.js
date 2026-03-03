@@ -5,9 +5,17 @@ import { useGlobal } from '@/lib/global'
  * 右下角悬浮按钮 - Anthropic 风格
  * 回到顶部 + 暗色模式切换 (移动端) + TOC 切换 (移动端)
  */
-export default function RightFloatArea({ floatSlot }) {
+export default function RightFloatArea({ floatSlot, triggerThemeTransition }) {
   const [showFloatButton, switchShow] = useState(false)
   const { isDarkMode, changeDarkMode } = useGlobal()
+
+  const handleDarkModeToggle = useCallback((e) => {
+    if (triggerThemeTransition) {
+      triggerThemeTransition(e)
+    } else {
+      changeDarkMode()
+    }
+  }, [triggerThemeTransition, changeDarkMode])
 
   const scrollListener = useCallback(() => {
     const targetRef =
@@ -54,9 +62,9 @@ export default function RightFloatArea({ floatSlot }) {
 
       {/* 暗色模式切换 - 移动端 */}
       <button
-        onClick={changeDarkMode}
+        onClick={handleDarkModeToggle}
         aria-label='Toggle dark mode'
-        className='lg:hidden w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md border'
+        className='float-btn lg:hidden w-10 h-10 rounded-full flex items-center justify-center shadow-md border'
         style={{
           backgroundColor: 'var(--anthropic-card-bg)',
           borderColor: 'var(--anthropic-border)',
@@ -76,7 +84,7 @@ export default function RightFloatArea({ floatSlot }) {
       <button
         onClick={scrollToTop}
         aria-label='Scroll to top'
-        className='w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-md hover:shadow-lg'
+        className='float-btn w-10 h-10 rounded-full flex items-center justify-center shadow-md'
         style={{
           backgroundColor: 'var(--anthropic-accent)',
           color: 'white'

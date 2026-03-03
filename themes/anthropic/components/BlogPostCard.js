@@ -8,6 +8,7 @@ import TagItemMini from './TagItemMini'
  * 文章卡片 - Anthropic 风格
  * 封面图 + 标题 + 日期 + 摘要 + 标签
  * 整体可点击，hover 上浮效果
+ * 支持交错入场动画 (--card-stagger)
  */
 const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
   const showCover = siteConfig('ANTHROPIC_POST_LIST_COVER', true, CONFIG)
@@ -21,7 +22,9 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
   const placeholderColor = palette[index % palette.length]
 
   return (
-    <div className='post-card group'>
+    <div
+      className='post-card post-card-stagger group'
+      style={{ '--card-stagger': index }}>
       <SmartLink
         href={post?.href}
         className='block rounded-xl overflow-hidden transition-all duration-300'

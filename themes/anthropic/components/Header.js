@@ -11,7 +11,7 @@ import Logo from './Logo'
  * 固定在顶部，毛玻璃背景，极简设计
  */
 const Header = props => {
-  const { tags, currentTag, categories, currentCategory } = props
+  const { tags, currentTag, categories, currentCategory, triggerThemeTransition } = props
   const { locale, isDarkMode, changeDarkMode } = useGlobal()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -29,6 +29,24 @@ const Header = props => {
   const closeMenu = () => {
     setIsOpen(false)
   }
+
+  // Use ripple transition if available, otherwise fall back to direct toggle
+  const handleDarkModeToggle = useCallback((e) => {
+    if (triggerThemeTransition) {
+      triggerThemeTransition(e)
+    } else {
+      changeDarkMode()
+    }
+  }, [triggerThemeTransition, changeDarkMode])
+
+  const handleMobileDarkModeToggle = useCallback((e) => {
+    if (triggerThemeTransition) {
+      triggerThemeTransition(e)
+    } else {
+      changeDarkMode()
+    }
+    closeMenu()
+  }, [triggerThemeTransition, changeDarkMode])
 
   // 监听滚动来切换导航栏样式
   useEffect(() => {
@@ -76,9 +94,9 @@ const Header = props => {
 
             {/* 暗色模式切换 */}
             <button
-              onClick={changeDarkMode}
+              onClick={handleDarkModeToggle}
               aria-label='Toggle dark mode'
-              className='p-2 rounded-lg transition-colors duration-200 hover:bg-[var(--anthropic-border)]'
+              className='anthro-btn-icon p-2 rounded-lg'
               style={{ color: 'var(--anthropic-text-secondary)' }}>
               {isDarkMode
                 ? <svg className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}>
@@ -94,7 +112,7 @@ const Header = props => {
           {/* 移动端菜单按钮 */}
           <button
             onClick={toggleMenu}
-            className='lg:hidden p-2 rounded-lg transition-colors duration-200 hover:bg-[var(--anthropic-border)]'
+            className='lg:hidden anthro-btn-icon p-2 rounded-lg'
             style={{ color: 'var(--anthropic-text-primary)' }}
             aria-label='Toggle menu'>
             {isOpen
@@ -131,8 +149,8 @@ const Header = props => {
               ))}
               {/* 移动端暗色模式切换 */}
               <button
-                onClick={() => { changeDarkMode(); closeMenu() }}
-                className='py-3 text-left text-base ui-text transition-colors duration-200 flex items-center space-x-2'
+                onClick={handleMobileDarkModeToggle}
+                className='anthro-btn-icon py-3 text-left text-base ui-text flex items-center space-x-2'
                 style={{ color: 'var(--anthropic-text-secondary)' }}>
                 {isDarkMode
                   ? <><svg className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={1.5}><path strokeLinecap='round' strokeLinejoin='round' d='M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z' /></svg><span>{locale.COMMON.LIGHT_MODE || 'Light Mode'}</span></>

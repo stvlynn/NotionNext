@@ -29,6 +29,7 @@ import SlotBar from './components/SlotBar'
 import TagItemMini from './components/TagItemMini'
 import CONFIG from './config'
 import { Style } from './style'
+import { useThemeTransition, ThemeTransitionOverlay } from './components/ThemeTransition'
 
 const AlgoliaSearchModal = dynamic(
   () => import('@/components/AlgoliaSearchModal'),
@@ -51,6 +52,9 @@ const LayoutBase = props => {
   // Algolia搜索框
   const searchModal = useRef(null)
 
+  // 全屏涟漪暗色模式过渡
+  const { ripple, triggerTransition } = useThemeTransition()
+
   return (
     <ThemeGlobalAnthropic.Provider value={{ searchModal }}>
       <div
@@ -58,8 +62,11 @@ const LayoutBase = props => {
         className={`${siteConfig('FONT_STYLE')} scroll-smooth min-h-screen`}>
         <Style />
 
+        {/* 全屏涟漪过渡遮罩 */}
+        <ThemeTransitionOverlay ripple={ripple} />
+
         {/* 顶部导航 */}
-        <Header {...props} />
+        <Header {...props} triggerThemeTransition={triggerTransition} />
 
         {/* 主区块 */}
         <main
@@ -78,12 +85,12 @@ const LayoutBase = props => {
               <Transition
                 show={!onLoading}
                 appear={true}
-                enter='transition ease-in-out duration-700 transform order-first'
-                enterFrom='opacity-0 translate-y-8'
-                enterTo='opacity-100'
-                leave='transition ease-in-out duration-300 transform'
-                leaveFrom='opacity-100 translate-y-0'
-                leaveTo='opacity-0 -translate-y-8'
+                enter='anthropic-page-enter'
+                enterFrom='anthropic-page-enter-from'
+                enterTo='anthropic-page-enter-to'
+                leave='anthropic-page-leave'
+                leaveFrom='anthropic-page-leave-from'
+                leaveTo='anthropic-page-leave-to'
                 unmount={false}>
                 {slotTop}
                 {children}
@@ -96,7 +103,7 @@ const LayoutBase = props => {
         </main>
 
         {/* 悬浮按钮 */}
-        <RightFloatArea {...props} />
+        <RightFloatArea {...props} triggerThemeTransition={triggerTransition} />
 
         {/* 全文搜索 */}
         <AlgoliaSearchModal cRef={searchModal} {...props} />
