@@ -7,7 +7,7 @@ import { isHttpLink } from '.'
 import { siteConfig } from '@/lib/config'
 import { uploadDataToAlgolia } from '../plugins/algolia'
 import { getPageContentText } from '@/lib/db/notion/getPageContentText'
-import { getPageTableOfContents } from '../db/notion/getPageTableOfContents'
+import { getPageTableOfContents } from '@/lib/db/notion/getPageTableOfContents'
 import { countWords } from '../plugins/wordCount'
 
 /**

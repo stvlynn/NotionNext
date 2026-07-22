@@ -197,11 +197,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
-  // The DDD backend lives in ../backend/src (outside the frontend project root).
-  // externalDir lets Next transpile TS/JS modules imported from there.
-  experimental: {
-    externalDir: true
-  },
   output: getOutput(),
   // Root the standalone output at the frontend workspace so server.js lands at
   // .next/standalone/server.js (not nested under a mirrored root path).
@@ -438,6 +433,35 @@ const nextConfig = {
       __dirname,
       'src/shared/lib/utils/throttle.js'
     )
+
+    // The DDD backend lives in ../backend/src, outside the frontend project root,
+    // so Next.js's SWC rule for .ts/.tsx (scoped to the project dir) does not pick
+    // up backend TypeScript files; webpack then parses them as plain JS and fails
+    // on TS syntax (e.g. `interface`). Extend the existing .ts/.tsx rule's
+    // `include` so the SWC loader also transpiles the backend tree.
+    const tsRuleTest = /\.(ts|tsx)$/
+    const extendTsInclude = rules => {
+      for (const rule of rules) {
+        if (!rule) continue
+        if (Array.isArray(rule.oneOf)) {
+          extendTsInclude(rule.oneOf)
+          continue
+        }
+        const test = rule.test
+        const matchesTs =
+          test === tsRuleTest ||
+          (test instanceof RegExp && test.source && test.source.includes('ts'))
+        if (!matchesTs) continue
+        if (Array.isArray(rule.include)) {
+          rule.include.push(backend)
+        } else if (typeof rule.include === 'string') {
+          rule.include = [rule.include, backend]
+        } else if (!rule.include) {
+          rule.include = [src, backend]
+        }
+      }
+    }
+    extendTsInclude(config.module.rules)
 
     if (!isServer) {
       console.log(
