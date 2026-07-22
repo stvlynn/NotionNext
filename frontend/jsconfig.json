@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react",
+    "allowJs": true,
+    "checkJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/blog.config": ["./blog.config"],
+      "@/components/*": ["./src/shared/components/*"],
+      "@/hooks/*": ["./src/shared/hooks/*"],
+      "@/themes/*": ["./src/shared/themes/*"],
+      "@/styles/*": ["./src/app/styles/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/conf/*": ["./src/shared/config/*"],
+      "@/types/*": ["./src/entities/types/*"],
+      "@/lib/db/*": ["../backend/src/infrastructure/db/*"],
+      "@/lib/cache/*": ["../backend/src/infrastructure/cache/*"],
+      "@/lib/server/*": ["../backend/src/infrastructure/claude/*"],
+      "@/lib/middleware/*": ["../backend/src/infrastructure/middleware/*"],
+      "@/lib/build/*": ["../backend/src/application/build/*"],
+      "@/lib/site/*": ["../backend/src/application/site/*"],
+      "@/lib/*": ["./src/shared/lib/*"],
+      "@/backend/*": ["../backend/src/*"]
+    }
+  }
+}

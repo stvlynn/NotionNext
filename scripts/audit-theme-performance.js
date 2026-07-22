@@ -5,7 +5,7 @@ const path = require('node:path')
 const { spawnSync } = require('node:child_process')
 
 const root = process.cwd()
-const themesDir = path.join(root, 'themes')
+const themesDir = path.join(root, 'frontend/src/shared/themes')
 const reportDir = path.join(root, '.perf', 'theme-audit')
 const rawDir = path.join(reportDir, 'raw')
 const docsPerfDir = path.join(root, 'docs', 'performance')

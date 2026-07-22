@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export const REPO_ROOT = path.resolve(__dirname, '../..')
-export const THEMES_DIR = path.join(REPO_ROOT, 'themes')
+export const THEMES_DIR = path.join(REPO_ROOT, 'frontend/src/shared/themes')
 export const GITHUB_BLOB = 'https://github.com/notionnext-org/NotionNext/blob/main'
 
 /** @returns {string[]} */
@@ -22,7 +22,7 @@ export function getBuiltinThemeIds() {
 /** @returns {Record<string, { name?: string, summary?: string }>} */
 export function loadThemeSwitchManifest() {
   const manifestSrc = fs.readFileSync(
-    path.join(REPO_ROOT, 'conf/themeSwitch.manifest.js'),
+    path.join(REPO_ROOT, 'frontend/src/shared/config/themeSwitch.manifest.js'),
     'utf8'
   )
   /** @type {Record<string, { name?: string, summary?: string }>} */

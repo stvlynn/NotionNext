@@ -11,7 +11,9 @@
 
 # next.js
 /.next/
+/frontend/.next/
 /out/
+/frontend/out/
 
 # vitepress (docs site)
 .vitepress/cache
@@ -48,10 +50,11 @@ yarn-error.log*
 
 
 # sitemap
-/public/robots.txt
-/public/sitemap.xml
-/public/rss/*
+/frontend/public/robots.txt
+/frontend/public/sitemap.xml
+/frontend/public/rss/*
 /sitemap.xml
+/frontend/sitemap.xml
 
 # yarn
 package-lock.json

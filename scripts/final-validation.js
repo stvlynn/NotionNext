@@ -48,37 +48,37 @@ function validateOptimizationTasks() {
     {
       name: '性能优化',
       checks: [
-        { file: 'next.config.js', desc: 'Next.js 性能配置', validate: validateNextConfig },
-        { file: 'conf/performance.config.js', desc: '性能配置文件' },
-        { file: 'components/PerformanceMonitor.js', desc: '性能监控组件' }
+        { file: 'frontend/next.config.js', desc: 'Next.js 性能配置', validate: validateNextConfig },
+        { file: 'frontend/src/shared/config/performance.config.js', desc: '性能配置文件' },
+        { file: 'frontend/src/shared/components/PerformanceMonitor.js', desc: '性能监控组件' }
       ]
     },
     {
       name: '代码质量提升',
       checks: [
-        { file: 'tsconfig.json', desc: 'TypeScript 配置', validate: validateTSConfig },
-        { file: '.eslintrc.js', desc: 'ESLint 配置' },
+        { file: 'frontend/tsconfig.json', desc: 'TypeScript 配置', validate: validateTSConfig },
+        { file: 'frontend/.eslintrc.js', desc: 'ESLint 配置' },
         { file: '.prettierrc.json', desc: 'Prettier 配置' },
-        { file: 'lib/utils/errorHandler.js', desc: '错误处理工具' },
-        { file: 'types/index.ts', desc: '类型定义文件' },
+        { file: 'frontend/src/shared/lib/utils/errorHandler.js', desc: '错误处理工具' },
+        { file: 'frontend/src/entities/types/index.ts', desc: '类型定义文件' },
         { file: 'scripts/quality-check.js', desc: '质量检查脚本' }
       ]
     },
     {
       name: 'SEO和可访问性优化',
       checks: [
-        { file: 'components/SEO.js', desc: 'SEO 组件优化', validate: validateSEOComponent },
-        { file: 'components/Accessibility.js', desc: '可访问性组件' },
-        { file: 'lib/sitemap.js', desc: '站点地图生成器' }
+        { file: 'frontend/src/shared/components/SEO.js', desc: 'SEO 组件优化', validate: validateSEOComponent },
+        { file: 'frontend/src/shared/components/Accessibility.js', desc: '可访问性组件' },
+        { file: 'frontend/src/shared/lib/utils/sitemap.js', desc: '站点地图生成器' }
       ]
     },
     {
       name: '安全性加固',
       checks: [
-        { file: 'next.config.js', desc: '安全头部配置', validate: validateSecurityHeaders },
-        { file: 'lib/utils/validation.js', desc: '输入验证工具' },
-        { file: 'lib/middleware/security.js', desc: '安全中间件' },
-        { file: 'lib/config/env-validation.js', desc: '环境变量验证' }
+        { file: 'frontend/next.config.js', desc: '安全头部配置', validate: validateSecurityHeaders },
+        { file: 'frontend/src/shared/lib/utils/validation.js', desc: '输入验证工具' },
+        { file: 'backend/src/infrastructure/middleware/security.js', desc: '安全中间件' },
+        { file: 'backend/src/infrastructure/env-config/env-validation.js', desc: '环境变量验证' }
       ]
     },
     {
@@ -90,7 +90,7 @@ function validateOptimizationTasks() {
         { file: '.vscode/tasks.json', desc: 'VSCode 任务配置' },
         { file: 'scripts/dev-tools.js', desc: '开发工具脚本' },
         { file: 'scripts/setup-git-hooks.js', desc: 'Git Hooks 设置' },
-        { file: 'DEVELOPMENT.md', desc: '开发者指南' }
+        { file: 'docs/operations/development.md', desc: '开发者指南' }
       ]
     },
     {

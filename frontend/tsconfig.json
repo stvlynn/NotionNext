@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/blog.config": ["./blog.config"],
+      "@/components/*": ["./src/shared/components/*"],
+      "@/hooks/*": ["./src/shared/hooks/*"],
+      "@/themes/*": ["./src/shared/themes/*"],
+      "@/styles/*": ["./src/app/styles/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/conf/*": ["./src/shared/config/*"],
+      "@/types/*": ["./src/entities/types/*"],
+      "@/lib/db/*": ["../backend/src/infrastructure/db/*"],
+      "@/lib/cache/*": ["../backend/src/infrastructure/cache/*"],
+      "@/lib/server/*": ["../backend/src/infrastructure/claude/*"],
+      "@/lib/middleware/*": ["../backend/src/infrastructure/middleware/*"],
+      "@/lib/build/*": ["../backend/src/application/build/*"],
+      "@/lib/site/*": ["../backend/src/application/site/*"],
+      "@/lib/*": ["./src/shared/lib/*"],
+      "@/backend/*": ["../backend/src/*"]
+    },
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false
+  },
+  "include": [
+    "next-env.d.ts",
+    "blog.config.js",
+    "src/**/*.js",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.jsx",
+    "../backend/src/**/*.js",
+    "../backend/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "public"
+  ]
+}

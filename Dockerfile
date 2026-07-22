@@ -28,12 +28,14 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/frontend/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# next.config.js sets outputFileTracingRoot to the frontend workspace, so the
+# standalone server.js lands at the standalone root.
+COPY --from=builder /app/frontend/.next/standalone ./
+COPY --from=builder /app/frontend/.next/static ./.next/static
 
 # 个人仓库把将配置好的.env.local文件放到项目根目录，可自动使用环境变量
 # COPY --from=builder /app/.env.local ./

@@ -16,7 +16,7 @@ import {
 } from './lib/builtin-themes.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const themesDir = path.join(REPO_ROOT, 'themes')
+const themesDir = path.join(REPO_ROOT, 'frontend/src/shared/themes')
 const outDir = path.join(REPO_ROOT, 'docs/user-guide/themes')
 
 /** 开发者向长篇（不进在线 VitePress 站） */
@@ -96,7 +96,7 @@ function buildConfigTableBlock(id, keys, notes) {
     block += `| \`${k}\` | ${note} |\n`
   }
   if (keys.length > 40) {
-    block += `\n共 **${keys.length}** 项，上表列出前 40 项，完整列表见 [config.js](${GITHUB_BLOB}/themes/${id}/config.js)。\n`
+    block += `\n共 **${keys.length}** 项，上表列出前 40 项，完整列表见 [config.js](${GITHUB_BLOB}/frontend/src/shared/themes/${id}/config.js)。\n`
   }
   block += '\n<!-- /theme-config-table -->\n'
   return block
@@ -161,7 +161,7 @@ function buildFullDoc(id, title, summary, keys, notes) {
   }
 
   md += '## 配置说明\n\n'
-  md += `配置文件：[\`themes/${id}/config.js\`](${GITHUB_BLOB}/themes/${id}/config.js)  \n`
+  md += `配置文件：[\`themes/${id}/config.js\`](${GITHUB_BLOB}/frontend/src/shared/themes/${id}/config.js)  \n`
   md += '也可在 **Notion Config** 表中填写同名键（对象/数组用 JSON）。\n\n'
   md += buildConfigTableBlock(id, keys, notes)
   md += '\n## 相关\n\n'

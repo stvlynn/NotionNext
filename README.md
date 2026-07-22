@@ -6,6 +6,8 @@
 
 用 Notion 搭建自己的独立站
 
+> 本仓库采用 [agentic-coding](https://github.com/stvlynn/agentic-coding) 的项目结构:前端使用 Feature-Sliced Design (FSD),后端使用 Domain-Driven Design (DDD)。编码代理请先阅读 [`AGENTS.md`](AGENTS.md),文档索引见 [`docs/README.md`](docs/README.md)。
+
 继续在 Notion 写作，一键发布为博客、作品集、知识库、导航站或产品官网。
 
 <p>
