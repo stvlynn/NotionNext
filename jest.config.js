@@ -19,7 +19,7 @@ const customJestConfig = {
     '^@/components/(.*)$': '<rootDir>/frontend/src/shared/components/$1',
     '^@/hooks/(.*)$': '<rootDir>/frontend/src/shared/hooks/$1',
     '^@/themes/(.*)$': '<rootDir>/frontend/src/shared/themes/$1',
-    '^@/styles/(.*)$': '<rootDir>/frontend/src/app/styles/$1',
+    '^@/styles/(.*)$': '<rootDir>/frontend/src/shared/styles/$1',
     '^@/pages/(.*)$': '<rootDir>/frontend/src/pages/$1',
     '^@/conf/(.*)$': '<rootDir>/frontend/src/shared/config/$1',
     '^@/types/(.*)$': '<rootDir>/frontend/src/entities/types/$1',

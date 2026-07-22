@@ -423,7 +423,7 @@ const nextConfig = {
       '@/hooks': path.resolve(src, 'shared/hooks'),
       '@/conf': path.resolve(src, 'shared/config'),
       '@/types': path.resolve(src, 'entities/types'),
-      '@/styles': path.resolve(src, 'app/styles'),
+      '@/styles': path.resolve(src, 'shared/styles'),
       '@/pages': path.resolve(src, 'pages'),
       '@/backend': backend,
       '@/blog.config': path.resolve(__dirname, 'blog.config'),

@@ -6,7 +6,7 @@ module.exports = {
     './src/pages/**/*.js',
     './src/shared/components/**/*.js',
     './src/shared/themes/**/*.js',
-    './src/app/**/*.js',
+    './src/shared/**/*.js',
     './src/widgets/**/*.js',
     './src/features/**/*.js'
   ],

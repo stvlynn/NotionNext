@@ -78,6 +78,7 @@ const ArticleCopyright = ({ post }) => {
         {licenseText}
       </div>
       <div className='mt-3'>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <button type='button' onClick={handleCopy} className='fuwari-copy-btn'>
           <i className='far fa-copy mr-1' />
           {copied

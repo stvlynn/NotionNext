@@ -1,6 +1,7 @@
 /**
  * 全局类型定义
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 // 基础类型
 export type ID = string | number

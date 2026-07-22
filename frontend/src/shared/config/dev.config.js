@@ -24,7 +24,7 @@ module.exports = {
     try {
       // 优先使用环境变量，否则从package.json中获取版本号
       return (
-        process.env.NEXT_PUBLIC_VERSION || require('../package.json').version
+        process.env.NEXT_PUBLIC_VERSION || require('../../../../package.json').version
       )
     } catch (error) {
       console.warn('Failed to load package.json version:', error)

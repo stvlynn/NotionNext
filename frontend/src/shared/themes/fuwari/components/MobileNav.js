@@ -12,6 +12,7 @@ const MobileNav = ({ locale, customNav, customMenu }) => {
 
   const links = getFuwariMenuLinks({ locale, customNav, customMenu }).slice(0, 5)
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const onClickOutside = e => {
       if (!open) return

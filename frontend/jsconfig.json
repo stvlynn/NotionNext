@@ -7,12 +7,11 @@
     "checkJs": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
       "@/blog.config": ["./blog.config"],
       "@/components/*": ["./src/shared/components/*"],
       "@/hooks/*": ["./src/shared/hooks/*"],
       "@/themes/*": ["./src/shared/themes/*"],
-      "@/styles/*": ["./src/app/styles/*"],
+      "@/styles/*": ["./src/shared/styles/*"],
       "@/pages/*": ["./src/pages/*"],
       "@/conf/*": ["./src/shared/config/*"],
       "@/types/*": ["./src/entities/types/*"],
@@ -23,7 +22,8 @@
       "@/lib/build/*": ["../backend/src/application/build/*"],
       "@/lib/site/*": ["../backend/src/application/site/*"],
       "@/lib/*": ["./src/shared/lib/*"],
-      "@/backend/*": ["../backend/src/*"]
+      "@/backend/*": ["../backend/src/*"],
+      "@/*": ["./src/*"]
     }
   }
 }

@@ -1,6 +1,6 @@
 # ADR Template
 
-# ADR NNN: <title>
+# ADR NNN: Title
 
 ## Status
 
