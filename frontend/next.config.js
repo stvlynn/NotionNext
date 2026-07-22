@@ -197,6 +197,11 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
+  // The DDD backend lives in ../backend/src (outside the frontend project root).
+  // externalDir lets Next transpile TS/JS modules imported from there.
+  experimental: {
+    externalDir: true
+  },
   output: getOutput(),
   // Root the standalone output at the frontend workspace so server.js lands at
   // .next/standalone/server.js (not nested under a mirrored root path).
