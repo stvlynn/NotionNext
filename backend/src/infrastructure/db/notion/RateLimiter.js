@@ -1,30 +1,20 @@
 import fs from 'fs'
 
-interface QueueItem<T> {
-  requestFunc: () => Promise<T>
-  resolve: (value: T) => void
-  reject: (err: unknown) => void
-}
-
-interface NodeError extends Error {
-  code?: string
-}
-
 export class RateLimiter {
-  private queue: QueueItem<unknown>[] = []
-  private inflight = new Set<string>()
-  private isProcessing = false
-  private lastRequestTime = 0
-  private requestCount = 0
-  private windowStart = Date.now()
+  queue = []
+  inflight = new Set()
+  isProcessing = false
+  lastRequestTime = 0
+  requestCount = 0
+  windowStart = Date.now()
 
-  constructor(
-    private maxRequestsPerMinute = 200,
-    private lockFilePath?: string,
-    private minIntervalMs = 300
-  ) { }
+  constructor(maxRequestsPerMinute = 200, lockFilePath, minIntervalMs = 300) {
+    this.maxRequestsPerMinute = maxRequestsPerMinute
+    this.lockFilePath = lockFilePath
+    this.minIntervalMs = minIntervalMs
+  }
 
-  private async acquireLock() {
+  async acquireLock() {
     if (!this.lockFilePath) return
     // 如果锁文件存在且创建时间过久（比如 >5分钟），认为是陈旧锁，直接删除
     if (fs.existsSync(this.lockFilePath)) {
@@ -44,22 +34,22 @@ export class RateLimiter {
         fs.writeFileSync(this.lockFilePath, process.pid.toString(), { flag: 'wx' })
         return
       } catch (err) {
-        const e = err as NodeError
+        const e = err
         if (e.code === 'EEXIST') await new Promise(res => setTimeout(res, 100))
         else throw err
       }
     }
   }
 
-  private releaseLock() {
+  releaseLock() {
     if (!this.lockFilePath) return
     try { if (fs.existsSync(this.lockFilePath)) fs.unlinkSync(this.lockFilePath) }
     catch (err) { console.error('释放锁失败', err) }
   }
 
-  public enqueue<T>(key: string, requestFunc: () => Promise<T>): Promise<T> {
+  enqueue(key, requestFunc) {
     if (this.inflight.has(key)) {
-      return new Promise<T>((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
           if (!this.inflight.has(key)) {
             clearInterval(interval)
@@ -70,10 +60,10 @@ export class RateLimiter {
       })
     }
 
-    return new Promise<T>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.queue.push({
-        requestFunc: requestFunc as () => Promise<unknown>,
-        resolve: resolve as (value: unknown) => void,
+        requestFunc,
+        resolve,
         reject
       })
       if (!this.isProcessing) {
@@ -83,7 +73,7 @@ export class RateLimiter {
     })
   }
 
-  private async processQueue() {
+  async processQueue() {
     if (this.queue.length === 0) { this.isProcessing = false; return }
     this.isProcessing = true
 
@@ -92,9 +82,9 @@ export class RateLimiter {
       const now = Date.now()
       const elapsed = now - this.windowStart
 
-      if (elapsed > 60_000) { this.requestCount = 0; this.windowStart = now }
+      if (elapsed > 60000) { this.requestCount = 0; this.windowStart = now }
       if (this.requestCount >= this.maxRequestsPerMinute) {
-        const waitTime = 60_000 - elapsed + 100
+        const waitTime = 60000 - elapsed + 100
         await new Promise(res => setTimeout(res, waitTime))
         this.requestCount = 0
         this.windowStart = Date.now()
@@ -106,12 +96,12 @@ export class RateLimiter {
       )
       if (waitTime > 0) await new Promise(res => setTimeout(res, waitTime))
 
-      const { requestFunc, resolve, reject } = this.queue.shift()!
+      const { requestFunc, resolve, reject } = this.queue.shift()
       const key = crypto.randomUUID()
       this.inflight.add(key)
 
       try {
-        const result: unknown = await requestFunc()
+        const result = await requestFunc()
         this.lastRequestTime = Date.now()
         this.requestCount++
         resolve(result)
