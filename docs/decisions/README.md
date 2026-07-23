@@ -14,6 +14,7 @@ Write an ADR when the decision:
 
 - [`adr-template.md`](adr-template.md) — template for new ADRs.
 - [`001-adopt-fsd-ddd-structure.md`](001-adopt-fsd-ddd-structure.md) — adopt the agentic-coding FSD/DDD project structure.
+- [`002-typescript-first.md`](002-typescript-first.md) — TypeScript-first codebase (backend + frontend core; themes migrate incrementally).
 
 ## Naming
 

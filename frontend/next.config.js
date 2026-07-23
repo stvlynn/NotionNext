@@ -3,7 +3,7 @@ const path = require('node:path')
 const BLOG = require('./blog.config')
 const { extractLangPrefix } = require('./src/shared/lib/utils/pageId')
 const { isExport } = require('./src/shared/lib/utils/buildMode')
-const { getStaticPageGenerationTimeoutSec } = require('../backend/src/application/build/buildEnv')
+const { getStaticPageGenerationTimeoutSec } = require('../backend/src/application/build/buildEnv.cjs')
 
 // 打包时是否分析代码
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
