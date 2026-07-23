@@ -1,0 +1,217 @@
+/**
+ * Navy Ink design tokens.
+ *
+ * A recolour of the coss UI (Base UI) token set: cool silver-white light mode,
+ * navy-ink dark mode, cornflower-blue accent. Source of truth:
+ * https://github.com/stvlynn/navy-ink-design-system
+ *
+ * Token scoping strategy (so the 26 legacy themes keep working):
+ *   - Tokens that do NOT exist in the legacy Tailwind config (`background`,
+ *     `foreground`, `card`, `popover`, `muted`, `accent`, `border`, `input`,
+ *     `ring`, `brand`, `destructive`, `success`, `info`, `sidebar`, `chart-*`)
+ *     are defined globally. Only coss components consume them, and coss
+ *     components only appear inside the navyink theme, so there is no bleed.
+ *   - Tokens that DO collide with the legacy config (`primary`, `secondary`,
+ *     `warning`) default to their legacy values on `:root` and are overridden
+ *     only inside `.theme-navyink`. The legacy Tailwind colours are rewired to
+ *     read these same CSS variables (see tailwind.config.js), so a single
+ *     `bg-primary` utility resolves per scope.
+ */
+
+:root {
+  /* Base ramps ----------------------------------------------------------- */
+  --white: #ffffff;
+  --black: oklch(0.16 0.028 264);
+
+  --ink-50: oklch(0.985 0.004 258);
+  --ink-100: oklch(0.969 0.006 258);
+  --ink-150: oklch(0.947 0.01 258);
+  --ink-200: oklch(0.916 0.013 259);
+  --ink-300: oklch(0.858 0.017 259);
+  --ink-400: oklch(0.708 0.024 260);
+  --ink-500: oklch(0.585 0.028 261);
+  --ink-600: oklch(0.48 0.032 262);
+  --ink-700: oklch(0.382 0.036 263);
+  --ink-800: oklch(0.296 0.042 264);
+  --ink-900: oklch(0.232 0.044 265);
+  --ink-950: oklch(0.172 0.04 265);
+
+  --corn-50: oklch(0.966 0.018 257);
+  --corn-100: oklch(0.93 0.036 257);
+  --corn-200: oklch(0.878 0.062 258);
+  --corn-300: oklch(0.798 0.094 258);
+  --corn-400: oklch(0.69 0.128 258);
+  --corn-500: oklch(0.585 0.152 259);
+  --corn-600: oklch(0.52 0.156 260);
+  --corn-700: oklch(0.462 0.142 261);
+  --corn-800: oklch(0.402 0.116 262);
+
+  /* Semantic tokens - light --------------------------------------------- */
+  --radius: 0.625rem;
+
+  --background: var(--ink-50);
+  --foreground: var(--ink-800);
+  --card: #ffffff;
+  --card-foreground: var(--ink-800);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink-800);
+
+  --brand: var(--corn-500);
+  --brand-foreground: #ffffff;
+  --brand-muted: color-mix(in srgb, var(--corn-500) 8%, transparent);
+
+  --muted: color-mix(in srgb, var(--ink-900) 4%, transparent);
+  --muted-foreground: var(--ink-500);
+  --accent: color-mix(in srgb, var(--ink-900) 5%, transparent);
+  --accent-foreground: var(--ink-800);
+
+  --info: var(--corn-500);
+  --info-foreground: var(--corn-700);
+  --success: oklch(0.62 0.13 162);
+  --success-foreground: oklch(0.52 0.12 162);
+  --destructive: oklch(0.6 0.2 18);
+  --destructive-foreground: oklch(0.52 0.2 20);
+
+  --border: color-mix(in srgb, var(--ink-900) 9%, transparent);
+  --border-strong: color-mix(in srgb, var(--ink-900) 16%, transparent);
+  --input: color-mix(in srgb, var(--ink-900) 12%, transparent);
+  --ring: var(--corn-500);
+
+  --sidebar: var(--ink-100);
+  --sidebar-foreground: var(--ink-600);
+  --sidebar-accent: color-mix(in srgb, var(--ink-900) 5%, transparent);
+  --sidebar-accent-foreground: var(--ink-800);
+  --sidebar-border: color-mix(in srgb, var(--ink-900) 7%, transparent);
+
+  --chart-1: var(--corn-500);
+  --chart-2: var(--corn-300);
+  --chart-3: var(--ink-400);
+  --chart-4: oklch(0.62 0.13 162);
+  --chart-5: var(--ink-700);
+
+  /* Colliding tokens: legacy defaults preserved globally ---------------- */
+  --primary: #3758f9;
+  --primary-foreground: #ffffff;
+  --secondary: #13c296;
+  --secondary-foreground: #ffffff;
+  --warning: #fbbf24;
+  --warning-foreground: oklch(0.56 0.13 70);
+}
+
+.dark {
+  --background: var(--ink-950);
+  --foreground: var(--ink-100);
+  --card: var(--ink-900);
+  --card-foreground: var(--ink-100);
+  --popover: var(--ink-900);
+  --popover-foreground: var(--ink-100);
+
+  --brand: var(--corn-400);
+  --brand-foreground: var(--ink-950);
+  --brand-muted: color-mix(in srgb, var(--corn-400) 16%, transparent);
+
+  --muted: color-mix(in srgb, #ffffff 5%, transparent);
+  --muted-foreground: var(--ink-400);
+  --accent: color-mix(in srgb, #ffffff 6%, transparent);
+  --accent-foreground: var(--ink-100);
+
+  --info: var(--corn-400);
+  --info-foreground: var(--corn-300);
+
+  --border: color-mix(in srgb, #ffffff 8%, transparent);
+  --border-strong: color-mix(in srgb, #ffffff 16%, transparent);
+  --input: color-mix(in srgb, #ffffff 12%, transparent);
+  --ring: var(--corn-400);
+
+  --sidebar: var(--ink-900);
+  --sidebar-foreground: var(--ink-400);
+  --sidebar-accent: color-mix(in srgb, #ffffff 6%, transparent);
+  --sidebar-accent-foreground: var(--ink-100);
+  --sidebar-border: color-mix(in srgb, #ffffff 6%, transparent);
+}
+
+/**
+ * Navy-ink scope: override the colliding tokens with coss semantics.
+ * `--primary` becomes the near-black/near-white "ink" primary (buttons,
+ * headings) rather than the legacy blurple, and the cornflower lives on
+ * `--brand`. Applied to the navyink theme root only.
+ */
+.theme-navyink {
+  --primary: var(--ink-800);
+  --primary-foreground: var(--ink-50);
+  --secondary: color-mix(in srgb, var(--ink-900) 5%, transparent);
+  --secondary-foreground: var(--ink-800);
+  --warning: oklch(0.76 0.14 75);
+  --warning-foreground: oklch(0.56 0.13 70);
+}
+
+.dark .theme-navyink,
+.theme-navyink.dark {
+  --primary: var(--ink-100);
+  --primary-foreground: var(--ink-900);
+  --secondary: color-mix(in srgb, #ffffff 6%, transparent);
+  --secondary-foreground: var(--ink-100);
+}
+
+/* Map design tokens onto Tailwind v4 utility namespaces (coss consumes these:
+   `bg-background`, `text-muted-foreground`, `border-border`, `bg-brand`, ...).
+   Colliding names (primary/secondary/warning) are declared in the legacy
+   config so they are not repeated here. */
+@theme inline {
+  /* Base ramps as utilities (bg-ink-500, from-corn-400, text-ink-700, ...) */
+  --color-ink-50: var(--ink-50);
+  --color-ink-100: var(--ink-100);
+  --color-ink-150: var(--ink-150);
+  --color-ink-200: var(--ink-200);
+  --color-ink-300: var(--ink-300);
+  --color-ink-400: var(--ink-400);
+  --color-ink-500: var(--ink-500);
+  --color-ink-600: var(--ink-600);
+  --color-ink-700: var(--ink-700);
+  --color-ink-800: var(--ink-800);
+  --color-ink-900: var(--ink-900);
+  --color-ink-950: var(--ink-950);
+  --color-corn-50: var(--corn-50);
+  --color-corn-100: var(--corn-100);
+  --color-corn-200: var(--corn-200);
+  --color-corn-300: var(--corn-300);
+  --color-corn-400: var(--corn-400);
+  --color-corn-500: var(--corn-500);
+  --color-corn-600: var(--corn-600);
+  --color-corn-700: var(--corn-700);
+  --color-corn-800: var(--corn-800);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-muted: var(--brand-muted);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}

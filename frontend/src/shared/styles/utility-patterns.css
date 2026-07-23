@@ -1,3 +1,6 @@
+/* Tailwind v4: load theme context so @apply resolves in this standalone file. */
+@reference "tailwindcss";
+
 /* Typography */
 .h1 {
     @apply text-4xl font-extrabold leading-tight tracking-tighter;

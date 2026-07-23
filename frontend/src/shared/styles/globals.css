@@ -1,6 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import './navy-ink.css';
+
+/* Load the legacy theme (custom colours, breakpoints, fonts, shadows) so the
+   existing themes keep their utilities under Tailwind v4. */
+@config '../../../tailwind.config.js';
+
+/* v4 no longer reads `theme.container`; recreate the v3 centred, padded
+   container utility that the legacy themes rely on. */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+/* v4 changed the default border/divide colour from gray-200 to currentColor.
+   Restore the v3 default so bare `border` utilities render as before. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 html {
   overflow-x: hidden;
@@ -26,7 +49,7 @@ html {
 }
 
 .sticky-nav-full {
-  @apply border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50;
+  @apply border-b border-gray-200/50 dark:border-gray-600/50;
 }
 
 .header-name {
@@ -62,7 +85,7 @@ nav {
 
 @media (min-width: 768px) {
   .sticky-nav-full {
-    @apply max-w-full border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50;
+    @apply max-w-full border-b border-gray-200/50 dark:border-gray-600/50;
   }
   .header-name {
     display: block;
@@ -96,7 +119,7 @@ nav {
 }
 
 #waifu {
-  @apply right-auto left-0 hidden lg:block z-10 !important;
+  @apply right-auto! left-0! hidden! lg:block! z-10!;
 }
 
 /* 隐藏滚动条 */
@@ -140,7 +163,7 @@ nav {
 
 [data-waline] p {
   color: var(--waline-color);
-  @apply dark:text-gray-200 !important;
+  @apply dark:text-gray-200!;
 }
 
 .waline-recent-content p {
