@@ -17,6 +17,7 @@ Incremental migration via `allowJs` is already documented for themes (`docs/fron
 3. **Themes migrate theme-by-theme.** Legacy theme directories under `frontend/src/shared/themes/` (except `navyink`, already TypeScript) may remain `.js` under `allowJs` until each theme is converted using `navyink` as the reference (typed facade over `useGlobal` / `siteConfig`).
 4. **Keep `allowJs: true` until themes are done.** Do not enable `checkJs` globally; type safety is enforced on `.ts` / `.tsx` files.
 5. **Prefer real types over `any`.** When bridging untyped Notion payloads, keep a single explicit cast/facade boundary (same pattern as `themes/navyink/lib/global.ts`).
+6. **CJS bootstrap stays JavaScript.** `frontend/blog.config.js`, `frontend/next.config.js`, and the `shared/config/*.config.js` shards they `require` remain CommonJS so Node can load them without a TypeScript runtime. Tiny CJS bridges (`*.cjs`) mirror selected TypeScript helpers (e.g. `pageId`, `buildMode`, `buildEnv`) for those entry points.
 
 ## Consequences
 

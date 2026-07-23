@@ -44,7 +44,7 @@ export interface ThemeGlobal {
 
 /** Strongly-typed view of the global theme context. */
 export function useThemeGlobal(): ThemeGlobal {
-  return useGlobalRaw() as ThemeGlobal
+  return useGlobalRaw() as unknown as ThemeGlobal
 }
 
 /** Strongly-typed `siteConfig` reader. */
