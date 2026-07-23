@@ -64,6 +64,8 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
 - Untyped `useGlobal`/`siteConfig` are wrapped once in
   `themes/navyink/lib/global.ts` (`useThemeGlobal`, `conf`) so the rest of the
   theme is fully typed.
+- Header wordmark mark: `NAVYINK_LOGO` (default
+  `/themes/navyink/logo.jpg`).
 
 ## Motion
 

@@ -9,6 +9,9 @@
  * `shared/styles/navy-ink.css`; this config only toggles theme features.
  */
 const CONFIG = {
+  // Brand mark shown next to the site title in the header
+  NAVYINK_LOGO: '/themes/navyink/logo.jpg',
+
   // Navigation
   NAVYINK_MENU_INDEX: true,
   NAVYINK_MENU_CATEGORY: true,
