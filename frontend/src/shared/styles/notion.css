@@ -1,3 +1,6 @@
+/* Tailwind v4: load theme context so @apply resolves in this standalone file. */
+@reference "tailwindcss";
+
 :root {
   --fg-color: rgb(0, 0, 0) !important;
   --fg-color-0: rgba(55, 53, 47, 0.09);
@@ -828,7 +831,7 @@ code[class*='language-'] {
   overflow: auto;
   font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
-  @apply w-full mb-0 dark:bg-black !important;
+  @apply w-full! mb-0! dark:bg-black!;
 }
 
 .notion-column {
@@ -1407,7 +1410,7 @@ code[class*='language-'] {
   line-height: 16px;
   margin-left: 6px;
 
-  @apply dark:text-gray-400 !important;
+  @apply dark:text-gray-400!;
 }
 
 .notion-audio {
@@ -1812,7 +1815,7 @@ svg + .notion-page-title-text {
   padding: 4px 2px;
   white-space: nowrap;
   overflow: hidden;
-  @apply px-0 !important;
+  @apply px-0!;
 }
 
 .notion-collection-header-title {
@@ -1879,7 +1882,7 @@ svg + .notion-page-title-text {
 .notion-table {
   align-self: center;
   overflow: auto hidden;
-  @apply w-full !important;
+  @apply w-full!;
 }
 
 .notion-table-view {
@@ -1888,7 +1891,7 @@ svg + .notion-page-title-text {
   min-width: var(--notion-max-width);
   padding-left: 0;
   transition: padding 200ms ease-out;
-  @apply px-0 !important;
+  @apply px-0!;
 }
 
 .notion-table-header {
@@ -2021,7 +2024,7 @@ svg + .notion-page-title-text {
 }
 
 .notion-simple-table {
-  @apply whitespace-nowrap overflow-x-auto block w-full border-0 !important;
+  @apply whitespace-nowrap! overflow-x-auto! block! w-full! border-0!;
 }
 
 .notion-asset-wrapper-pdf > div {
@@ -2154,23 +2157,23 @@ code.language-mermaid {
 }
 
 .notion-external-title {
-  @apply dark:text-white !important;
+  @apply dark:text-white!;
 }
 
 .notion-external-subtitle {
-  @apply dark:text-gray-400 !important;
+  @apply dark:text-gray-400!;
 }
 
 .notion-external-block {
-  @apply dark:border-gray-200 !important;
+  @apply dark:border-gray-200!;
 }
 
 .notion-external-image > svg > g > path {
-  @apply dark:fill-gray-200 !important;
+  @apply dark:fill-gray-200!;
 }
 
 .notion-external-image {
-  @apply w-6 h-6 mx-3 my-2 !important;
+  @apply w-6! h-6! mx-3! my-2!;
 }
 
 /* 表格 #f5f6f8*/
@@ -2180,7 +2183,7 @@ code.language-mermaid {
 /* 表格头 新版notion不用 */
 /* .notion-simple-table tr:first-child td {
   background-color: #f5f6f8;
-  @apply text-center font-bold dark:bg-gray-800 !important;
+  @apply text-center! font-bold! dark:bg-gray-800!;
 } */
 
 .notion-simple-table td {

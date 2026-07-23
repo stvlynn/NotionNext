@@ -3,12 +3,12 @@ const { fontFamilies } = require('./src/shared/lib/utils/font')
 
 module.exports = {
   content: [
-    './src/pages/**/*.js',
-    './src/shared/components/**/*.js',
-    './src/shared/themes/**/*.js',
-    './src/shared/**/*.js',
-    './src/widgets/**/*.js',
-    './src/features/**/*.js'
+    './src/pages/**/*.{js,jsx,ts,tsx}',
+    './src/shared/components/**/*.{js,jsx,ts,tsx}',
+    './src/shared/themes/**/*.{js,jsx,ts,tsx}',
+    './src/shared/**/*.{js,jsx,ts,tsx}',
+    './src/widgets/**/*.{js,jsx,ts,tsx}',
+    './src/features/**/*.{js,jsx,ts,tsx}'
   ],
   darkMode: BLOG.APPEARANCE === 'class' ? 'media' : 'class', // or 'media' or 'class'
   theme: {
@@ -53,12 +53,19 @@ module.exports = {
           7: '#D1D5DB',
           8: '#E5E7EB'
         },
-        primary: '#3758F9',
+        // Rewired to CSS variables so coss components and the legacy themes can
+        // share a single `bg-primary`/`bg-secondary`/`bg-warning` utility that
+        // resolves per scope. Defaults live on `:root` in navy-ink.css and
+        // preserve the original values; `.theme-navyink` overrides them.
+        primary: 'var(--primary)',
+        'primary-foreground': 'var(--primary-foreground)',
         'blue-dark': '#1B44C8',
-        secondary: '#13C296',
+        secondary: 'var(--secondary)',
+        'secondary-foreground': 'var(--secondary-foreground)',
         'body-color': '#637381',
         'body-secondary': '#8899A8',
-        warning: '#FBBF24',
+        warning: 'var(--warning)',
+        'warning-foreground': 'var(--warning-foreground)',
         stroke: '#DFE4EA',
         'gray-1': '#F9FAFB',
         'gray-2': '#F3F4F6',
