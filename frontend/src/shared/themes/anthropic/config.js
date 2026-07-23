@@ -23,23 +23,23 @@ const CONFIG = {
   ANTHROPIC_WIDGET_TOC: true,
   ANTHROPIC_WIDGET_LATEST_POSTS: true,
 
-  // 配色方案 - 参考 Anthropic 设计语言
-  ANTHROPIC_ACCENT_COLOR: '#D97757', // 珊瑚色强调色
-  ANTHROPIC_BG_DARK: '#141413', // 深色背景
-  ANTHROPIC_BG_LIGHT: '#FAF9F0', // 奶油白背景
-  ANTHROPIC_TEXT_DARK: '#141413',
-  ANTHROPIC_TEXT_LIGHT: '#FAFAFA',
+  // 配色方案 - Navy Ink 设计体系（源自 coss.com/ui，冷色银白 / 藏青墨 + 棉花蓝强调）
+  ANTHROPIC_ACCENT_COLOR: '#3f6fc9', // cornflower 棉花蓝强调色
+  ANTHROPIC_BG_DARK: '#141a30', // ink-950 藏青墨背景
+  ANTHROPIC_BG_LIGHT: '#fafbfd', // ink-50 银白背景
+  ANTHROPIC_TEXT_DARK: '#28304a', // ink-800
+  ANTHROPIC_TEXT_LIGHT: '#f2f4f9', // ink-100
 
-  // 插图背景色调色板（用于文章卡片）
+  // 插图背景色调色板（用于无封面文章卡片）- 冷色藏青 / 棉花蓝家族
   ANTHROPIC_PALETTE: [
-    '#C4835A', // clay 陶土
-    '#7A9A7E', // cactus 仙人掌绿
-    '#7B9BB4', // sky 天空蓝
-    '#8B6E8E', // fig 无花果紫
-    '#8B8B5E', // olive 橄榄
-    '#D97757', // coral 珊瑚
-    '#9B89A8', // heather 石楠紫
-    '#D4C9A8'  // oat 燕麦
+    '#28304a', // ink-800 藏青墨
+    '#2b4d93', // corn-700 深棉花蓝
+    '#3f6fc9', // corn-500 棉花蓝
+    '#3c4760', // ink-700 冷板岩
+    '#305bb0', // corn-600 靛蓝
+    '#545f78', // ink-600 石墨蓝
+    '#3f7d6e', // 冷杉绿
+    '#6d788f'  // ink-500 银蓝
   ]
 }
 export default CONFIG

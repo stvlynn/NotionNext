@@ -2,50 +2,189 @@
 import { siteConfig } from '@/lib/config'
 import CONFIG from './config'
 
+/**
+ * Navy Ink design system for the Anthropic theme.
+ *
+ * Recolored from coss.com/ui (Cal.com's design system): the original warm
+ * Tailwind-neutral palette is retuned to a cool, restrained blue-grey slate —
+ * silver-white in light, navy ink in dark — with a single cornflower-blue
+ * accent reserved for links, focus and brand moments. Restraint over ornament.
+ *
+ * Two token layers:
+ *   1. Base ramps  — --ink-* (cool slate) and --corn-* (cornflower)
+ *   2. Semantic    — --background, --foreground, --brand … (alias the ramps)
+ * The theme's legacy --anthropic-* variables are mapped onto the semantic
+ * tokens so every existing component adopts the system without a rewrite.
+ */
 const Style = () => {
-  const accentColor = siteConfig('ANTHROPIC_ACCENT_COLOR', '#D97757', CONFIG)
-  const bgDark = siteConfig('ANTHROPIC_BG_DARK', '#141413', CONFIG)
-  const bgLight = siteConfig('ANTHROPIC_BG_LIGHT', '#FAF9F0', CONFIG)
+  const accentColor = siteConfig('ANTHROPIC_ACCENT_COLOR', '#3f6fc9', CONFIG)
+  const bgDark = siteConfig('ANTHROPIC_BG_DARK', '#141a30', CONFIG)
+  const bgLight = siteConfig('ANTHROPIC_BG_LIGHT', '#fafbfd', CONFIG)
 
   return (
     <style jsx global>{`
       :root {
-        --anthropic-accent: ${accentColor};
-        --anthropic-bg-dark: ${bgDark};
-        --anthropic-bg-light: ${bgLight};
-        --anthropic-text-primary: #141413;
-        --anthropic-text-secondary: #6B6B6B;
-        --anthropic-text-tertiary: #9B9B9B;
-        --anthropic-border: #E5E2D9;
-        --anthropic-card-bg: #FFFFFF;
-        --anthropic-selection: rgba(204, 120, 92, 0.3);
+        /* — Base ramps ————————————————————————————————————————————————— */
+        --white: #ffffff;
+        --black: oklch(0.16 0.028 264);
+
+        /* Ink — cool blue-grey slate (hue ~260, low chroma) */
+        --ink-50: oklch(0.985 0.004 258);
+        --ink-100: oklch(0.969 0.006 258);
+        --ink-150: oklch(0.947 0.01 258);
+        --ink-200: oklch(0.916 0.013 259);
+        --ink-300: oklch(0.858 0.017 259);
+        --ink-400: oklch(0.708 0.024 260);
+        --ink-500: oklch(0.585 0.028 261);
+        --ink-600: oklch(0.48 0.032 262);
+        --ink-700: oklch(0.382 0.036 263);
+        --ink-800: oklch(0.296 0.042 264);
+        --ink-900: oklch(0.232 0.044 265);
+        --ink-950: oklch(0.172 0.04 265);
+
+        /* Cornflower — the ribbon blue, the one accent (hue ~258) */
+        --corn-50: oklch(0.966 0.018 257);
+        --corn-100: oklch(0.93 0.036 257);
+        --corn-200: oklch(0.878 0.062 258);
+        --corn-300: oklch(0.798 0.094 258);
+        --corn-400: oklch(0.69 0.128 258);
+        --corn-500: oklch(0.585 0.152 259);
+        --corn-600: oklch(0.52 0.156 260);
+        --corn-700: oklch(0.462 0.142 261);
+        --corn-800: oklch(0.402 0.116 262);
+
+        /* — Semantic ——————————————————————————————————————————————————— */
+        --radius: 0.625rem;
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
+        --radius-2xl: 1rem;
+        --radius-full: 9999px;
+
+        --background: ${bgLight};
+        --foreground: var(--ink-800);
+
+        --card: var(--white);
+        --card-foreground: var(--ink-800);
+
+        /* Brand = cornflower (used sparingly: links, selection, focus) */
+        --brand: ${accentColor};
+        --brand-foreground: var(--white);
+        --brand-muted: color-mix(in srgb, ${accentColor} 8%, transparent);
+
+        --muted-foreground: var(--ink-500);
+
+        /* Lines & rings */
+        --border: color-mix(in srgb, var(--ink-900) 9%, transparent);
+        --border-strong: color-mix(in srgb, var(--ink-900) 16%, transparent);
+        --ring: ${accentColor};
+
+        /* Elevation — restrained, cool-tinted */
+        --shadow-xs: 0 1px 2px -1px color-mix(in srgb, var(--ink-950) 8%, transparent);
+        --shadow-sm: 0 1px 3px -1px color-mix(in srgb, var(--ink-950) 10%, transparent),
+          0 1px 2px -1px color-mix(in srgb, var(--ink-950) 6%, transparent);
+        --shadow-md: 0 4px 12px -2px color-mix(in srgb, var(--ink-950) 12%, transparent);
+        --shadow-lg: 0 12px 32px -6px color-mix(in srgb, var(--ink-950) 16%, transparent);
+
+        /* The coss top-highlight: a 1px inner line that reads as lit from above */
+        --highlight-top: inset 0 1px 0 color-mix(in srgb, var(--white) 40%, transparent);
+
+        /* Shadow-as-border — a 1px ring + gentle lift for elevated surfaces */
+        --shadow-border: 0 0 0 1px color-mix(in srgb, #000 6%, transparent),
+          0 1px 2px -1px color-mix(in srgb, #000 6%, transparent),
+          0 2px 4px 0 color-mix(in srgb, #000 4%, transparent);
+        --shadow-border-hover: 0 0 0 1px color-mix(in srgb, #000 8%, transparent),
+          0 8px 24px -8px color-mix(in srgb, var(--ink-950) 18%, transparent);
+
+        /* Motion — press-scale never below 0.95 */
+        --press-scale: 0.96;
         --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
         --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
         --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
         --card-stagger: 0;
-        /* Raw bg values - never overridden by .dark, used by theme transition ripple */
+
+        /* — Legacy alias layer: components keep their --anthropic-* names, the
+             values now resolve to the navy-ink semantic tokens ——————————————— */
+        --anthropic-accent: var(--brand);
+        --anthropic-bg-light: var(--background);
+        --anthropic-bg-dark: ${bgDark};
+        --anthropic-text-primary: var(--foreground);
+        --anthropic-text-secondary: var(--muted-foreground);
+        --anthropic-text-tertiary: var(--ink-400);
+        --anthropic-border: var(--border);
+        --anthropic-card-bg: var(--card);
+        --anthropic-selection: var(--brand-muted);
+
+        /* Raw bg values — concrete colors for the theme-transition ripple
+           (never overridden by .dark) */
         --anthropic-raw-bg-light: ${bgLight};
         --anthropic-raw-bg-dark: ${bgDark};
       }
 
       .dark {
-        --anthropic-bg-light: ${bgDark};
-        --anthropic-text-primary: #FAFAFA;
-        --anthropic-text-secondary: #A0A0A0;
-        --anthropic-text-tertiary: #707070;
-        --anthropic-border: #2A2A29;
-        --anthropic-card-bg: #1C1C1B;
+        --background: ${bgDark};
+        --foreground: var(--ink-100);
+
+        --card: var(--ink-900);
+        --card-foreground: var(--ink-100);
+
+        --brand: var(--corn-400);
+        --brand-foreground: var(--ink-950);
+        --brand-muted: color-mix(in srgb, var(--corn-400) 20%, transparent);
+
+        --muted-foreground: var(--ink-400);
+
+        --border: color-mix(in srgb, var(--white) 8%, transparent);
+        --border-strong: color-mix(in srgb, var(--white) 16%, transparent);
+        --ring: var(--corn-400);
+
+        --highlight-top: inset 0 1px 0 color-mix(in srgb, var(--white) 8%, transparent);
+
+        /* On dark surfaces layered depth shadows vanish — use a single ring */
+        --shadow-border: 0 0 0 1px color-mix(in srgb, #fff 8%, transparent);
+        --shadow-border-hover: 0 0 0 1px color-mix(in srgb, #fff 14%, transparent),
+          0 8px 24px -8px rgba(0, 0, 0, 0.5);
+
+        --anthropic-text-tertiary: var(--ink-500);
       }
 
       #theme-anthropic {
-        background-color: var(--anthropic-bg-light);
-        color: var(--anthropic-text-primary);
+        background-color: var(--background);
+        color: var(--foreground);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
       }
 
       #theme-anthropic ::selection {
         background: var(--anthropic-selection);
+      }
+
+      /* Text wrapping — balance headings, pretty body (no lone last words) */
+      #theme-anthropic h1,
+      #theme-anthropic h2,
+      #theme-anthropic h3,
+      #theme-anthropic h4 {
+        text-wrap: balance;
+      }
+      #theme-anthropic p,
+      #theme-anthropic li,
+      #theme-anthropic figcaption,
+      #theme-anthropic blockquote {
+        text-wrap: pretty;
+      }
+
+      /* Image outlines — a neutral 1px inset separator for consistent depth.
+         Pure black / white only so the edge never reads as a tint. */
+      #theme-anthropic #article-wrapper img,
+      #theme-anthropic .card-cover img {
+        outline: 1px solid rgba(0, 0, 0, 0.1);
+        outline-offset: -1px;
+      }
+      .dark #theme-anthropic #article-wrapper img,
+      .dark #theme-anthropic .card-cover img {
+        outline-color: rgba(255, 255, 255, 0.1);
       }
 
       /* 标题使用京华老宋体 */
@@ -69,14 +208,15 @@ const Style = () => {
       #theme-anthropic nav,
       #theme-anthropic .meta,
       #theme-anthropic footer {
-        font-family: "Noto Sans SC", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: "Noto Sans SC", "Cal Sans UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
       }
 
-      /* 代码使用 JetBrains Mono */
+      /* 代码与数字使用等宽字体 + 表格数字（数值变动不引发布局抖动） */
       #theme-anthropic code,
       #theme-anthropic pre,
       #theme-anthropic .mono {
-        font-family: "JetBrains Mono", "Fira Code", "SF Mono", monospace;
+        font-family: "Paper Mono", "JetBrains Mono", "Fira Code", "SF Mono", ui-monospace, monospace;
+        font-variant-numeric: tabular-nums;
       }
 
       /* 流体排版 */
@@ -96,19 +236,19 @@ const Style = () => {
         line-height: 1.4;
       }
 
-      /* 链接样式 */
+      /* 链接样式 — 棉花蓝，克制地出现 */
       #theme-anthropic a.anthropic-link {
-        color: var(--anthropic-accent);
+        color: var(--brand);
         text-decoration: none;
         transition: color 200ms var(--ease-smooth);
       }
 
       #theme-anthropic a.anthropic-link:hover {
-        color: color-mix(in srgb, var(--anthropic-accent) 80%, black);
+        color: color-mix(in srgb, var(--brand) 80%, var(--foreground));
       }
 
       /* ==========================================
-         文章卡片 - 悬浮效果 + 入场动画
+         文章卡片 - 发丝边框 + 顶部高光 + 入场动画
          ========================================== */
       #theme-anthropic .post-card {
         transition:
@@ -116,13 +256,19 @@ const Style = () => {
           box-shadow 400ms var(--ease-smooth);
       }
 
-      #theme-anthropic .post-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08);
+      #theme-anthropic .post-card > a {
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-border), var(--highlight-top);
+        border-radius: var(--radius-2xl);
+        transition: box-shadow 400ms var(--ease-smooth);
       }
 
-      .dark #theme-anthropic .post-card:hover {
-        box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
+      #theme-anthropic .post-card:hover {
+        transform: translateY(-4px);
+      }
+
+      #theme-anthropic .post-card:hover > a {
+        box-shadow: var(--shadow-border-hover), var(--highlight-top);
       }
 
       #theme-anthropic .post-card .card-cover img {
@@ -148,7 +294,7 @@ const Style = () => {
         left: 50%;
         width: 0;
         height: 1.5px;
-        background-color: var(--anthropic-accent);
+        background-color: var(--brand);
         transition: width 350ms var(--ease-smooth), left 350ms var(--ease-smooth);
         border-radius: 1px;
       }
@@ -159,31 +305,32 @@ const Style = () => {
       }
 
       /* ==========================================
-         标签样式
+         标签样式 - 发丝边框胶囊，hover 转棉花蓝
          ========================================== */
       #theme-anthropic .tag-pill {
         display: inline-block;
         padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
+        border-radius: var(--radius-full);
         font-size: 0.75rem;
-        font-family: "JetBrains Mono", monospace;
+        font-family: "Paper Mono", "JetBrains Mono", ui-monospace, monospace;
+        font-variant-numeric: tabular-nums;
         letter-spacing: 0.02em;
         text-transform: uppercase;
-        border: 1px solid var(--anthropic-border);
-        color: var(--anthropic-text-secondary);
+        border: 1px solid var(--border);
+        color: var(--muted-foreground);
         transition: all 300ms var(--ease-smooth);
       }
 
       #theme-anthropic .tag-pill:hover {
-        border-color: var(--anthropic-accent);
-        color: var(--anthropic-accent);
+        border-color: var(--brand);
+        color: var(--brand);
         transform: translateY(-1px);
       }
 
       /* 分割线 */
       #theme-anthropic .divider {
         height: 1px;
-        background: var(--anthropic-border);
+        background: var(--border);
         border: none;
       }
 
@@ -198,13 +345,13 @@ const Style = () => {
       }
 
       #theme-anthropic ::-webkit-scrollbar-thumb {
-        background-color: var(--anthropic-accent);
+        background-color: var(--brand);
         border-radius: 2px;
       }
 
       #theme-anthropic * {
         scrollbar-width: thin;
-        scrollbar-color: var(--anthropic-accent) transparent;
+        scrollbar-color: var(--brand) transparent;
       }
 
       /* 文章内容样式增强 */
@@ -215,39 +362,40 @@ const Style = () => {
       #theme-anthropic #article-wrapper p {
         font-size: clamp(1.0625rem, 1.04rem + 0.1vw, 1.125rem);
         line-height: 1.8;
-        color: var(--anthropic-text-primary);
+        color: var(--foreground);
         margin-bottom: 1.5rem;
       }
 
       #theme-anthropic #article-wrapper blockquote {
-        border-left: 2px solid var(--anthropic-accent);
+        border-left: 2px solid var(--brand);
         padding-left: 1.5rem;
         margin: 2rem 0;
-        color: var(--anthropic-text-secondary);
+        color: var(--muted-foreground);
         font-style: italic;
       }
 
       #theme-anthropic #article-wrapper pre {
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
         margin: 2rem 0;
       }
 
       #theme-anthropic #article-wrapper img {
-        border-radius: 0.5rem;
+        border-radius: var(--radius-lg);
         margin: 2rem 0;
       }
 
       /* ==========================================
-         按钮基础样式 - 增强交互反馈
+         主按钮 - 棉花蓝品牌动作 + 触觉反馈
          ========================================== */
       #theme-anthropic .btn-primary {
-        background-color: var(--anthropic-accent);
-        color: white;
+        background-color: var(--brand);
+        color: var(--brand-foreground);
         border: none;
         padding: 0.625rem 1.25rem;
-        border-radius: 0.375rem;
+        border-radius: var(--radius-lg);
         font-size: 0.875rem;
         cursor: pointer;
+        box-shadow: var(--highlight-top);
         transition:
           background-color 200ms var(--ease-smooth),
           transform 200ms var(--ease-smooth),
@@ -255,19 +403,19 @@ const Style = () => {
       }
 
       #theme-anthropic .btn-primary:hover {
-        background-color: color-mix(in srgb, var(--anthropic-accent) 85%, black);
+        background-color: color-mix(in srgb, var(--brand) 88%, black);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.12);
+        box-shadow: var(--shadow-md), var(--highlight-top);
       }
 
       #theme-anthropic .btn-primary:active {
-        transform: scale(0.97) translateY(0);
-        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.1);
+        transform: scale(var(--press-scale)) translateY(0);
+        box-shadow: var(--shadow-xs);
       }
 
       #theme-anthropic .btn-primary:focus-visible {
-        outline: 2px solid var(--anthropic-accent);
-        outline-offset: 2px;
+        outline: 3px solid var(--ring);
+        outline-offset: 1px;
       }
 
       /* ==========================================
@@ -283,19 +431,22 @@ const Style = () => {
       }
 
       #theme-anthropic .anthro-btn-icon:hover {
-        background-color: var(--anthropic-border);
+        background-color: color-mix(in srgb, var(--ink-900) 6%, transparent);
         transform: translateY(-1px);
-        box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+        box-shadow: var(--shadow-xs);
+      }
+      .dark #theme-anthropic .anthro-btn-icon:hover {
+        background-color: color-mix(in srgb, var(--white) 8%, transparent);
       }
 
       #theme-anthropic .anthro-btn-icon:active {
-        transform: scale(0.97) translateY(0);
+        transform: scale(var(--press-scale)) translateY(0);
         box-shadow: none;
       }
 
       #theme-anthropic .anthro-btn-icon:focus-visible {
-        outline: 2px solid var(--anthropic-accent);
-        outline-offset: 2px;
+        outline: 3px solid var(--ring);
+        outline-offset: 1px;
       }
 
       /* ==========================================
@@ -310,17 +461,17 @@ const Style = () => {
 
       #theme-anthropic .float-btn:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--shadow-lg);
       }
 
       #theme-anthropic .float-btn:active {
-        transform: scale(0.95);
-        box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
+        transform: scale(var(--press-scale));
+        box-shadow: var(--shadow-sm);
       }
 
       #theme-anthropic .float-btn:focus-visible {
-        outline: 2px solid var(--anthropic-accent);
-        outline-offset: 2px;
+        outline: 3px solid var(--ring);
+        outline-offset: 1px;
       }
 
       /* 响应式边距 */
@@ -454,7 +605,7 @@ const Style = () => {
 
         #theme-anthropic .hover-lift:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.08);
+          box-shadow: var(--shadow-md);
         }
       }
 

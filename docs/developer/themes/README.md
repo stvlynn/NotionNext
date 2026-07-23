@@ -19,6 +19,7 @@
 | --- | --- | --- |
 | Proxio | [proxio.md](../../user-guide/themes/proxio.md) | 已合并至站长文档 |
 | HEO | [heo.md](../../user-guide/themes/heo.md) | 已合并至站长文档 |
+| Anthropic | 仓库默认主题 | [ANTHROPIC.md](./ANTHROPIC.md)（Navy Ink 设计体系） |
 | Claude | [claude.md](../../user-guide/themes/claude.md) | [CLAUDE.md](./CLAUDE.md) · [CLAUDE.en.md](./CLAUDE.en.md) |
 | Endspace | [endspace.md](../../user-guide/themes/endspace.md) | [ENDSPACE.md](./ENDSPACE.md) · [ENDSPACE.en.md](./ENDSPACE.en.md) |
 | Fuwari | [fuwari.md](../../user-guide/themes/fuwari.md) | [FUWARI.md](./FUWARI.md) |
