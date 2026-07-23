@@ -13,6 +13,7 @@ The frontend lives in [`frontend/src/`](../../frontend/src/) and is a Next.js 14
 - [`public-api.md`](public-api.md) — public API and re-export rules.
 - [`import-rules.md`](import-rules.md) — cross-layer and cross-slice import rules.
 - [`ui-patterns.md`](ui-patterns.md) — semantic styling, no hardcoded copy, no redundant copy.
+- [`design-system.md`](design-system.md) — Navy Ink + coss UI, Tailwind v4, design tokens, and the `navyink` theme.
 
 ## Quick start
 
