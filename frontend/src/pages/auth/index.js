@@ -38,18 +38,13 @@ export const getServerSideProps = async ctx => {
 
   // 授权成功的划保存下用户的workspace信息
   if (params?.status === 200) {
-    console.log('请求成功', params)
     props.redirect_query = {
-      ...params.data,
-      msg: '成功了' + JSON.stringify(params.data)
+      msg: 'oauth_success'
     }
-    console.log('用户信息', JSON.stringify(params.data))
   } else if (!params) {
-    console.log('请求异常', params)
-    props.redirect_query = { msg: '无效请求' }
+    props.redirect_query = { msg: 'oauth_invalid_request' }
   } else {
-    console.log('请求失败', params)
-    props.redirect_query = { msg: params.statusText }
+    props.redirect_query = { msg: 'oauth_failed' }
   }
 
   props.redirect_pathname = '/auth/result'
@@ -63,18 +58,18 @@ const fetchToken = async code => {
   if (!code) {
     return '无效请求'
   }
-  console.log('Auth', code)
   const clientId = process.env.OAUTH_CLIENT_ID
   const clientSecret = process.env.OAUTH_CLIENT_SECRET
   const redirectUri = process.env.OAUTH_REDIRECT_URI
+
+  if (!clientId || !clientSecret || !redirectUri) {
+    return { status: 503, statusText: 'OAuth is not configured' }
+  }
 
   // encode in base 64
   const encoded = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
 
   try {
-    console.log(
-      `请求Code换取Token ${clientId}:${clientSecret} -- ${redirectUri}`
-    )
     const response = await axios.post(
       'https://api.notion.com/v1/oauth/token',
       {
@@ -91,10 +86,18 @@ const fetchToken = async code => {
       }
     )
 
-    console.log('Token response', response.data)
-    return response
+    return {
+      status: response.status,
+      statusText: response.statusText
+    }
   } catch (error) {
-    console.error('Error fetching token', error)
+    console.error('Notion OAuth token exchange failed', {
+      status: error?.response?.status
+    })
+    return {
+      status: error?.response?.status || 500,
+      statusText: 'OAuth token exchange failed'
+    }
   }
 }
 

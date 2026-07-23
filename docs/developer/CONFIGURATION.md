@@ -10,6 +10,8 @@
 2. 环境变量
 3. 本地配置文件（`blog.config.js` / `conf/*.config.js`）
 
+Notion Config 表和所有 `NEXT_PUBLIC_*` 环境变量都会发送到浏览器，只能保存公开的站点配置。Token、密码、OAuth Secret、服务端 API Key 等秘密必须使用不带 `NEXT_PUBLIC_` 的服务端环境变量，并由部署平台的 Secret 功能管理。
+
 ## 推荐实践
 
 - 将大块配置拆分到 `conf/*.config.js`
@@ -26,6 +28,7 @@
 以下内容通常属于个人环境，不应提交：
 
 - `.env.local`
+- `.dev.vars`
 - 带私人 key/token 的配置
 - 带个人广告 ID、统计 ID、第三方埋点 ID 的默认值
 - 仅个人站点使用的导航/菜单/主题私有配置
@@ -42,4 +45,3 @@
 - 本目录文档或 PR 描述中的使用说明
 
 主题级配置也遵守同一原则。新增 `themes/<theme>/config.js` 配置项时，请同步更新 `docs/user-guide/themes/<theme>.md`，说明默认值、开启/关闭效果，以及是否支持 Notion Config 或环境变量覆盖。不要把用户可见配置标记为“文档不适用”。
-

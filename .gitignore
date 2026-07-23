@@ -25,6 +25,9 @@
 # misc
 .DS_Store
 *.pem
+*.key
+*.p12
+*.pfx
 
 # debug
 npm-debug.log*
@@ -32,15 +35,18 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env.local
-.env.docs.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env
+.env*
+!.env.example
+!.env.*.example
+.dev.vars*
 
 # vercel
 .vercel
+
+# Cloudflare OpenNext build output
+.open-next
+frontend/.open-next
+.wrangler/
 
 # dev
 /data.json
