@@ -1,4 +1,4 @@
-# PR / main 基础质量门禁：减轻维护者手工验证，仅 Founder 需关注高影响路径 Review
+# Pull request and main branch quality gates.
 name: CI
 
 on:
@@ -6,6 +6,9 @@ on:
     branches: [main]
   push:
     branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}

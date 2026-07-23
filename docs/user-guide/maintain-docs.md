@@ -4,7 +4,8 @@
 
 在线文档站：[https://notionnext.tangly1024.com](https://notionnext.tangly1024.com)
 
-源码与 GitHub 上的 Markdown **一一对应**；改仓库 → 合并 `main` → 自动发布。
+源码与 GitHub 上的 Markdown **一一对应**；本仓库 CI 负责验证文档构建，
+但不单独发布 VitePress 文档站。
 
 每一次文档修正都会帮助后来的站长少踩一次坑。参与维护文档的开发者会出现在 [文档提交记录](https://github.com/notionnext-org/NotionNext/commits/main/docs) 与 [致谢页](./acknowledgements.md) 中。
 
@@ -14,18 +15,18 @@
 
 ## 浏览文档目录
 
-| 链接 | 说明 |
-| --- | --- |
-| [docs/](https://github.com/notionnext-org/NotionNext/tree/main/docs) | 目录说明（本 README 在 GitHub 可见） |
-| [docs/user-guide/](https://github.com/notionnext-org/NotionNext/tree/main/docs/user-guide) | 使用教程、主题配置、运营与维护 |
-| [docs/developer/](https://github.com/notionnext-org/NotionNext/tree/main/docs/developer) | 架构、贡献、主题迁移与维护文档（在线站可见） |
+| 链接                                                                                       | 说明                                         |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| [docs/](https://github.com/notionnext-org/NotionNext/tree/main/docs)                       | 目录说明（本 README 在 GitHub 可见）         |
+| [docs/user-guide/](https://github.com/notionnext-org/NotionNext/tree/main/docs/user-guide) | 使用教程、主题配置、运营与维护               |
+| [docs/developer/](https://github.com/notionnext-org/NotionNext/tree/main/docs/developer)   | 架构、贡献、主题迁移与维护文档（在线站可见） |
 
 ## 推荐流程（贡献者）
 
-1. Fork [notionnext-org/NotionNext](https://github.com/notionnext-org/NotionNext) 或具备组织仓库写权限。  
+1. Fork [notionnext-org/NotionNext](https://github.com/notionnext-org/NotionNext) 或具备组织仓库写权限。
 2. 编辑 `docs/user-guide/**/*.md` 或 `docs/developer/**/*.md`（主题配置表可运行 `node scripts/generate-theme-user-docs.mjs`）。
-3. 本地预览：`yarn docs:site:dev`。  
-4. 提交 PR，合并 **`main`** 后由 GitHub Actions 部署。  
+3. 本地预览：`yarn docs:site:dev`。
+4. 提交 PR，由 GitHub Actions 验证文档构建。
 
 ## 代码 PR 也要检查文档
 
@@ -35,12 +36,12 @@ PR 模板中的“用户文档不适用”只适合内部重构、测试、CI、
 
 详细检查清单：[MAINTENANCE_WORKFLOW.md](./MAINTENANCE_WORKFLOW.md) · 策略：[DOCUMENTATION_POLICY.md](../DOCUMENTATION_POLICY.md)
 
-## 部署原理（简述）
+## 验证原理（简述）
 
 ```text
-push main（docs/user-guide/ 等变更）
+pull request 或 push main
     → GitHub Actions: yarn docs:site:build
-    → .vitepress/dist → Cloudflare Pages
+    → 验证 VitePress 可以生成 .vitepress/dist
 ```
 
 ## 与旧版在线手册
@@ -56,9 +57,9 @@ push main（docs/user-guide/ 等变更）
 
 当前复用仓库默认分类 **General**（可在 [Discussions](https://github.com/notionnext-org/NotionNext/discussions) 查看）：
 
-| 变量 | 值（公开 ID，非密钥） |
-| --- | --- |
-| `VITE_GISCUS_REPO_ID` | `R_kgDOGHdxTw` |
+| 变量                      | 值（公开 ID，非密钥）  |
+| ------------------------- | ---------------------- |
+| `VITE_GISCUS_REPO_ID`     | `R_kgDOGHdxTw`         |
 | `VITE_GISCUS_CATEGORY_ID` | `DIC_kwDOGHdxT84CBR2I` |
 
 **GitHub Actions**：已在组织仓库 Secrets 中配置上述两项（构建 workflow 会自动注入）。  
