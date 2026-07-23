@@ -1,5 +1,7 @@
 /* Tailwind v4: load theme context so @apply resolves in this standalone file. */
 @reference "tailwindcss";
+/* Class-based dark: — must match globals.css (see dark-variant.css). */
+@import './dark-variant.css';
 
 /* Typography */
 .h1 {

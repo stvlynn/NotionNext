@@ -20,9 +20,16 @@ The project runs Tailwind CSS **v4** via `@tailwindcss/postcss`
 ```
 
 The legacy `tailwind.config.js` is still loaded via `@config` so existing
-themes keep their custom colours, breakpoints, fonts, and shadows. Two v4
-compatibility shims live in `globals.css`:
+themes keep their custom colours, breakpoints, fonts, and shadows. Three v4
+compatibility shims live in `globals.css` (and the standalone sheets that
+`@apply` `dark:` utilities):
 
+- `dark-variant.css` — `@custom-variant dark (&:where(.dark, .dark *))` so
+  `dark:` follows the `html.dark` class (NotionNext appearance toggle)
+  instead of the v4 default `prefers-color-scheme` media query. Without this,
+  a light site on a dark OS paints near-white Notion body text on a light
+  background. Import it from `globals.css`, `notion.css`, and
+  `utility-patterns.css` (each file is compiled separately).
 - a `@utility container` that restores the v3 centred/padded container, and
 - a base-layer `border-color` default (v4 changed it from `gray-200` to
   `currentColor`).

@@ -34,11 +34,21 @@ const Style = () => {
         transform: translateY(0);
       }
 
-      /* Article typography, tuned to the ink token ramp */
+      /* Article typography, tuned to the ink token ramp.
+         Force body colour onto Notion blocks so prose stays tied to
+         `--foreground` (beats media-based `dark:text-*` on `.notion`). */
       #theme-navyink .navyink-article {
         color: var(--foreground);
         font-size: 1.02rem;
         line-height: 1.75;
+      }
+      #theme-navyink .navyink-article .notion,
+      #theme-navyink .navyink-article .notion-text,
+      #theme-navyink .navyink-article .notion-list,
+      #theme-navyink .navyink-article .notion-quote,
+      #theme-navyink .navyink-article .notion-toggle,
+      #theme-navyink .navyink-article .notion-callout {
+        color: var(--foreground);
       }
       #theme-navyink .navyink-article a {
         color: var(--brand);
@@ -52,7 +62,9 @@ const Style = () => {
       }
       #theme-navyink .navyink-article h1,
       #theme-navyink .navyink-article h2,
-      #theme-navyink .navyink-article h3 {
+      #theme-navyink .navyink-article h3,
+      #theme-navyink .navyink-article .notion-h,
+      #theme-navyink .navyink-article .notion-h-title {
         color: var(--foreground);
         font-weight: 650;
         letter-spacing: -0.01em;

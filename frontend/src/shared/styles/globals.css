@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import './navy-ink.css';
+@import './dark-variant.css';
 
 /* Load the legacy theme (custom colours, breakpoints, fonts, shadows) so the
    existing themes keep their utilities under Tailwind v4. */
