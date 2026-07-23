@@ -1736,9 +1736,11 @@ code[class*='language-'] {
   }
 }
 
-/* NOTION CSS OVERRIDE */
+/* NOTION CSS OVERRIDE
+   Body colour is owned by `--fg-color` above (light on :root, dark on
+   html.dark). Do not add `dark:text-*` here — that fights the token and,
+   under a misconfigured dark: variant, washes out light-mode prose. */
 .notion {
-  @apply dark:text-gray-100;
   overflow-wrap: break-word;
 }
 .notion,
