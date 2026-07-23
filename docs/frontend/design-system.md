@@ -21,27 +21,20 @@ The project runs Tailwind CSS **v4** via `@tailwindcss/postcss`
 
 The legacy `tailwind.config.js` is still loaded via `@config` so existing
 themes keep their custom colours, breakpoints, fonts, and shadows. Three v4
-compatibility shims live in `globals.css` (and the standalone sheets that
-`@apply` `dark:` utilities):
+compatibility shims live in `globals.css`:
 
 - `dark-variant.css` — `@custom-variant dark (&:where(.dark, .dark *))` so
-  `dark:` follows the `html.dark` class (NotionNext appearance toggle)
-  instead of the v4 default `prefers-color-scheme` media query. Without this,
-  a light site on a dark OS paints near-white Notion body text on a light
-  background. Import it from `globals.css`, `notion.css`, and
-  `utility-patterns.css` (each file is compiled separately).
+  `dark:` follows `html.dark` instead of `prefers-color-scheme`. Also import
+  it from `notion.css` (compiled separately; uses `@apply dark:*`).
 - a `@utility container` that restores the v3 centred/padded container, and
 - a base-layer `border-color` default (v4 changed it from `gray-200` to
   `currentColor`).
 
 ### Notion body colour
 
-Article prose colour is owned by `--fg-color` in `notion.css` (`.notion {
-color: var(--fg-color) }`), flipped under `html.dark`. Themes may set
-container typography (size, line-height, link colour) but should not re-list
-every Notion block with a forced `color` — that duplicates the token and
-masks dark-mode bugs. Do not add `@apply dark:text-*` on `.notion`; it
-fights `--fg-color`.
+Prose colour is `--fg-color` in `notion.css` (`.notion { color: var(--fg-color) }`),
+switched under `html.dark`. Do not also `@apply dark:text-*` on `.notion`, and
+do not re-list Notion blocks with a forced `color` in themes.
 
 Standalone stylesheets that use `@apply` (`notion.css`, `utility-patterns.css`)
 start with `@reference "tailwindcss"` so `@apply` resolves outside the entry

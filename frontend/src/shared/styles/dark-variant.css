@@ -1,11 +1,8 @@
 /**
  * Class-based `dark:` variant for Tailwind v4.
  *
- * NotionNext toggles appearance with `html.dark` / `html.light`. Tailwind v4
- * defaults `dark:` to `prefers-color-scheme`, which desyncs from that class and
- * can paint near-white Notion body text on a light page when the OS is dark.
- *
- * Import or reference this file from every stylesheet that uses `@apply dark:*`
- * or `dark:` utilities (globals.css, notion.css, utility-patterns.css).
+ * NotionNext toggles appearance via `html.dark` / `html.light`. Override the
+ * v4 default (`prefers-color-scheme`) so `dark:` utilities follow that class.
+ * Import from every stylesheet that `@apply`s `dark:` (globals.css, notion.css).
  */
 @custom-variant dark (&:where(.dark, .dark *));
