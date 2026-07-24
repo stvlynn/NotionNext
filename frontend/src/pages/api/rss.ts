@@ -1,6 +1,6 @@
 import BLOG from '@/blog.config'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { fetchGlobalAllData } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { RssContent, SitePage } from '@/lib/page/runtime'
 import { Feed } from 'feed'
 

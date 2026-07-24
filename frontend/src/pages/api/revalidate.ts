@@ -1,6 +1,6 @@
 import BLOG from '@/blog.config'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { cleanCache } from '@/lib/page/runtime'
+import { cleanCache } from '@/lib/cache/local_file_cache'
 
 interface RevalidateResult {
   path: string

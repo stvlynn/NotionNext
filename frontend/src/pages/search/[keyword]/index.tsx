@@ -1,14 +1,11 @@
 import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import {
-  fetchGlobalAllData,
-  getDataFromCache,
-  getPageBlockCacheKey,
-  getPageContentText,
-  staticPropsResult,
-  siteConfig
-} from '@/lib/page/runtime'
+import { staticPropsResult, siteConfig } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
+import { getDataFromCache } from '@/lib/cache/cache_manager'
+import { getPageBlockCacheKey } from '@/lib/db/notion/getPostBlocks'
+import { getPageContentText } from '@/lib/db/notion/getPageContentText'
 import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 const Index: NextPage<PageProps> = props => {
@@ -67,7 +64,9 @@ async function filterByMemCache(allPosts: SitePage[], keyword: string) {
   }
   for (const post of allPosts) {
     const cacheKey = getPageBlockCacheKey(post.id, post.lastEditedDate)
-    const page = await getDataFromCache(cacheKey, true)
+    const page = await getDataFromCache<
+      Parameters<typeof getPageContentText>[1]
+    >(cacheKey, true)
     const tagContent =
       post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : ''
     const categoryContent =
@@ -76,7 +75,16 @@ async function filterByMemCache(allPosts: SitePage[], keyword: string) {
         : ''
     const articleInfo = post.title + post.summary + tagContent + categoryContent
     let hit = articleInfo.toLowerCase().indexOf(keyword) > -1
-    const contentTextList = page ? getPageContentText(post, page) : ''
+    const contentTextList = page
+      ? getPageContentText(
+        {
+          id: post.id,
+          ...(post.content ? { content: post.content } : {}),
+          password: post.password
+        },
+        page
+      )
+      : ''
     // console.log('Full-text search cache', cacheKey, page != null)
     post.results = []
     let hitCount = 0

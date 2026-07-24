@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { subscribeToMailchimpApi } from '@/lib/page/runtime'
+import subscribeToMailchimpApi from '@/lib/plugins/mailchimp'
 
 type SubscribeResponse = {
   status: 'success' | 'error'

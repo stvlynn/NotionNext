@@ -1,19 +1,13 @@
 import BLOG from '@/blog.config'
-import {
-  cleanPostSummaries,
-  fetchGlobalAllData,
-  formatNotionBlock,
-  generateRedirectJson,
-  generateRobotsTxt,
-  generateRss,
-  generateSitemapXml,
-  getPostBlocks,
-  shouldGenerateRssForLocale,
-  staticPropsResult,
-  siteConfig,
-  adapterNotionBlockMap,
-  checkDataFromAlgolia
-} from '@/lib/page/runtime'
+import { staticPropsResult, siteConfig } from '@/lib/page/runtime'
+import { cleanPostSummaries, fetchGlobalAllData, getPostBlocks } from '@/lib/page/server-data'
+import { formatNotionBlock } from '@/lib/db/notion/getPostBlocks'
+import { generateRedirectJson } from '@/lib/utils/redirect'
+import { generateRobotsTxt } from '@/lib/utils/robots.txt'
+import { generateRss, shouldGenerateRssForLocale } from '@/lib/utils/rss'
+import { generateSitemapXml } from '@/lib/utils/sitemap.xml'
+import { adapterNotionBlockMap } from '@/lib/utils/notion.util'
+import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
 import { DynamicLayout } from '@/themes/theme'
 import pLimit from 'p-limit'
 import type { GetStaticProps, NextPage } from 'next'
@@ -106,7 +100,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   )
   if (isBuildLifecycle) {
     generateRobotsTxt(props)
-    if (shouldGenerateRssForLocale({ locale })) {
+    if (shouldGenerateRssForLocale(locale ? { locale } : {})) {
       await generateRss(props)
     }
     generateSitemapXml(props)

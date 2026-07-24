@@ -2,11 +2,8 @@ import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import PropTypes from 'prop-types'
-import {
-  resolvePostProps,
-  siteConfig as resolveSiteConfig,
-  staticPropsResult
-} from '@/lib/page/runtime'
+import { siteConfig as resolveSiteConfig, staticPropsResult } from '@/lib/page/runtime'
+import { resolvePostProps } from '@/lib/page/server-data'
 import type { PageProps } from '@/lib/page/runtime'
 
 /**

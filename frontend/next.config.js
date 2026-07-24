@@ -445,33 +445,6 @@ const nextConfig = {
           themeFolderPath: path.resolve(__dirname, 'src/shared/themes', BLOG.THEME)
         })
       )
-      // Page barrels may re-export server cache helpers; keep Node-only deps out of the client bundle.
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        ioredis: false,
-        '@/lib/cache/redis_cache': path.resolve(
-          __dirname,
-          'src/shared/lib/empty-module.js'
-        ),
-        [path.resolve(backend, 'infrastructure/cache/redis_cache')]: path.resolve(
-          __dirname,
-          'src/shared/lib/empty-module.js'
-        )
-      }
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-        dns: false,
-        path: false,
-        diagnostics_channel: false,
-        'node:diagnostics_channel': false,
-        child_process: false,
-        crypto: false,
-        stream: false,
-        os: false
-      }
     }
     return config
   }

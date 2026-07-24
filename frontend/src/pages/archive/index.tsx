@@ -2,12 +2,9 @@ import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticProps, NextPage } from 'next'
 import { useEffect } from 'react'
-import {
-  fetchGlobalAllData,
-  formatDateFmt,
-  siteConfig,
-  staticPropsResult
-} from '@/lib/page/runtime'
+import { siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
+import { formatDateFmt } from '@/lib/utils/formatDate'
 import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 /**
@@ -48,7 +45,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   const archivePosts: Record<string, SitePage[]> = {}
 
   postsSortByDate.forEach((post: SitePage) => {
-    const date = formatDateFmt(post.publishDate, 'yyyy-MM')
+    const date = formatDateFmt(post.publishDate ?? 0, 'yyyy-MM')
     if (archivePosts[date]) {
       archivePosts[date].push(post)
     } else {

@@ -2,7 +2,8 @@
 import type { GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Slug from '../[prefix]'
-import { fetchGlobalAllData, staticPropsResult } from '@/lib/page/runtime'
+import { staticPropsResult } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { PageProps } from '@/lib/page/runtime'
 
 /**

@@ -4,7 +4,7 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Slug from '../[prefix]'
-import { fetchGlobalAllData } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { PageProps } from '@/lib/page/runtime'
 
 /**

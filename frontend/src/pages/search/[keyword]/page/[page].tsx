@@ -1,13 +1,10 @@
 import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import {
-  fetchGlobalAllData,
-  getDataFromCache,
-  getPageBlockCacheKey,
-  staticPropsResult,
-  siteConfig
-} from '@/lib/page/runtime'
+import { staticPropsResult, siteConfig } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
+import { getDataFromCache } from '@/lib/cache/cache_manager'
+import { getPageBlockCacheKey } from '@/lib/db/notion/getPostBlocks'
 import type { MutableRecord, PageProps, SitePage } from '@/lib/page/runtime'
 
 const Index: NextPage<PageProps> = props => {
@@ -110,7 +107,9 @@ async function filterByMemCache(allPosts: SitePage[], keyword: string) {
   }
   for (const post of allPosts) {
     const cacheKey = getPageBlockCacheKey(post.id, post.lastEditedDate)
-    const page = await getDataFromCache(cacheKey, true)
+    const page = await getDataFromCache<{
+      block?: Record<string, MutableRecord | undefined>
+    }>(cacheKey, true)
     const tagContent =
       post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : ''
     const categoryContent =

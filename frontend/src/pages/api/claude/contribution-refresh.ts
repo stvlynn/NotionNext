@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { markContributionCacheDirty } from '@/lib/page/runtime'
+import { markContributionCacheDirty } from '@/lib/server/contributionStore'
 
 interface ContributionRefreshResponse {
   ok: boolean

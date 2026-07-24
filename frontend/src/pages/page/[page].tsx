@@ -1,12 +1,8 @@
 import BLOG from '@/blog.config'
-import {
-  adapterNotionBlockMap,
-  fetchGlobalAllData,
-  formatNotionBlock,
-  getPostBlocks,
-  staticPropsResult,
-  siteConfig
-} from '@/lib/page/runtime'
+import { staticPropsResult, siteConfig } from '@/lib/page/runtime'
+import { adapterNotionBlockMap } from '@/lib/utils/notion.util'
+import { fetchGlobalAllData, getPostBlocks } from '@/lib/page/server-data'
+import { formatNotionBlock } from '@/lib/db/notion/getPostBlocks'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import type { PageProps, SitePage } from '@/lib/page/runtime'

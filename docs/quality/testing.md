@@ -9,6 +9,8 @@ NotionNext uses Jest (see `jest.config.js`). Tests live in `__tests__/` and colo
 - **Unit tests** — pure functions in `lib/utils`, `lib/cache`, domain logic, and config validation.
 - **Component tests** — React components using `@testing-library/react`.
 - **Integration tests** — Notion data fetching, cache layers, and API route handlers.
+- **Architecture tests** — client/server import boundaries and deployment
+  bindings that must remain synchronized.
 
 ## Running
 

@@ -1,15 +1,14 @@
 // pages/sitemap.xml.js
 import BLOG from '@/blog.config'
+import { siteConfig } from '@/lib/page/runtime'
 import {
   buildSitemapLoc,
-  extractLangId,
-  extractLangPrefix,
-  fetchGlobalAllData,
   normalizeSitemapBaseUrl,
   normalizeSitemapLocale,
-  siteConfig,
   toSitemapDateString
-} from '@/lib/page/runtime'
+} from '@/lib/sitemap-utils'
+import { extractLangId, extractLangPrefix } from '@/lib/utils/pageId'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { GetServerSideProps } from 'next'
 import type { SitePage } from '@/lib/page/runtime'
 import { getServerSideSitemap } from 'next-sitemap'

@@ -1,11 +1,9 @@
 import Slug from '..'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import {
-  checkSlugHasOneSlash,
-  getStaticPathsBase,
-  resolvePostProps,
-  staticPropsResult
-} from '@/lib/page/runtime'
+import { staticPropsResult } from '@/lib/page/runtime'
+import { checkSlugHasOneSlash } from '@/lib/utils/post'
+import { getStaticPathsBase } from '@/lib/build/staticPaths'
+import { resolvePostProps } from '@/lib/page/server-data'
 import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 const isStaticExport = process.env.EXPORT === 'true'

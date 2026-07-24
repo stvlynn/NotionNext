@@ -2,17 +2,17 @@ import BLOG from '@/blog.config'
 import useNotification from '@/components/Notification'
 import TechGrow from '@/components/TechGrow'
 import {
-  checkSlugHasNoSlash,
-  getPageTableOfContents,
   getPasswordQuery,
   getPasswordStoragePath,
-  getStaticPathsBase,
-  resolvePostProps,
+  getPageTableOfContents,
   sha256Digest,
   staticPropsResult,
   siteConfig,
   useGlobal
 } from '@/lib/page/runtime'
+import { checkSlugHasNoSlash } from '@/lib/utils/post'
+import { getStaticPathsBase } from '@/lib/build/staticPaths'
+import { resolvePostProps } from '@/lib/page/server-data'
 import { DynamicLayout } from '@/themes/theme'
 import { md5 } from 'js-md5'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'

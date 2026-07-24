@@ -1,7 +1,8 @@
 import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import { siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { PageProps } from '@/lib/page/runtime'
 
 /**

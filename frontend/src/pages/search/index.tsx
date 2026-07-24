@@ -2,7 +2,8 @@ import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import { siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 /**
