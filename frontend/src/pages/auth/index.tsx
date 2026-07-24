@@ -4,8 +4,8 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Slug from '../[prefix]'
-import { fetchGlobalAllData } from '@/pages/_runtime'
-import type { PageProps } from '@/pages/_runtime'
+import { fetchGlobalAllData } from '@/lib/page/runtime'
+import type { PageProps } from '@/lib/page/runtime'
 
 /**
  * Redirect the Notion OAuth callback to the auth result page.

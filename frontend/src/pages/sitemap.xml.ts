@@ -9,9 +9,9 @@ import {
   normalizeSitemapLocale,
   siteConfig,
   toSitemapDateString
-} from '@/pages/_runtime'
+} from '@/lib/page/runtime'
 import type { GetServerSideProps } from 'next'
-import type { SitePage } from '@/pages/_runtime'
+import type { SitePage } from '@/lib/page/runtime'
 import { getServerSideSitemap } from 'next-sitemap'
 
 type SitemapField = Parameters<typeof getServerSideSitemap>[1][number]

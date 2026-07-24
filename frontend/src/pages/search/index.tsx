@@ -2,8 +2,8 @@ import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/pages/_runtime'
-import type { PageProps, SitePage } from '@/pages/_runtime'
+import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 /**
  * Client-side search route.

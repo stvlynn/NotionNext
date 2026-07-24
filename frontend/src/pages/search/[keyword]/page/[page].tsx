@@ -7,8 +7,8 @@ import {
   getPageBlockCacheKey,
   staticPropsResult,
   siteConfig
-} from '@/pages/_runtime'
-import type { MutableRecord, PageProps, SitePage } from '@/pages/_runtime'
+} from '@/lib/page/runtime'
+import type { MutableRecord, PageProps, SitePage } from '@/lib/page/runtime'
 
 const Index: NextPage<PageProps> = props => {
   const { keyword } = props

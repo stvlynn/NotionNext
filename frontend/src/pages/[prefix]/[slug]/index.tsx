@@ -5,8 +5,8 @@ import {
   getStaticPathsBase,
   resolvePostProps,
   staticPropsResult
-} from '@/pages/_runtime'
-import type { PageProps, SitePage } from '@/pages/_runtime'
+} from '@/lib/page/runtime'
+import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 const isStaticExport = process.env.EXPORT === 'true'
 

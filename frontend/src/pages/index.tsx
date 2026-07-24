@@ -13,11 +13,11 @@ import {
   siteConfig,
   adapterNotionBlockMap,
   checkDataFromAlgolia
-} from '@/pages/_runtime'
+} from '@/lib/page/runtime'
 import { DynamicLayout } from '@/themes/theme'
 import pLimit from 'p-limit'
 import type { GetStaticProps, NextPage } from 'next'
-import type { PageProps, SitePage } from '@/pages/_runtime'
+import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 /**
  * Home page layout.

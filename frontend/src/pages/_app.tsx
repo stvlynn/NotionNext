@@ -11,8 +11,9 @@ import { getBaseLayoutByTheme } from '@/themes/theme'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo } from 'react'
-import type { PageProps } from '@/pages/_runtime'
-import { ErrorHandler, GlobalContextProvider } from '@/pages/_runtime'
+import type { PageProps } from '@/lib/page/runtime'
+import { GlobalContextProvider } from '@/lib/global'
+import ErrorHandler from '@/lib/utils/errorHandler'
 
 // Extension plugins are intentionally loaded in the app shell.
 import BLOG from '@/blog.config'

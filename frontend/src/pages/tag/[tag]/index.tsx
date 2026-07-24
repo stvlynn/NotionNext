@@ -1,8 +1,8 @@
 import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/pages/_runtime'
-import type { PageProps, SiteOption, SitePage } from '@/pages/_runtime'
+import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import type { PageProps, SiteOption, SitePage } from '@/lib/page/runtime'
 
 /**
  * Tag post list page.

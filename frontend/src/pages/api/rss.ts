@@ -1,7 +1,7 @@
 import BLOG from '@/blog.config'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { fetchGlobalAllData } from '@/pages/_runtime'
-import type { RssContent, SitePage } from '@/pages/_runtime'
+import { fetchGlobalAllData } from '@/lib/page/runtime'
+import type { RssContent, SitePage } from '@/lib/page/runtime'
 import { Feed } from 'feed'
 
 interface RssCache {

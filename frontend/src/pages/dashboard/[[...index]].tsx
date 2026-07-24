@@ -6,8 +6,8 @@ import {
   resolvePostProps,
   siteConfig as resolveSiteConfig,
   staticPropsResult
-} from '@/pages/_runtime'
-import type { PageProps } from '@/pages/_runtime'
+} from '@/lib/page/runtime'
+import type { PageProps } from '@/lib/page/runtime'
 
 /**
  * Dashboard catch-all route.

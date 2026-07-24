@@ -8,8 +8,8 @@ import {
   getPageContentText,
   staticPropsResult,
   siteConfig
-} from '@/pages/_runtime'
-import type { PageProps, SitePage } from '@/pages/_runtime'
+} from '@/lib/page/runtime'
+import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 const Index: NextPage<PageProps> = props => {
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)

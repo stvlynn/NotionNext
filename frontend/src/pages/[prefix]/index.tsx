@@ -12,13 +12,13 @@ import {
   staticPropsResult,
   siteConfig,
   useGlobal
-} from '@/pages/_runtime'
+} from '@/lib/page/runtime'
 import { DynamicLayout } from '@/themes/theme'
 import { md5 } from 'js-md5'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import type { PageProps, SitePage } from '@/pages/_runtime'
+import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 const isStaticExport = process.env.EXPORT === 'true'
 

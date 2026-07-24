@@ -2,8 +2,8 @@
 import type { GetStaticProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Slug from '../[prefix]'
-import { fetchGlobalAllData } from '@/pages/_runtime'
-import type { PageProps } from '@/pages/_runtime'
+import { fetchGlobalAllData, staticPropsResult } from '@/lib/page/runtime'
+import type { PageProps } from '@/lib/page/runtime'
 
 /**
  * Build the auth result page props.
@@ -13,9 +13,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async () => {
   const props = await fetchGlobalAllData({ from })
 
   delete props.allPages
-  return {
-    props
-  }
+  return staticPropsResult(props, props.NOTION_CONFIG)
 }
 
 /**

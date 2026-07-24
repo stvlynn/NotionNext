@@ -7,8 +7,8 @@ import {
   isPublicComment,
   PUBLIC_COMMENT_STATUS,
   validateCommentPayload
-} from '@/pages/_runtime'
-import type { MutableRecord, NotionComment } from '@/pages/_runtime'
+} from '@/lib/page/runtime'
+import type { MutableRecord, NotionComment } from '@/lib/page/runtime'
 
 const databaseId = process.env.NOTION_COMMENT_DATABASE_ID
 const token = process.env.NOTION_TOKEN

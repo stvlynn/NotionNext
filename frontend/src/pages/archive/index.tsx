@@ -7,8 +7,8 @@ import {
   formatDateFmt,
   siteConfig,
   staticPropsResult
-} from '@/pages/_runtime'
-import type { PageProps, SitePage } from '@/pages/_runtime'
+} from '@/lib/page/runtime'
+import type { PageProps, SitePage } from '@/lib/page/runtime'
 
 /**
  * Archive index page.

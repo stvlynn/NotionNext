@@ -1,8 +1,8 @@
 import BLOG from '@/blog.config'
 import { DynamicLayout } from '@/themes/theme'
 import type { GetStaticProps, NextPage } from 'next'
-import { fetchGlobalAllData, siteConfig } from '@/pages/_runtime'
-import type { PageProps } from '@/pages/_runtime'
+import { fetchGlobalAllData, siteConfig, staticPropsResult } from '@/lib/page/runtime'
+import type { PageProps } from '@/lib/page/runtime'
 
 /**
  * 404
@@ -14,7 +14,7 @@ const NoFound: NextPage<PageProps> = props => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   const props = (await fetchGlobalAllData({ from: '404', locale })) || {}
-  return { props }
+  return staticPropsResult(props, props.NOTION_CONFIG)
 }
 
 export default NoFound

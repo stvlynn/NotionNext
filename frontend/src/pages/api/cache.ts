@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { cleanCache } from '@/pages/_runtime'
+import { cleanCache } from '@/lib/page/runtime'
 
 type CacheResponse = {
   status: 'success' | 'error'
