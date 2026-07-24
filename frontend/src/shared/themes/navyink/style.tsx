@@ -34,7 +34,7 @@ const Style = () => {
         transform: translateY(0);
       }
 
-      /* Article typography. Prose colour is owned by `--fg-color` in notion.css. */
+      /* Article typography. Prose colour is owned by --fg-color in notion.css. */
       #theme-navyink .navyink-article {
         font-size: 1.02rem;
         line-height: 1.75;
