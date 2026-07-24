@@ -16,10 +16,13 @@ export default function IconFont() {
 
                 // 查找所有 <i> 标签且 class 包含 'icon-'
                 const iElements = document.querySelectorAll('i[class*="icon-"]');
-                iElements.forEach((element: any) => {
-                    const className = Array.from(element.classList).find((cls: any) => cls.startsWith('icon-'));
+                iElements.forEach((element: Element) => {
+                    const className = Array.from(element.classList).find(
+                      (cls): cls is string =>
+                        typeof cls === 'string' && cls.startsWith('icon-')
+                    )
                     if (className) {
-                        // 创建新的 <svg> 元素
+                        // Create an SVG that references the iconfont glyph
                         const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                         svgElement.setAttribute('class', 'icon');
                         svgElement.setAttribute('aria-hidden', 'true');

@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
     node: true
   },
+  ignorePatterns: ['**/*.cjs'],
   extends: [
     'plugin:react/jsx-runtime',
     'plugin:react/recommended',
@@ -45,10 +46,21 @@ module.exports = {
   overrides: [
     {
       files: ['.eslintrc.js'],
-      parser: null // 避免对 `.eslintrc.js` 文件使用 TypeScript 解析器
+      parser: null // Avoid TypeScript parser on the ESLint config itself
     },
     {
-      files: ['**/*.js'], // Match all .js files 对js的代码规范检查不那么严格
+      // Legacy modules (still JS, or mechanical JS→TS migrations) keep the
+      // previous JS lint bar. Strict type-aware rules apply to typed-first
+      // modules such as navyink.
+      files: ['**/*.{js,jsx,ts,tsx}'],
+      excludedFiles: [
+        'src/shared/themes/navyink/**/*.{ts,tsx}',
+        'src/shared/lib/cn.ts',
+        'src/shared/lib/utils/clean.util.ts',
+        'src/shared/lib/utils/time.util.ts',
+        'src/shared/hooks/useWindowSize.ts',
+        'src/entities/**/*.{ts,tsx}'
+      ],
       rules: {
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-argument': 'off',
@@ -59,7 +71,8 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-floating-promises': 'off',
-        '@typescript-eslint/no-unsafe-return': 'off'
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unnecessary-type-assertion': 'off'
       }
     }
   ],

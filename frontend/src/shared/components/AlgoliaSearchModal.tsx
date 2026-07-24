@@ -350,12 +350,13 @@ export default function AlgoliaSearchModal({ cRef }: any) {
  */
 function TagGroups() {
   const { tagOptions } = useGlobal()
-  //  获取tagOptions数组前十个
-  const firstTenTags = tagOptions?.slice(0, 10)
+  const tags = Array.isArray(tagOptions) ? tagOptions : []
+  // Take the first ten tags for the quick-jump list
+  const firstTenTags = tags.slice(0, 10)
 
   return (
     <div id='tags-group' className='dark:border-gray-700 space-y-2'>
-      {firstTenTags?.map((tag: any, index: any) => {
+      {firstTenTags.map((tag: any, index: any) => {
         return (
           <SmartLink
             passHref

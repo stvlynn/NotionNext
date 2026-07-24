@@ -89,7 +89,7 @@ const showAiSummaryAnimation = (rawSummary: any, setSummary: any) => {
     },
     { threshold: 0 }
   )
-  let post_ai = document.querySelector('.post-ai')
+  const post_ai = document.querySelector('.post-ai')
   if (post_ai) {
     observer.observe(post_ai)
   }

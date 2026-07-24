@@ -50,7 +50,7 @@ function validateOptimizationTasks() {
       checks: [
         { file: 'frontend/next.config.js', desc: 'Next.js 性能配置', validate: validateNextConfig },
         { file: 'frontend/src/shared/config/performance.config.js', desc: '性能配置文件' },
-        { file: 'frontend/src/shared/components/PerformanceMonitor.js', desc: '性能监控组件' }
+        { file: 'frontend/src/shared/components/PerformanceMonitor.tsx', desc: '性能监控组件' }
       ]
     },
     {
@@ -59,7 +59,7 @@ function validateOptimizationTasks() {
         { file: 'frontend/tsconfig.json', desc: 'TypeScript 配置', validate: validateTSConfig },
         { file: 'frontend/.eslintrc.js', desc: 'ESLint 配置' },
         { file: '.prettierrc.json', desc: 'Prettier 配置' },
-        { file: 'frontend/src/shared/lib/utils/errorHandler.js', desc: '错误处理工具' },
+        { file: 'frontend/src/shared/lib/utils/errorHandler.tsx', desc: '错误处理工具' },
         { file: 'frontend/src/entities/types/index.ts', desc: '类型定义文件' },
         { file: 'scripts/quality-check.js', desc: '质量检查脚本' }
       ]
@@ -67,18 +67,18 @@ function validateOptimizationTasks() {
     {
       name: 'SEO和可访问性优化',
       checks: [
-        { file: 'frontend/src/shared/components/SEO.js', desc: 'SEO 组件优化', validate: validateSEOComponent },
-        { file: 'frontend/src/shared/components/Accessibility.js', desc: '可访问性组件' },
-        { file: 'frontend/src/shared/lib/utils/sitemap.js', desc: '站点地图生成器' }
+        { file: 'frontend/src/shared/components/SEO.tsx', desc: 'SEO 组件优化', validate: validateSEOComponent },
+        { file: 'frontend/src/shared/components/Accessibility.tsx', desc: '可访问性组件' },
+        { file: 'frontend/src/shared/lib/utils/sitemap.ts', desc: '站点地图生成器' }
       ]
     },
     {
       name: '安全性加固',
       checks: [
         { file: 'frontend/next.config.js', desc: '安全头部配置', validate: validateSecurityHeaders },
-        { file: 'frontend/src/shared/lib/utils/validation.js', desc: '输入验证工具' },
-        { file: 'backend/src/infrastructure/middleware/security.js', desc: '安全中间件' },
-        { file: 'backend/src/infrastructure/env-config/env-validation.js', desc: '环境变量验证' }
+        { file: 'frontend/src/shared/lib/utils/validation.ts', desc: '输入验证工具' },
+        { file: 'backend/src/infrastructure/middleware/security.ts', desc: '安全中间件' },
+        { file: 'backend/src/infrastructure/env-config/env-validation.ts', desc: '环境变量验证' }
       ]
     },
     {

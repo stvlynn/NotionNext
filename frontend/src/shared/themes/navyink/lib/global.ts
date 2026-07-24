@@ -53,5 +53,5 @@ export function conf<T = unknown>(
   defaultValue?: T,
   config?: unknown
 ): T {
-  return siteConfigRaw(key, defaultValue as any, config) as T
+  return siteConfigRaw<T>(key, defaultValue, config)
 }

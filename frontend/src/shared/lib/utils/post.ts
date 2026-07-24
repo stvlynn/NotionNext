@@ -151,7 +151,7 @@ async function getPageAISummary(
       const aiSummaryCacheTime = Number(siteConfig('AI_SUMMARY_CACHE_TIME'))
       const wordLimit = Number(siteConfig('AI_SUMMARY_WORD_LIMIT', '1000'))
       let content = ''
-      for (let heading of post.toc || []) {
+      for (const heading of post.toc || []) {
         content += (heading.text || '') + ' '
       }
       content += pageContentText

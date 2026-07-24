@@ -55,9 +55,9 @@ export interface GlobalContextValue {
   theme: string
   setTheme: Dispatch<SetStateAction<string>>
   switchTheme: () => string | string[] | undefined
-  siteInfo?: any | undefined
-  categoryOptions?: any | undefined
-  tagOptions?: any | undefined
+  siteInfo?: unknown
+  categoryOptions?: unknown
+  tagOptions?: unknown
 }
 
 /**

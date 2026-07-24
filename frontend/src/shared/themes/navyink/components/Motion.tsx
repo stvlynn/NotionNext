@@ -22,9 +22,11 @@ export function FadeIn({
   className,
   ...props
 }: HTMLMotionProps<'div'> & { delay?: number; y?: number }) {
+  const motionClassName =
+    typeof className === 'string' ? className : undefined
   return (
     <motion.div
-      className={className}
+      className={motionClassName}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -10% 0px' }}
@@ -51,9 +53,11 @@ export function StaggerContainer({
   className,
   ...props
 }: HTMLMotionProps<'div'>) {
+  const motionClassName =
+    typeof className === 'string' ? className : undefined
   return (
     <motion.div
-      className={className}
+      className={motionClassName}
       variants={staggerParent}
       initial='hidden'
       whileInView='show'
@@ -69,8 +73,13 @@ export function StaggerItem({
   className,
   ...props
 }: HTMLMotionProps<'div'>) {
+  const motionClassName =
+    typeof className === 'string' ? className : undefined
   return (
-    <motion.div className={className} variants={staggerChild} {...props}>
+    <motion.div
+      className={motionClassName}
+      variants={staggerChild}
+      {...props}>
       {children}
     </motion.div>
   )
@@ -82,9 +91,11 @@ export function Lift({
   className,
   ...props
 }: HTMLMotionProps<'div'>) {
+  const motionClassName =
+    typeof className === 'string' ? className : undefined
   return (
     <motion.div
-      className={className}
+      className={motionClassName}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.99 }}
       transition={{ duration: 0.2, ease: EASE_OUT }}

@@ -13,8 +13,8 @@ const CursorDot = () => {
         document.body.appendChild(dot);
 
         // 鼠标坐标和缓动目标坐标
-        let mouse = { x: -100, y: -100 }; // 初始位置在屏幕外
-        let dotPos = { x: mouse.x, y: mouse.y };
+        const mouse = { x: -100, y: -100 }; // 初始位置在屏幕外
+        const dotPos = { x: mouse.x, y: mouse.y };
 
         // 监听鼠标移动
         const handleMouseMove = (e: any) => {

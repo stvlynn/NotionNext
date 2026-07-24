@@ -28,14 +28,13 @@ const mapImgUrl = (
   }
 
   const hasConverted =
-    ret.indexOf('https://www.notion.so/image') === 0 ||
-    ret.includes('notion.site/images/page-cover/')
+    isNotionImageProxyUrl(ret) || isNotionSitePageCoverUrl(ret)
 
   const needConvert =
     (!hasConverted &&
       (block.type === 'bookmark' ||
-        ret.includes('secure.notion-static.com') ||
-        ret.includes('prod-files-secure'))) ||
+        isNotionStaticFileHost(ret) ||
+        isProdFilesSecureHost(ret))) ||
     ret.indexOf('attachment') === 0
 
   if (needConvert) {
@@ -49,7 +48,7 @@ const mapImgUrl = (
       block.id
   }
 
-  if (!isEmoji(ret) && ret.indexOf('notion.so/images/page-cover') < 0) {
+  if (!isEmoji(ret) && !isNotionPageCoverUrl(ret)) {
     if (BLOG.RANDOM_IMAGE_URL) {
       const texts = BLOG.RANDOM_IMAGE_REPLACE_TEXT
       let isReplace = false
@@ -68,11 +67,7 @@ const mapImgUrl = (
       }
     }
 
-    if (
-      ret &&
-      ret.length > 4 &&
-      !ret.includes('https://www.notion.so/images/')
-    ) {
+    if (ret && ret.length > 4 && !isNotionHostedImagesUrl(ret)) {
       const separator = ret.includes('?') ? '&' : '?'
       ret = `${ret.trim()}${separator}t=${block.id}`
     }
@@ -84,6 +79,68 @@ const mapImgUrl = (
   }
 
   return ret
+}
+
+function tryParseUrl(value: string): URL | null {
+  try {
+    return new URL(value)
+  } catch {
+    try {
+      return new URL(decodeURIComponent(value))
+    } catch {
+      return null
+    }
+  }
+}
+
+function hostnameMatches(url: URL, host: string): boolean {
+  return url.hostname === host || url.hostname.endsWith(`.${host}`)
+}
+
+/** Notion image proxy URLs such as https://www.notion.so/image/... */
+function isNotionImageProxyUrl(value: string): boolean {
+  const url = tryParseUrl(value)
+  if (!url) return false
+  return hostnameMatches(url, 'notion.so') && url.pathname.startsWith('/image')
+}
+
+/** Workspace page-cover assets hosted on *.notion.site */
+function isNotionSitePageCoverUrl(value: string): boolean {
+  const url = tryParseUrl(value)
+  if (!url) return false
+  return (
+    hostnameMatches(url, 'notion.site') &&
+    url.pathname.includes('/images/page-cover/')
+  )
+}
+
+function isNotionPageCoverUrl(value: string): boolean {
+  const url = tryParseUrl(value)
+  if (!url) return false
+  return (
+    hostnameMatches(url, 'notion.so') &&
+    url.pathname.includes('/images/page-cover')
+  )
+}
+
+/** Official Notion static file CDN hosts */
+function isNotionStaticFileHost(value: string): boolean {
+  const url = tryParseUrl(value)
+  if (!url) return false
+  return hostnameMatches(url, 'secure.notion-static.com')
+}
+
+function isProdFilesSecureHost(value: string): boolean {
+  const url = tryParseUrl(value)
+  if (!url) return false
+  return url.hostname.includes('prod-files-secure')
+}
+
+/** Built-in Notion image assets under /images/ on notion.so */
+function isNotionHostedImagesUrl(value: string): boolean {
+  const url = tryParseUrl(value)
+  if (!url) return false
+  return hostnameMatches(url, 'notion.so') && url.pathname.startsWith('/images/')
 }
 
 function isEmoji(str: string): boolean {
