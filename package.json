@@ -20,6 +20,7 @@
     "validate:env": "node scripts/validate-env.js",
     "dev": "yarn validate:env && cd frontend && next dev",
     "build": "yarn validate:env && cd frontend && cross-env BUILD_MODE=true next build",
+    "vercel-build": "yarn build",
     "build:cloudflare": "cross-env NEXT_PUBLIC_THEME=navyink opennextjs-cloudflare build",
     "preview:cloudflare": "opennextjs-cloudflare preview",
     "deploy:cloudflare": "wrangler deploy",

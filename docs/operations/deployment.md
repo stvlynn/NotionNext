@@ -63,20 +63,16 @@ yarn quality
 
 Vercel 是 Next.js 的官方部署平台，提供最佳的性能和开发体验。
 
-### 自动部署
+### Automatic deploy (monorepo layout)
 
-1. **连接 GitHub**
-   - 访问 [Vercel](https://vercel.com)
-   - 使用 GitHub 账号登录
-   - 导入你的 NotionNext 仓库
+After the FSD/DDD move, the Next.js app lives under `frontend/`. In the Vercel project settings set:
 
-2. **配置环境变量**
-   - 在 Vercel 项目设置中添加环境变量
-   - 至少需要配置 `NOTION_PAGE_ID`
+- **Root Directory**: `frontend`
+- **Install Command**: `cd .. && yarn install --frozen-lockfile` (also in `frontend/vercel.json`)
+- **Build Command**: `cd .. && yarn build` (also in `frontend/vercel.json` / root `vercel-build`)
+- **Environment**: at least `NOTION_PAGE_ID`
 
-3. **部署**
-   - Vercel 会自动检测 Next.js 项目
-   - 每次推送到主分支都会自动部署
+Root `vercel.json` keeps `buildCommand: yarn build` for deployments that use the repository root.
 
 ### 手动部署
 
