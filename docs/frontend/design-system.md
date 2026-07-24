@@ -20,12 +20,21 @@ The project runs Tailwind CSS **v4** via `@tailwindcss/postcss`
 ```
 
 The legacy `tailwind.config.js` is still loaded via `@config` so existing
-themes keep their custom colours, breakpoints, fonts, and shadows. Two v4
+themes keep their custom colours, breakpoints, fonts, and shadows. Three v4
 compatibility shims live in `globals.css`:
 
+- `dark-variant.css` — `@custom-variant dark (&:where(.dark, .dark *))` so
+  `dark:` follows `html.dark` instead of `prefers-color-scheme`. Also import
+  it from `notion.css` (compiled separately; uses `@apply dark:*`).
 - a `@utility container` that restores the v3 centred/padded container, and
 - a base-layer `border-color` default (v4 changed it from `gray-200` to
   `currentColor`).
+
+### Notion body colour
+
+Prose colour is `--fg-color` in `notion.css` (`.notion { color: var(--fg-color) }`),
+switched under `html.dark`. Do not also `@apply dark:text-*` on `.notion`, and
+do not re-list Notion blocks with a forced `color` in themes.
 
 Standalone stylesheets that use `@apply` (`notion.css`, `utility-patterns.css`)
 start with `@reference "tailwindcss"` so `@apply` resolves outside the entry

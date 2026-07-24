@@ -1,5 +1,6 @@
 /* Tailwind v4: load theme context so @apply resolves in this standalone file. */
 @reference "tailwindcss";
+@import './dark-variant.css';
 
 :root {
   --fg-color: rgb(0, 0, 0) !important;
@@ -1734,9 +1735,8 @@ code[class*='language-'] {
   }
 }
 
-/* NOTION CSS OVERRIDE */
+/* NOTION CSS OVERRIDE — prose colour stays on `--fg-color` (see :root / html.dark). */
 .notion {
-  @apply dark:text-gray-100;
   overflow-wrap: break-word;
 }
 .notion,

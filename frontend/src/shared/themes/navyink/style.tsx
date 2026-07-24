@@ -34,9 +34,8 @@ const Style = () => {
         transform: translateY(0);
       }
 
-      /* Article typography, tuned to the ink token ramp */
+      /* Article typography. Prose colour is owned by --fg-color in notion.css. */
       #theme-navyink .navyink-article {
-        color: var(--foreground);
         font-size: 1.02rem;
         line-height: 1.75;
       }
@@ -53,7 +52,6 @@ const Style = () => {
       #theme-navyink .navyink-article h1,
       #theme-navyink .navyink-article h2,
       #theme-navyink .navyink-article h3 {
-        color: var(--foreground);
         font-weight: 650;
         letter-spacing: -0.01em;
       }
