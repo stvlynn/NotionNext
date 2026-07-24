@@ -14,6 +14,7 @@ The frontend lives in [`frontend/src/`](../../frontend/src/) and is a Next.js 14
 - [`import-rules.md`](import-rules.md) — cross-layer and cross-slice import rules.
 - [`ui-patterns.md`](ui-patterns.md) — semantic styling, no hardcoded copy, no redundant copy.
 - [`design-system.md`](design-system.md) — Navy Ink + coss UI, Tailwind v4, design tokens, and the `navyink` theme.
+- [`theme-typescript-migration.md`](theme-typescript-migration.md) — how to migrate a legacy theme to TypeScript.
 
 ## Quick start
 

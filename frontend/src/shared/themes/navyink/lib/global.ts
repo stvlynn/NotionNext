@@ -44,7 +44,7 @@ export interface ThemeGlobal {
 
 /** Strongly-typed view of the global theme context. */
 export function useThemeGlobal(): ThemeGlobal {
-  return useGlobalRaw() as ThemeGlobal
+  return useGlobalRaw() as unknown as ThemeGlobal
 }
 
 /** Strongly-typed `siteConfig` reader. */
@@ -53,5 +53,5 @@ export function conf<T = unknown>(
   defaultValue?: T,
   config?: unknown
 ): T {
-  return siteConfigRaw(key, defaultValue as any, config) as T
+  return siteConfigRaw<T>(key, defaultValue, config)
 }

@@ -1,9 +1,9 @@
 const fs = require('node:fs')
 const path = require('node:path')
 const BLOG = require('./blog.config')
-const { extractLangPrefix } = require('./src/shared/lib/utils/pageId')
-const { isExport } = require('./src/shared/lib/utils/buildMode')
-const { getStaticPageGenerationTimeoutSec } = require('../backend/src/application/build/buildEnv')
+const { extractLangPrefix } = require('./src/shared/lib/utils/pageId.cjs')
+const { isExport } = require('./src/shared/lib/utils/buildMode.cjs')
+const { getStaticPageGenerationTimeoutSec } = require('../backend/src/application/build/buildEnv.cjs')
 
 // 打包时是否分析代码
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -431,7 +431,7 @@ const nextConfig = {
     }
     config.resolve.alias['lodash.throttle'] = path.resolve(
       __dirname,
-      'src/shared/lib/utils/throttle.js'
+      'src/shared/lib/utils/throttle.ts'
     )
 
     if (!isServer) {
@@ -445,19 +445,41 @@ const nextConfig = {
           themeFolderPath: path.resolve(__dirname, 'src/shared/themes', BLOG.THEME)
         })
       )
+      // Page barrels may re-export server cache helpers; keep Node-only deps out of the client bundle.
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        ioredis: false,
+        '@/lib/cache/redis_cache': path.resolve(
+          __dirname,
+          'src/shared/lib/empty-module.js'
+        ),
+        [path.resolve(backend, 'infrastructure/cache/redis_cache')]: path.resolve(
+          __dirname,
+          'src/shared/lib/empty-module.js'
+        )
+      }
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
         net: false,
         tls: false,
         dns: false,
-        path: false
+        path: false,
+        diagnostics_channel: false,
+        'node:diagnostics_channel': false,
+        child_process: false,
+        crypto: false,
+        stream: false,
+        os: false
       }
     }
     return config
   }
   ,
   experimental: {
+    // Allow SWC to compile TypeScript under ../backend (imported via @/lib/* aliases).
+    // Without this, webpack parses backend .ts as plain JS and fails on `interface`.
+    externalDir: true,
     // cpus: 1,
     scrollRestoration: true,
     // 性能优化实验性功能

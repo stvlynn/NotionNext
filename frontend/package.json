@@ -1,0 +1,11 @@
+{
+  "name": "notion-next-frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "cd .. && yarn build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  }
+}

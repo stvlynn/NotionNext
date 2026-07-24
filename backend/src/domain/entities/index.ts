@@ -1,0 +1,6 @@
+export type * from './page'
+export type * from './post'
+export type * from './category'
+export type * from './tag'
+export type * from './comment'
+export type * from './site-config'

@@ -2,7 +2,7 @@
 
 ## Semantic styling
 
-Use semantic class names and theme tokens. NotionNext uses Tailwind CSS plus theme color tokens defined in `frontend/src/shared/config/themeColorPalette.js`. Do not hardcode colors; reference tokens.
+Use semantic class names and theme tokens. NotionNext uses Tailwind CSS plus theme color tokens defined in `frontend/src/shared/config/themeColorPalette.ts`. Do not hardcode colors; reference tokens.
 
 ## No hardcoded copy
 

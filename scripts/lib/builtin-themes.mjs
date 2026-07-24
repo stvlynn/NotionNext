@@ -22,7 +22,7 @@ export function getBuiltinThemeIds() {
 /** @returns {Record<string, { name?: string, summary?: string }>} */
 export function loadThemeSwitchManifest() {
   const manifestSrc = fs.readFileSync(
-    path.join(REPO_ROOT, 'frontend/src/shared/config/themeSwitch.manifest.js'),
+    path.join(REPO_ROOT, 'frontend/src/shared/config/themeSwitch.manifest.ts'),
     'utf8'
   )
   /** @type {Record<string, { name?: string, summary?: string }>} */

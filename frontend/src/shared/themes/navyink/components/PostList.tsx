@@ -66,7 +66,7 @@ export function PostListScroll({
   const { NOTION_CONFIG, locale } = useThemeGlobal()
   const perPage = conf('POSTS_PER_PAGE', 12, NOTION_CONFIG)
   const [page, setPage] = React.useState(1)
-  const visible = getListByPage(posts, page, perPage) as Post[]
+  const visible = getListByPage(posts, page, perPage)
   const hasMore = page * perPage < (posts?.length || 0)
 
   const loadMore = React.useCallback(() => {

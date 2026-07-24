@@ -63,6 +63,7 @@ The two sides communicate through well-defined contracts. The backend exposes us
 
 ## Technology stack
 
+- Language: TypeScript (backend and frontend core); legacy theme JS under `allowJs`
 - Runtime: Node.js 22
 - Frontend framework: Next.js 14 (Pages Router) + React 18
 - Styling: Tailwind CSS 3

@@ -4,10 +4,10 @@ The `domain` layer contains business rules. It has no dependencies on frameworks
 
 ## Contents
 
-- **Entities** — `Post`, `NotionPage`, `Category`, `Tag`, `Comment`, `SiteConfig`.
-- **Value objects** — `Slug`, `LangPrefix`, `NotionPageId`, `CacheKey`.
+- **Entities** — `Post`, `BasePage` / `NavPage`, `Category`, `Tag`, `Comment`, `SiteConfig`, `SiteData` (see `backend/src/domain/entities/`).
+- **Value objects** — `Slug`, `LangPrefix`, `NotionPageId`, `CacheKey` (see `backend/src/domain/value-objects/`).
 - **Aggregates** — `Post` aggregate (post + its tags + category).
-- **Domain services** — pure functions operating on entities (e.g. `extractLangPrefix`, `parseNotionPageId`).
+- **Domain services** — pure helpers on value objects (e.g. slug / Notion page ID / cache-key helpers).
 - **Domain events** — (reserved) `PostPublished`, `CommentReceived`.
 
 ## Rules
@@ -19,3 +19,7 @@ The `domain` layer contains business rules. It has no dependencies on frameworks
 ## Location
 
 `backend/src/domain/`
+
+Public API: `backend/src/domain/index.ts`.
+
+Application DTOs such as `FetchSiteParams` stay in `backend/src/application/site/site.types.ts`. Overlapping site page/site-data types are defined in `domain` and re-exported from `site.types.ts` for backward compatibility.

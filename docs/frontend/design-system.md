@@ -86,8 +86,17 @@ collapses all transitions.
 
 ## TypeScript
 
-New frontend code is authored in TypeScript. `tsconfig.json` is strict
-(`noImplicitAny`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`);
-`allowJs` keeps the legacy `.js` files compiling while they are migrated
-incrementally. Keep the `any` boundary to typed facades (see
-`themes/navyink/lib/global.ts`) rather than scattering unsafe access.
+Frontend core (`pages/`, `shared/lib/`, `shared/hooks/`, `shared/components/`)
+and the typed `navyink` theme are authored in TypeScript.
+`tsconfig.json` is strict (`noImplicitAny`, `exactOptionalPropertyTypes`,
+`noUncheckedIndexedAccess`).
+
+`allowJs` remains enabled for:
+
+- Legacy theme directories under `shared/themes/` (except `navyink`)
+- CJS bootstrap configs under `shared/config/*.config.js` that
+  `blog.config.js` loads via Node `require`
+
+Keep the `any` boundary to typed facades (see `themes/navyink/lib/global.ts`)
+rather than scattering unsafe access. See
+[`docs/decisions/002-typescript-first.md`](../decisions/002-typescript-first.md).

@@ -26,6 +26,7 @@
     "strict": true,
     "noEmit": true,
     "incremental": true,
+    "target": "es2015",
     "module": "esnext",
     "esModuleInterop": true,
     "moduleResolution": "node",
