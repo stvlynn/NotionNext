@@ -12,7 +12,10 @@ interface SearchNavProps {
 }
 
 /** Empty-state search page: the input plus tag and category clouds. */
-export function SearchNav({ tagOptions = [], categoryOptions = [] }: SearchNavProps) {
+export function SearchNav({
+  tagOptions = [],
+  categoryOptions = []
+}: SearchNavProps) {
   const { locale } = useThemeGlobal()
 
   return (
@@ -41,12 +44,7 @@ export function SearchNav({ tagOptions = [], categoryOptions = [] }: SearchNavPr
           </p>
           <div className='flex flex-wrap gap-2'>
             {categoryOptions.map(cat => (
-              <TagPill
-                key={cat.name}
-                tag={cat}
-                showCount
-                className='hover:border-brand'
-              />
+              <TagPill key={cat.name} tag={cat} showCount />
             ))}
           </div>
         </FadeIn>

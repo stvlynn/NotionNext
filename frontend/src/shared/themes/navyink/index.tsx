@@ -10,7 +10,14 @@ import { motion } from 'motion/react'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
-import { Button } from '@/components/ui'
+import {
+  Button,
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle
+} from '@/components/ui'
 import { cn } from '@/lib/cn'
 import CONFIG from './config'
 import { Style } from './style'
@@ -39,7 +46,8 @@ const LayoutBase = (props: ThemeLayoutProps) => {
   return (
     <div
       id='theme-navyink'
-      className='theme-navyink min-h-screen scroll-smooth bg-background text-foreground antialiased'>
+      className='theme-navyink min-h-screen scroll-smooth bg-background text-foreground antialiased'
+    >
       <Style />
       <Header />
 
@@ -49,8 +57,13 @@ const LayoutBase = (props: ThemeLayoutProps) => {
             key={router.asPath}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.2, 0, 0, 1] }}
-            className={cn('w-full min-w-0', fullWidth ? '' : 'max-w-3xl', className)}>
+            transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+            className={cn(
+              'w-full min-w-0',
+              fullWidth ? '' : 'max-w-3xl',
+              className
+            )}
+          >
             {slotTop}
             {children}
           </motion.div>
@@ -169,7 +182,7 @@ const LayoutSlug = (props: ThemeLayoutProps) => {
 
       <div className='mx-auto max-w-3xl'>
         <ShareBar post={post} />
-        <div className='mt-10 duration-200'>
+        <div className='mt-10'>
           <Comment frontMatter={post} />
         </div>
       </div>
@@ -180,15 +193,21 @@ const LayoutSlug = (props: ThemeLayoutProps) => {
 const Layout404 = () => {
   const { locale } = useThemeGlobal()
   return (
-    <div className='flex min-h-[60vh] flex-col items-center justify-center text-center'>
-      <p className='font-mono text-7xl font-bold text-brand'>404</p>
-      <p className='mt-4 text-lg text-muted-foreground'>
-        {locale.COMMON.NOT_FOUND}
-      </p>
-      <SmartLink href='/' className='mt-8'>
-        <Button variant='brand'>{locale.NAV.INDEX}</Button>
-      </SmartLink>
-    </div>
+    <Empty className='min-h-[60vh]'>
+      <EmptyHeader>
+        <EmptyTitle className='font-mono text-7xl font-bold text-brand'>
+          404
+        </EmptyTitle>
+        <EmptyDescription className='mt-4 text-lg'>
+          {locale.COMMON.NOT_FOUND}
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <SmartLink href='/'>
+          <Button variant='brand'>{locale.NAV.INDEX}</Button>
+        </SmartLink>
+      </EmptyContent>
+    </Empty>
   )
 }
 
@@ -202,13 +221,12 @@ const LayoutCategoryIndex = (props: ThemeLayoutProps) => {
       </h1>
       <div className='flex flex-wrap gap-2'>
         {categoryOptions.map(category => (
-          <SmartLink
+          <TagPill
             key={category.name}
-            href={`/category/${category.name}`}
-            className='inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:border-brand hover:text-brand'>
-            {category.name}
-            <span className='text-muted-foreground'>{category.count}</span>
-          </SmartLink>
+            tag={category}
+            showCount
+            href={`/category/${encodeURIComponent(category.name)}`}
+          />
         ))}
       </div>
     </FadeIn>

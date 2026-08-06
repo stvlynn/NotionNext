@@ -21,8 +21,9 @@ export function ArchiveGroup({
           <li key={post.id}>
             <SmartLink
               href={post.href || `/${post.slug || ''}`}
-              className='group -ml-px flex items-baseline gap-4 border-l-2 border-transparent py-2 pl-4 transition-colors hover:border-brand'>
-              <span className='w-14 shrink-0 font-mono text-xs text-muted-foreground'>
+              className='group -ml-px flex items-baseline gap-4 border-l-2 border-transparent py-2 pl-4 transition-colors hover:border-brand'
+            >
+              <span className='w-14 shrink-0 font-mono text-xs tabular-nums text-muted-foreground'>
                 {post.date?.start_date?.slice(5) || post.lastEditedDay}
               </span>
               <span className='text-foreground transition-colors group-hover:text-brand'>

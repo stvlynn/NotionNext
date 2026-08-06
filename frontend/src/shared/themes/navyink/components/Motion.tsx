@@ -22,16 +22,16 @@ export function FadeIn({
   className,
   ...props
 }: HTMLMotionProps<'div'> & { delay?: number; y?: number }) {
-  const motionClassName =
-    typeof className === 'string' ? className : undefined
+  const motionClassName = typeof className === 'string' ? className : undefined
   return (
     <motion.div
       className={motionClassName}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-      transition={{ duration: 0.5, ease: EASE_OUT, delay }}
-      {...props}>
+      transition={{ duration: 0.3, ease: EASE_OUT, delay }}
+      {...props}
+    >
       {children}
     </motion.div>
   )
@@ -44,7 +44,7 @@ const staggerParent: Variants = {
 
 const staggerChild: Variants = {
   hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE_OUT } }
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: EASE_OUT } }
 }
 
 /** Wraps a list; children rendered with <StaggerItem> rise in sequence. */
@@ -53,8 +53,7 @@ export function StaggerContainer({
   className,
   ...props
 }: HTMLMotionProps<'div'>) {
-  const motionClassName =
-    typeof className === 'string' ? className : undefined
+  const motionClassName = typeof className === 'string' ? className : undefined
   return (
     <motion.div
       className={motionClassName}
@@ -62,7 +61,8 @@ export function StaggerContainer({
       initial='hidden'
       whileInView='show'
       viewport={{ once: true, margin: '0px 0px -8% 0px' }}
-      {...props}>
+      {...props}
+    >
       {children}
     </motion.div>
   )
@@ -73,13 +73,9 @@ export function StaggerItem({
   className,
   ...props
 }: HTMLMotionProps<'div'>) {
-  const motionClassName =
-    typeof className === 'string' ? className : undefined
+  const motionClassName = typeof className === 'string' ? className : undefined
   return (
-    <motion.div
-      className={motionClassName}
-      variants={staggerChild}
-      {...props}>
+    <motion.div className={motionClassName} variants={staggerChild} {...props}>
       {children}
     </motion.div>
   )
@@ -91,15 +87,15 @@ export function Lift({
   className,
   ...props
 }: HTMLMotionProps<'div'>) {
-  const motionClassName =
-    typeof className === 'string' ? className : undefined
+  const motionClassName = typeof className === 'string' ? className : undefined
   return (
     <motion.div
       className={motionClassName}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.99 }}
       transition={{ duration: 0.2, ease: EASE_OUT }}
-      {...props}>
+      {...props}
+    >
       {children}
     </motion.div>
   )

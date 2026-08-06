@@ -1,20 +1,31 @@
 import SmartLink from '@/components/SmartLink'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
 import { cn } from '@/lib/cn'
+import {
+  buttonVariants,
+  Pagination as PaginationRoot,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink
+} from '@/components/ui'
+
+import { useLocale } from '../lib/global'
 
 interface PaginationProps {
   page: number
   totalPage: number
 }
 
-const linkBase =
-  'inline-flex h-9 min-w-9 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors'
-
-/** Numbered pagination with prev/next, current page on the ink primary. */
+/**
+ * Numbered pagination composed from the coss pagination primitives. Links
+ * render through SmartLink so routing keeps NotionNext's link behavior.
+ */
 export function Pagination({ page, totalPage }: PaginationProps) {
+  const locale = useLocale()
   const router = useRouter()
   const current = +page
   const prefix = (router.asPath.split('?')[0] ?? router.asPath)
@@ -30,57 +41,69 @@ export function Pagination({ page, totalPage }: PaginationProps) {
   )
 
   return (
-    <nav
-      className='mt-14 flex items-center justify-center gap-1'
-      aria-label='Pagination'>
-      <SmartLink
-        href={hrefFor(current - 1)}
-        rel='prev'
-        aria-label='Previous page'
-        className={cn(
-          linkBase,
-          'text-muted-foreground hover:bg-accent hover:text-foreground',
-          current <= 1 && 'pointer-events-none invisible'
-        )}>
-        <ChevronLeft className='size-4' />
-      </SmartLink>
-
-      {pages.map((p, i) => {
-        const prev = pages[i - 1]
-        const gap = prev !== undefined && p - prev > 1
-        return (
-          <React.Fragment key={p}>
-            {gap && (
-              <span className='px-1 text-muted-foreground' aria-hidden>
-                …
-              </span>
+    <PaginationRoot className='mt-14' aria-label={locale.PAGINATION.LABEL}>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationLink
+            rel='prev'
+            aria-label={locale.PAGINATION.PREVIOUS}
+            render={<SmartLink href={hrefFor(current - 1)} />}
+            className={cn(
+              buttonVariants({ variant: 'ghost', size: 'default' }),
+              'max-sm:aspect-square max-sm:p-0',
+              current <= 1 && 'pointer-events-none invisible'
             )}
-            <SmartLink
-              href={hrefFor(p)}
-              aria-current={p === current ? 'page' : undefined}
-              className={cn(
-                linkBase,
-                p === current
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-accent hover:text-foreground'
-              )}>
-              {p}
-            </SmartLink>
-          </React.Fragment>
-        )
-      })}
+          >
+            <ChevronLeftIcon className='sm:-ms-1' />
+            <span className='max-sm:hidden'>{locale.PAGINATION.PREVIOUS}</span>
+          </PaginationLink>
+        </PaginationItem>
 
-      <SmartLink
-        href={hrefFor(current + 1)}
-        rel='next'
-        aria-label='Next page'
-        className={cn(
-          linkBase,
-          'text-muted-foreground hover:bg-accent hover:text-foreground',
-          current >= totalPage && 'pointer-events-none invisible'
-        )}>
-        <ChevronRight className='size-4' />
-      </SmartLink>
-    </nav>
+        {pages.map((p, i) => {
+          const prev = pages[i - 1]
+          const gap = prev !== undefined && p - prev > 1
+          return (
+            <React.Fragment key={p}>
+              {gap && (
+                <PaginationItem>
+                  <PaginationEllipsis className='text-muted-foreground' />
+                </PaginationItem>
+              )}
+              <PaginationItem>
+                <PaginationLink
+                  isActive={p === current}
+                  render={<SmartLink href={hrefFor(p)} />}
+                  className={cn(
+                    buttonVariants({
+                      variant: p === current ? 'brand' : 'ghost',
+                      size: 'icon'
+                    }),
+                    'tabular-nums'
+                  )}
+                >
+                  {p}
+                </PaginationLink>
+              </PaginationItem>
+            </React.Fragment>
+          )
+        })}
+
+        <PaginationItem>
+          <PaginationLink
+            rel='next'
+            aria-label={locale.PAGINATION.NEXT}
+            render={<SmartLink href={hrefFor(current + 1)} />}
+            className={cn(
+              buttonVariants({ variant: 'ghost', size: 'default' }),
+              'max-sm:aspect-square max-sm:p-0',
+              current >= totalPage && 'pointer-events-none invisible'
+            )}
+          >
+            <span className='max-sm:hidden'>{locale.PAGINATION.NEXT}</span>
+            <ChevronRightIcon className='sm:-me-1' />
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationContent>
+    </PaginationRoot>
   )
 }

@@ -2,6 +2,8 @@ import { conf } from '../lib/global'
 import SmartLink from '@/components/SmartLink'
 import * as React from 'react'
 
+import { Avatar, AvatarImage } from '@/components/ui'
+
 import CONFIG from '../config'
 
 /**
@@ -19,16 +21,12 @@ export function Logo() {
     <SmartLink
       href='/'
       aria-label={title}
-      className='group inline-flex items-center gap-2.5'>
+      className='group inline-flex items-center gap-2.5'
+    >
       {/* Decorative mark; accessible name comes from the link aria-label. */}
-      <img
-        src={logoSrc}
-        alt=''
-        width={20}
-        height={20}
-        decoding='async'
-        className='size-5 rounded-[6px] object-cover transition-transform duration-200 group-hover:rotate-12'
-      />
+      <Avatar className='size-5 rounded-sm transition-transform duration-200 group-hover:rotate-12'>
+        <AvatarImage src={logoSrc} alt='' decoding='async' />
+      </Avatar>
       <span className='text-base font-semibold tracking-tight text-foreground'>
         {title}
       </span>

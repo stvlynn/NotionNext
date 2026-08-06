@@ -1,11 +1,15 @@
 'use client'
 
-import { conf } from '../lib/global'
-import { useThemeGlobal } from '../lib/global'
+import {
+  Button,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle
+} from '@/components/ui'
 import { getListByPage } from '@/lib/utils'
 import * as React from 'react'
-
-import { Button } from '@/components/ui'
+import { conf, useLocale, useThemeGlobal } from '../lib/global'
 import type { Post } from '../types'
 import { StaggerContainer } from './Motion'
 import { Pagination } from './Pagination'
@@ -13,11 +17,22 @@ import { PostCard } from './PostCard'
 
 const GRID = 'grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'
 
-function EmptyState({ message }: { message: string }) {
+function EmptyState({
+  title,
+  description
+}: {
+  title: string
+  description?: string | undefined
+}) {
   return (
-    <div className='flex items-center justify-center py-24'>
-      <p className='text-sm text-muted-foreground'>{message}</p>
-    </div>
+    <Empty>
+      <EmptyHeader>
+        <EmptyTitle>{title}</EmptyTitle>
+        {description ? (
+          <EmptyDescription>{description}</EmptyDescription>
+        ) : null}
+      </EmptyHeader>
+    </Empty>
   )
 }
 
@@ -33,12 +48,13 @@ export function PostListPage({
   posts = [],
   postCount = 0
 }: PostListPageProps) {
-  const { NOTION_CONFIG, locale } = useThemeGlobal()
+  const { NOTION_CONFIG } = useThemeGlobal()
+  const locale = useLocale()
   const perPage = conf('POSTS_PER_PAGE', 12, NOTION_CONFIG)
   const totalPage = Math.ceil(postCount / perPage)
 
   if (!posts || posts.length === 0 || page > totalPage) {
-    return <EmptyState message={locale.COMMON.NO_RESULTS || 'No posts found.'} />
+    return <EmptyState title={locale.COMMON.NOT_FOUND} />
   }
 
   return (
@@ -63,22 +79,28 @@ export function PostListScroll({
   posts = [],
   currentSearch
 }: PostListScrollProps) {
-  const { NOTION_CONFIG, locale } = useThemeGlobal()
+  const { NOTION_CONFIG } = useThemeGlobal()
+  const locale = useLocale()
   const perPage = conf('POSTS_PER_PAGE', 12, NOTION_CONFIG)
   const [page, setPage] = React.useState(1)
+  const [loading, setLoading] = React.useState(false)
   const visible = getListByPage(posts, page, perPage)
   const hasMore = page * perPage < (posts?.length || 0)
 
   const loadMore = React.useCallback(() => {
+    setLoading(true)
     setPage(p => (p * perPage < (posts?.length || 0) ? p + 1 : p))
   }, [perPage, posts])
+
+  React.useEffect(() => {
+    setLoading(false)
+  }, [page])
 
   React.useEffect(() => {
     const onScroll = () => {
       if (!hasMore) return
       const nearBottom =
-        window.scrollY + window.innerHeight >
-        document.body.scrollHeight - 320
+        window.scrollY + window.innerHeight > document.body.scrollHeight - 320
       if (nearBottom) loadMore()
     }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -86,14 +108,13 @@ export function PostListScroll({
   }, [hasMore, loadMore])
 
   if (!visible || visible.length === 0) {
-    return (
+    return currentSearch ? (
       <EmptyState
-        message={
-          currentSearch
-            ? `${locale.COMMON.NO_RESULTS || 'No results for'} "${currentSearch}"`
-            : locale.COMMON.NO_RESULTS || 'No posts found.'
-        }
+        title={locale.COMMON.NO_RESULTS}
+        description={`"${currentSearch}"`}
       />
+    ) : (
+      <EmptyState title={locale.COMMON.NOT_FOUND} />
     )
   }
 
@@ -106,12 +127,17 @@ export function PostListScroll({
       </StaggerContainer>
       <div className='flex justify-center py-10'>
         {hasMore ? (
-          <Button variant='outline' size='sm' onClick={loadMore}>
-            {locale.COMMON.MORE || 'Load more'}
+          <Button
+            variant='outline'
+            size='sm'
+            loading={loading}
+            onClick={loadMore}
+          >
+            {locale.COMMON.MORE}
           </Button>
         ) : (
           <span className='text-sm text-muted-foreground'>
-            {locale.COMMON.NO_MORE || 'No more posts'}
+            {locale.COMMON.NO_MORE}
           </span>
         )}
       </div>

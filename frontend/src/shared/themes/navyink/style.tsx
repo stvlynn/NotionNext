@@ -19,21 +19,6 @@ const Style = () => {
         color: var(--foreground);
       }
 
-      /* Page transition used by the <Transition> in LayoutBase */
-      .navyink-page-enter {
-        transition:
-          opacity 0.5s var(--ease-emphasized),
-          transform 0.5s var(--ease-emphasized);
-      }
-      .navyink-page-enter-from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      .navyink-page-enter-to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
       /* Article typography. Prose colour is owned by --fg-color in notion.css. */
       #theme-navyink .navyink-article {
         font-size: 1.02rem;

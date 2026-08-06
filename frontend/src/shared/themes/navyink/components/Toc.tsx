@@ -4,6 +4,7 @@ import { useThemeGlobal } from '../lib/global'
 import { uuidToId } from 'notion-utils'
 import * as React from 'react'
 
+import { ScrollArea } from '@/components/ui'
 import { cn } from '@/lib/cn'
 
 interface TocItem {
@@ -44,31 +45,34 @@ export function Toc({ toc }: { toc?: TocItem[] }) {
   if (!toc || toc.length < 2) return null
 
   return (
-    <nav aria-label={locale.COMMON.TABLE_OF_CONTENTS || 'On this page'}>
+    <nav aria-label={locale.COMMON.TABLE_OF_CONTENTS}>
       <p className='mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground'>
-        {locale.COMMON.TABLE_OF_CONTENTS || 'On this page'}
+        {locale.COMMON.TABLE_OF_CONTENTS}
       </p>
-      <ul className='space-y-1 border-l border-border'>
-        {toc.map(item => {
-          const id = uuidToId(item.id)
-          const active = id === activeId
-          return (
-            <li key={id}>
-              <a
-                href={`#${id}`}
-                className={cn(
-                  '-ml-px block border-l-2 py-1 text-sm transition-colors',
-                  active
-                    ? 'border-brand font-medium text-foreground'
-                    : 'border-transparent text-muted-foreground hover:border-border-strong hover:text-foreground'
-                )}
-                style={{ paddingLeft: `${item.indentLevel * 12 + 12}px` }}>
-                {item.text}
-              </a>
-            </li>
-          )
-        })}
-      </ul>
+      <ScrollArea className='max-h-[70vh]'>
+        <ul className='space-y-1 border-l border-border pr-2'>
+          {toc.map(item => {
+            const id = uuidToId(item.id)
+            const active = id === activeId
+            return (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  className={cn(
+                    '-ml-px block border-l-2 py-1 text-sm transition-colors',
+                    active
+                      ? 'border-brand font-medium text-foreground'
+                      : 'border-transparent text-muted-foreground hover:border-border-strong hover:text-foreground'
+                  )}
+                  style={{ paddingLeft: `${item.indentLevel * 12 + 12}px` }}
+                >
+                  {item.text}
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </ScrollArea>
     </nav>
   )
 }

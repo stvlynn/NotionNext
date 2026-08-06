@@ -1,18 +1,28 @@
 'use client'
 
-import { useThemeGlobal } from '../lib/global'
+import {
+  Button,
+  Field,
+  FieldError,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput
+} from '@/components/ui'
+import { useLocale } from '../lib/global'
 import { Lock } from 'lucide-react'
 import * as React from 'react'
-
-import { Button } from '@/components/ui'
 
 interface ArticleLockProps {
   validPassword: (password: string) => boolean
 }
 
-/** Password gate for locked posts. Shakes the field on an incorrect password. */
+/**
+ * Password gate for locked posts. Autofocuses the password field on mount. A
+ * wrong password marks the field invalid and shows an inline error, which
+ * clears as soon as the visitor edits the input again.
+ */
 export function ArticleLock({ validPassword }: ArticleLockProps) {
-  const { locale } = useThemeGlobal()
+  const locale = useLocale()
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [error, setError] = React.useState(false)
 
@@ -30,30 +40,34 @@ export function ArticleLock({ validPassword }: ArticleLockProps) {
     <div className='flex min-h-[60vh] w-full items-center justify-center'>
       <form
         onSubmit={submit}
-        className='w-full max-w-sm space-y-6 px-6 text-center'>
-        <div className='mx-auto flex size-12 items-center justify-center rounded-full bg-brand-muted'>
+        className='w-full max-w-sm space-y-6 px-6 text-center'
+      >
+        <div className='mx-auto flex size-12 items-center justify-center rounded-full bg-muted'>
           <Lock className='size-5 text-brand' />
         </div>
         <p className='font-medium text-foreground'>
           {locale.COMMON.ARTICLE_LOCK_TIPS}
         </p>
-        <div className='flex overflow-hidden rounded-lg border border-input focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/30'>
-          <input
-            ref={inputRef}
-            type='password'
-            onChange={() => error && setError(false)}
-            className='h-11 w-full bg-card px-3.5 text-sm text-foreground outline-none'
-            aria-invalid={error}
-          />
-          <Button type='submit' className='rounded-none'>
-            {locale.COMMON.SUBMIT || 'OK'}
-          </Button>
-        </div>
-        {error && (
-          <p className='text-sm text-destructive'>
-            {locale.COMMON.PASSWORD_ERROR}
-          </p>
-        )}
+        <Field invalid={error} className='items-stretch'>
+          <InputGroup className='h-11'>
+            <InputGroupInput
+              ref={inputRef}
+              type='password'
+              onChange={() => error && setError(false)}
+              className='h-full'
+              aria-label={locale.COMMON.ARTICLE_LOCK_TIPS}
+              aria-invalid={error || undefined}
+            />
+            <InputGroupAddon align='inline-end'>
+              <Button type='submit'>{locale.COMMON.SUBMIT}</Button>
+            </InputGroupAddon>
+          </InputGroup>
+          {error && (
+            <FieldError match className='text-center text-sm'>
+              {locale.COMMON.PASSWORD_ERROR}
+            </FieldError>
+          )}
+        </Field>
       </form>
     </div>
   )

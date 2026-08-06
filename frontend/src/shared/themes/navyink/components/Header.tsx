@@ -1,14 +1,20 @@
 'use client'
 
 import { conf } from '../lib/global'
-import { useThemeGlobal } from '../lib/global'
+import { useLocale } from '../lib/global'
 import SmartLink from '@/components/SmartLink'
 import { Menu, Search, X } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { motion } from 'motion/react'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
-import { Button } from '@/components/ui'
+import {
+  Button,
+  Sheet,
+  SheetPopup,
+  SheetTitle,
+  SheetTrigger
+} from '@/components/ui'
 import { cn } from '@/lib/cn'
 import CONFIG from '../config'
 import { Logo } from './Logo'
@@ -21,11 +27,11 @@ interface NavLink {
 
 /**
  * Sticky top navigation. Transparent at the top of the page, it settles into a
- * translucent, blurred, bordered bar once the reader scrolls — a single
- * material change rather than an abrupt swap.
+ * solid, bordered bar once the reader scrolls. On mobile the nav lives in a
+ * Sheet drawer; on desktop the active link carries a shared-layout underline.
  */
 export function Header() {
-  const { locale } = useThemeGlobal()
+  const locale = useLocale()
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
@@ -64,11 +70,12 @@ export function Header() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-40 h-16 transition-all duration-300',
+        'fixed inset-x-0 top-0 z-40 h-16 border-b transition-colors duration-200',
         scrolled
-          ? 'border-b border-border bg-background/80 backdrop-blur-md'
-          : 'border-b border-transparent bg-transparent'
-      )}>
+          ? 'border-border bg-background'
+          : 'border-transparent bg-transparent'
+      )}
+    >
       <div className='mx-auto flex h-full max-w-5xl items-center justify-between px-5'>
         <Logo />
 
@@ -82,7 +89,8 @@ export function Header() {
                 isActive(link.href)
                   ? 'text-foreground'
                   : 'text-muted-foreground hover:text-foreground'
-              )}>
+              )}
+            >
               {link.label}
               {isActive(link.href) && (
                 <motion.span
@@ -101,50 +109,48 @@ export function Header() {
               variant='ghost'
               size='icon'
               aria-label={locale.NAV.SEARCH}
-              onClick={() => void router.push('/search')}>
+              onClick={() => void router.push('/search')}
+            >
               <Search className='size-4' />
             </Button>
           )}
           <ThemeToggle />
-          <Button
-            variant='ghost'
-            size='icon'
-            className='md:hidden'
-            aria-label='Menu'
-            aria-expanded={open}
-            onClick={() => setOpen(v => !v)}>
-            {open ? <X className='size-5' /> : <Menu className='size-5' />}
-          </Button>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+              render={
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='md:hidden'
+                  aria-label={locale.NAV.MENU}
+                />
+              }
+            >
+              {open ? <X className='size-5' /> : <Menu className='size-5' />}
+            </SheetTrigger>
+            <SheetPopup className='theme-navyink md:hidden'>
+              <SheetTitle className='sr-only'>{locale.NAV.MENU}</SheetTitle>
+              <nav className='flex flex-col gap-1 p-4'>
+                {links.map(link => (
+                  <SmartLink
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                      isActive(link.href)
+                        ? 'bg-accent text-foreground'
+                        : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                    )}
+                  >
+                    {link.label}
+                  </SmartLink>
+                ))}
+              </nav>
+            </SheetPopup>
+          </Sheet>
         </div>
       </div>
-
-      <AnimatePresence>
-        {open && (
-          <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
-            className='overflow-hidden border-b border-border bg-background/95 backdrop-blur-md md:hidden'>
-            <div className='mx-auto flex max-w-5xl flex-col gap-1 px-5 py-3'>
-              {links.map(link => (
-                <SmartLink
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    'rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                    isActive(link.href)
-                      ? 'bg-accent text-foreground'
-                      : 'text-muted-foreground hover:bg-accent hover:text-foreground'
-                  )}>
-                  {link.label}
-                </SmartLink>
-              ))}
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
     </header>
   )
 }

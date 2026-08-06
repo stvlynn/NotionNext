@@ -56,8 +56,18 @@ per scope without touching the other themes.
 ## coss component registry
 
 Reusable coss primitives live in `frontend/src/shared/components/ui/` (TypeScript,
-`data-slot` attributes, `cn()` from `@/lib/cn`): `Button`, `Card`, `Badge`,
-`Separator`, `Skeleton`, `Avatar`. Prefer these primitives over hand-written
+`data-slot` attributes, `cn()` from `@/lib/cn`). They are verbatim ports of the
+upstream coss UI sources (`cosscom/coss`, `apps/ui/registry/default/ui/`), adapted
+only in imports: `@/registry/default/lib/utils` → `@/lib/cn`, sibling imports are
+relative, and `useRender`/`mergeProps` come from the `@base-ui-components/react`
+package root (the installed 1.0.0-rc.0 exposes no `./use-render` subpath export).
+`Button` carries one project addition: a `brand` variant mapped to the
+`--brand`/`--brand-foreground` tokens.
+
+Ported set: `Button`, `Spinner`, `Card` (+ `CardFrame` family), `Badge`,
+`Avatar`, `Separator`, `Skeleton`, `Empty`, `Field`, `Input`, `InputGroup`,
+`Textarea`, `Kbd`, `Label`, `Menu` (+ `DropdownMenu` aliases), `Pagination`,
+`ScrollArea`, `Sheet`, `Tooltip`. Prefer these primitives over hand-written
 markup. Add more with `npx shadcn@latest add @coss/<component>`.
 
 ## The `navyink` theme
@@ -73,6 +83,13 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
 - Untyped `useGlobal`/`siteConfig` are wrapped once in
   `themes/navyink/lib/global.ts` (`useThemeGlobal`, `conf`) so the rest of the
   theme is fully typed.
+- All user-facing copy resolves through `useLocale()` (same file): the active
+  lang file is deep-merged over `NAVYINK_LOCALE_DEFAULTS`, so components read
+  plain `locale.X` keys and never use `|| 'literal'` fallbacks.
+- Base UI portals (Sheet, Tooltip, Menu popups) render at `document.body`,
+  outside the `.theme-navyink` token scope — portaled popup content must carry
+  the `theme-navyink` class so the scoped `primary`/`secondary`/`warning`
+  overrides still apply.
 - Header wordmark mark: `NAVYINK_LOGO` (default
   `/themes/navyink/logo.jpg`).
 
@@ -81,8 +98,11 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
 Animation uses [`motion`](https://motion.dev) via helpers in
 `themes/navyink/components/Motion.tsx` (`FadeIn`, `StaggerContainer`,
 `StaggerItem`, `Lift`). Motion is quick, eased-out, and short-travel; entrances
-play once on scroll-in. A `prefers-reduced-motion` guard in `style.tsx`
-collapses all transitions.
+play once on scroll-in. UI motion stays at or under 300 ms (page enter 250 ms,
+stagger children 300 ms at 60 ms intervals, interaction feedback 150–200 ms),
+transitions name exact properties (never `transition-all`), and pressables get
+press feedback from the coss primitives or `Lift`'s `whileTap`. A
+`prefers-reduced-motion` guard in `style.tsx` collapses all transitions.
 
 ## TypeScript
 
