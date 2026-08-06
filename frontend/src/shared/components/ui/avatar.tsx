@@ -1,38 +1,52 @@
-import * as React from 'react'
+'use client'
 
+import { Avatar as AvatarPrimitive } from '@base-ui-components/react/avatar'
+import type React from 'react'
 import { cn } from '@/lib/cn'
 
-/**
- * Lightweight avatar. Renders the image when `src` is provided, otherwise the
- * children (typically initials) on a muted background.
- */
-interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
-  src?: string
-  alt?: string
-}
-
-function Avatar({ className, src, alt = '', children, ...props }: AvatarProps) {
+export function Avatar({
+  className,
+  ...props
+}: AvatarPrimitive.Root.Props): React.ReactElement {
   return (
-    <span
-      data-slot='avatar'
+    <AvatarPrimitive.Root
       className={cn(
-        'relative flex size-9 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-muted text-sm font-medium text-muted-foreground',
+        'inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-background align-middle font-medium text-xs',
         className
       )}
-      {...props}>
-      {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt={alt}
-          className='size-full object-cover'
-          loading='lazy'
-        />
-      ) : (
-        children
-      )}
-    </span>
+      data-slot='avatar'
+      {...props}
+    />
   )
 }
 
-export { Avatar }
+export function AvatarImage({
+  className,
+  ...props
+}: AvatarPrimitive.Image.Props): React.ReactElement {
+  return (
+    <AvatarPrimitive.Image
+      className={cn('size-full object-cover', className)}
+      data-slot='avatar-image'
+      {...props}
+    />
+  )
+}
+
+export function AvatarFallback({
+  className,
+  ...props
+}: AvatarPrimitive.Fallback.Props): React.ReactElement {
+  return (
+    <AvatarPrimitive.Fallback
+      className={cn(
+        'flex size-full items-center justify-center rounded-full bg-muted',
+        className
+      )}
+      data-slot='avatar-fallback'
+      {...props}
+    />
+  )
+}
+
+export { AvatarPrimitive }
