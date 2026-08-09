@@ -7,6 +7,7 @@ import 'katex/dist/katex.min.css'
 import dynamic from 'next/dynamic'
 import { useEffect, useRef } from 'react'
 import { NotionRenderer, useNotionContext } from 'react-notion-x'
+import { isNotionHtmlArtifactBlock } from '@/backend/domain'
 
 /**
  * 整个站点的核心组件
@@ -150,8 +151,7 @@ const NotionEmbed = ({ block }: any) => {
     recordMap?.signed_urls?.[block?.id] ||
     block?.format?.display_source ||
     block?.properties?.source?.[0]?.[0]
-  const isHtmlArtifact =
-    block?.type === 'embed' && block?.format?.embed_variant === 'html_artifact'
+  const isHtmlArtifact = isNotionHtmlArtifactBlock(block)
   const srcDoc = isHtmlArtifact
     ? block?.format?.html_artifact_content
     : undefined

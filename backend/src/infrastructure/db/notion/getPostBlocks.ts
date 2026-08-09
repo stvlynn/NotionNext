@@ -11,6 +11,7 @@ import type { SignedUrlRequest } from 'notion-client'
 import pLimit from 'p-limit'
 import { normalizeNotionBlockType } from '@/lib/utils/notion.util'
 import { normalizeExternalMediaBlock } from '@/lib/db/notion/normalizeExternalMediaBlock'
+import { isNotionHtmlArtifactBlock } from '@/backend/domain'
 
 interface FetchNotionPageBlocksOptions {
   cacheVersion?: string | number | Date
@@ -63,7 +64,9 @@ interface LooseNotionBlockBox {
 
 type LooseNotionBlockEntry = LooseNotionBlockBox | LooseNotionBlockValue
 type LooseNotionBlockMap = Record<string, LooseNotionBlockEntry>
-type LooseRecordMap = Partial<Omit<ExtendedRecordMap, 'block' | 'signed_urls'>> & {
+type LooseRecordMap = Partial<
+  Omit<ExtendedRecordMap, 'block' | 'signed_urls'>
+> & {
   block?: LooseNotionBlockMap
   signed_urls?: Record<string, string>
 }
@@ -123,7 +126,9 @@ function getLooseBlockValue(entry: unknown): LooseNotionBlockValue | undefined {
   return isObjectRecord(block) ? (block as LooseNotionBlockValue) : undefined
 }
 
-function getBlockSource(block: LooseNotionBlockValue | undefined): string | undefined {
+function getBlockSource(
+  block: LooseNotionBlockValue | undefined
+): string | undefined {
   const source = block?.properties?.source?.[0]?.[0]
   return typeof source === 'string' ? source : undefined
 }
@@ -203,6 +208,10 @@ export async function fetchNotionPageBlocks(
   if (hasExpiredSignedUrls(pageBlock)) {
     await refreshSignedUrls(pageBlock, cacheKey)
   }
+  const htmlArtifactsChanged = await hydrateNotionHtmlArtifacts(pageBlock)
+  if (htmlArtifactsChanged) {
+    await setDataToCache(cacheKey, pageBlock, null)
+  }
   preferStablePdfSignedUrls(pageBlock)
 
   return pageBlock
@@ -217,7 +226,9 @@ export function hasExpiredSignedUrls(
 
   return signedUrls.some(url => {
     try {
-      const expires = Number(new URL(url).searchParams.get('expirationTimestamp'))
+      const expires = Number(
+        new URL(url).searchParams.get('expirationTimestamp')
+      )
       return Number.isFinite(expires) && expires <= now + bufferMs
     } catch {
       return false
@@ -255,7 +266,10 @@ function getNotionFileInstances(recordMap: LooseRecordMap): SignedUrlRequest[] {
     if (
       !block ||
       typeof block.type !== 'string' ||
-      !['pdf', 'audio', 'image', 'video', 'file', 'page'].includes(block.type)
+      (!['pdf', 'audio', 'image', 'video', 'file', 'page'].includes(
+        block.type
+      ) &&
+        !isNotionHtmlArtifactBlock(block))
     ) {
       return []
     }
@@ -283,7 +297,9 @@ function getNotionFileSource(source: string | undefined): string | null {
 
   if (source.includes('notion.so/signed/')) {
     try {
-      return decodeURIComponent(new URL(source).pathname.replace(/^\/signed\//, ''))
+      return decodeURIComponent(
+        new URL(source).pathname.replace(/^\/signed\//, '')
+      )
     } catch {
       return source
     }
@@ -313,7 +329,9 @@ export function preferStablePdfSignedUrls(recordMap: LooseRecordMap): void {
     if (block?.type !== 'pdf' || !source) return
 
     recordMap.signed_urls = recordMap.signed_urls || {}
-    recordMap.signed_urls[block.id as string] = source.includes('notion.so/signed/')
+    recordMap.signed_urls[block.id as string] = source.includes(
+      'notion.so/signed/'
+    )
       ? source
       : `https://notion.so/signed/${encodeURIComponent(source)}?table=block&id=${block.id}`
   })
@@ -340,7 +358,7 @@ export async function getPageWithRetry(
   try {
     const start = Date.now()
     const pageData = (await notionAPI.getPage(id)) as LooseRecordMap
-    await addHtmlArtifactSignedUrls(pageData)
+    await hydrateNotionHtmlArtifacts(pageData)
     const end = Date.now()
     console.log('[API<<--响应]', `耗时:${end - start}ms - from:${from}`)
     return pageData
@@ -357,21 +375,29 @@ export async function getPageWithRetry(
   }
 }
 
-async function addHtmlArtifactSignedUrls(
+export async function hydrateNotionHtmlArtifacts(
   recordMap: LooseRecordMap | null | undefined
-): Promise<void> {
-  if (!recordMap?.block) return
+): Promise<boolean> {
+  if (!recordMap?.block) return false
 
   const files: HtmlArtifactFile[] = []
+  let changed = false
   for (const entry of Object.values(recordMap.block)) {
     const block = getLooseBlockValue(entry)
     const source = getBlockSource(block)
     if (
-      block?.type === 'embed' &&
-      block.format?.embed_variant === 'html_artifact' &&
-      source?.includes('attachment:') &&
-      !recordMap.signed_urls?.[block.id as string]
+      block &&
+      isNotionHtmlArtifactBlock(block) &&
+      source?.startsWith('attachment:')
     ) {
+      block.format = block.format || {}
+      if (block.format.embed_variant !== 'html_artifact') {
+        block.format.embed_variant = 'html_artifact'
+        changed = true
+      }
+
+      if (block.format.html_artifact_content) continue
+
       files.push({
         block,
         permissionRecord: {
@@ -383,31 +409,44 @@ async function addHtmlArtifactSignedUrls(
     }
   }
 
-  if (!files.length) return
+  if (!files.length) return changed
 
   try {
-    const { signedUrls } = await notionAPI.getSignedFileUrls(
-      files.map(({ block, ...file }) => file)
-    )
-    if (!signedUrls?.length) return
-
     recordMap.signed_urls = recordMap.signed_urls || {}
+    const filesMissingSignedUrls = files.filter(
+      file => !recordMap.signed_urls?.[file.permissionRecord.id]
+    )
+    if (filesMissingSignedUrls.length > 0) {
+      const { signedUrls } = await notionAPI.getSignedFileUrls(
+        filesMissingSignedUrls.map(({ block, ...file }) => file)
+      )
+      filesMissingSignedUrls.forEach((file, index) => {
+        const signedUrl = signedUrls?.[index]
+        if (signedUrl) {
+          recordMap.signed_urls![file.permissionRecord.id] = signedUrl
+          changed = true
+        }
+      })
+    }
+
     await Promise.all(
-      files.map(async (file, index) => {
-        const signedUrl = signedUrls[index]
+      files.map(async file => {
+        const signedUrl = recordMap.signed_urls?.[file.permissionRecord.id]
         if (!signedUrl) return
 
-        recordMap.signed_urls![file.permissionRecord.id] = signedUrl
         const html = await fetchHtmlArtifactContent(signedUrl)
         if (html) {
           file.block.format = file.block.format || {}
           file.block.format.html_artifact_content = html
+          changed = true
         }
       })
     )
   } catch (err) {
-    console.warn('[Notion HTML artifact] getSignedFileUrls failed:', err)
+    console.warn('[Notion HTML artifact] hydration failed:', err)
   }
+
+  return changed
 }
 
 async function fetchHtmlArtifactContent(url: string): Promise<string | null> {
@@ -462,6 +501,10 @@ export function formatNotionBlock(
       delete value.crdt_data
       delete value.crdt_format_version
       value.type = normalizeNotionBlockType(value.type)
+      if (isNotionHtmlArtifactBlock(value)) {
+        value.format = value.format || {}
+        value.format.embed_variant = 'html_artifact'
+      }
     }
 
     sanitizeBlockUrls(value)
@@ -594,7 +637,8 @@ export const fetchInBatches = async (
 
         const end = Date.now()
 
-        const blocks = (pageChunk?.recordMap?.block || {}) as LooseNotionBlockMap
+        const blocks = (pageChunk?.recordMap?.block ||
+          {}) as LooseNotionBlockMap
 
         console.log(
           `[API<<--批量响应] size:${batch.length} 耗时:${end - start}ms blocks:${Object.keys(blocks).length}`
@@ -615,13 +659,14 @@ export const fetchInBatches = async (
   return fetchedBlocks
 }
 
-function sanitizeBlockUrls(blockValue: LooseNotionBlockValue | undefined): void {
+function sanitizeBlockUrls(
+  blockValue: LooseNotionBlockValue | undefined
+): void {
   if (!blockValue) return
 
   const fixUrl = (url: string): string => {
     if (
-      blockValue.type === 'embed' &&
-      blockValue.format?.embed_variant === 'html_artifact' &&
+      isNotionHtmlArtifactBlock(blockValue) &&
       url.startsWith('attachment:')
     ) {
       return url
