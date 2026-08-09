@@ -294,7 +294,7 @@ POSTS_PER_PAGE: 12, // post counts per page
 <summary>博客列表排序</summary>
 
 ```JavaScript
-POSTS_SORT_BY: 'notion', // 排序方式 'date'按时间,'notion'由notion控制
+POSTS_SORT_BY: 'date', // 排序方式 'date'按发布时间倒序，'notion'由 Notion 数据库顺序控制
 ```
 
 </details>

@@ -32,7 +32,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx: any) => {
     paths: Array.from({ length: totalPages - 1 }, (_, i) => ({
       params: { page: '' + (i + 2) }
     })),
-    fallback: true
+    // A paginated route must render complete HTML on its first request. This
+    // avoids exposing the transient fallback shell as a 404 at the edge.
+    fallback: 'blocking'
   }
 }
 

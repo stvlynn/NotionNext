@@ -32,7 +32,7 @@
 | `POST_LIST_STYLE` | `page` 分页 / `scroll` 滚动加载 |
 | `POST_LIST_PREVIEW` | 列表是否显示预览 |
 | `POSTS_PER_PAGE` | 每页篇数 |
-| `POSTS_SORT_BY` | `notion` 或 `date` |
+| `POSTS_SORT_BY` | 默认 `date`（按发布日期倒序）；可设为 `notion` 保留 Notion 数据库顺序 |
 | `POST_RECOMMEND_COUNT` | 文末推荐数量 |
 | `POST_SHARE_BAR_ENABLE` | 底部分享条 |
 | `POSTS_SHARE_SERVICES` | 分享渠道列表 |
