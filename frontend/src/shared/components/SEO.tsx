@@ -66,13 +66,13 @@ const SEO = (props: any) => {
   const title = meta?.title || TITLE
   const description = meta?.description || `${siteInfo?.description}`
   const type = meta?.type === 'Post' ? 'article' : meta?.type || 'website'
-  const language =
-    router?.locale || siteConfig('LANG', 'zh-CN', NOTION_CONFIG)
+  const language = router?.locale || siteConfig('LANG', 'zh-CN', NOTION_CONFIG)
   const lang = String(language).replace('-', '_') // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
   const category = Array.isArray(meta?.category)
     ? meta?.category?.[0]
     : meta?.category || KEYWORDS // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
-  const favicon = siteConfig('BLOG_FAVICON')
+  const configuredFavicon = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
+  const favicon = resolveFavicon(configuredFavicon, siteInfo?.icon)
   const BACKGROUND_DARK = siteConfig('BACKGROUND_DARK', '', NOTION_CONFIG)
 
   const SEO_BAIDU_SITE_VERIFICATION = siteConfig(
@@ -86,8 +86,6 @@ const SEO = (props: any) => {
     null,
     NOTION_CONFIG
   )
-
-  const BLOG_FAVICON = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
 
   const COMMENT_WEBMENTION_ENABLE = siteConfig(
     'COMMENT_WEBMENTION_ENABLE',
@@ -125,7 +123,10 @@ const SEO = (props: any) => {
         name='viewport'
         content='width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0'
       />
-      <meta name='robots' content='follow, index, max-snippet:-1, max-image-preview:large, max-video-preview:-1' />
+      <meta
+        name='robots'
+        content='follow, index, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+      />
       <meta charSet='UTF-8' />
       <meta name='format-detection' content='telephone=no' />
       <meta name='mobile-web-app-capable' content='yes' />
@@ -181,8 +182,6 @@ const SEO = (props: any) => {
       <meta name='twitter:image' content={image} />
       <meta name='twitter:image:alt' content={title} />
 
-      <link rel='icon' href={BLOG_FAVICON} />
-
       {COMMENT_WEBMENTION_ENABLE && (
         <>
           <link
@@ -206,7 +205,10 @@ const SEO = (props: any) => {
       {meta?.type === 'Post' && (
         <>
           {meta.publishTime && (
-            <meta property='article:published_time' content={meta.publishTime} />
+            <meta
+              property='article:published_time'
+              content={meta.publishTime}
+            />
           )}
           {meta.modifiedTime && (
             <meta
@@ -234,7 +236,9 @@ const SEO = (props: any) => {
       />
 
       {/* DNS预取和预连接 */}
-      {hasWebFontUrl && <link rel='dns-prefetch' href='//fonts.googleapis.com' />}
+      {hasWebFontUrl && (
+        <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+      )}
       <link rel='dns-prefetch' href='//www.google-analytics.com' />
       <link rel='dns-prefetch' href='//www.googletagmanager.com' />
       {hasWebFontUrl && (
@@ -248,6 +252,21 @@ const SEO = (props: any) => {
       {children}
     </Head>
   )
+}
+
+export const resolveFavicon = (
+  configuredFavicon: unknown,
+  profileIcon: unknown
+) => {
+  const favicon =
+    typeof configuredFavicon === 'string' ? configuredFavicon.trim() : ''
+  const profile = typeof profileIcon === 'string' ? profileIcon.trim() : ''
+
+  if (profile && (!favicon || favicon === '/favicon.ico')) {
+    return profile
+  }
+
+  return favicon || '/favicon.ico'
 }
 
 /**
@@ -458,8 +477,7 @@ const getSEOMeta = (props: any, router: any, locale: any) => {
         publishDay: post?.publishDay,
         lastEditedDay: post?.lastEditedDay,
         publishTime:
-          getIsoTime(post?.publishDate) ||
-          getIsoTime(post?.date?.start_date),
+          getIsoTime(post?.publishDate) || getIsoTime(post?.date?.start_date),
         modifiedTime: getIsoTime(post?.lastEditedTime || post?.lastEditedDate)
       }
   }

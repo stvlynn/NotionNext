@@ -1,4 +1,22 @@
-import { generateStructuredData } from '@/components/SEO'
+import { generateStructuredData, resolveFavicon } from '@/components/SEO'
+
+describe('SEO favicon', () => {
+  it('uses the profile icon when the favicon is still the default', () => {
+    expect(
+      resolveFavicon('/favicon.ico', 'https://example.com/profile.png')
+    ).toBe('https://example.com/profile.png')
+  })
+
+  it('preserves an explicitly configured favicon', () => {
+    expect(
+      resolveFavicon('/brand.ico', 'https://example.com/profile.png')
+    ).toBe('/brand.ico')
+  })
+
+  it('keeps the default favicon when no profile icon is available', () => {
+    expect(resolveFavicon('/favicon.ico', '')).toBe('/favicon.ico')
+  })
+})
 
 describe('SEO structured data', () => {
   const siteInfo = {
