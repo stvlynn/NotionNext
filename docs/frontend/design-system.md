@@ -97,6 +97,9 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
   `Logo` renders it in both the header and, via its `compact` variant, the
   footer, so there is a single source for the mark.
 - Article pages carry no share bar; the post ends with comments.
+- `TagPill` renders tags and categories as chrome-free muted links, not
+  badges: a tag carries a `#` sigil, a category (`kind='category'`) does not.
+  Rows of them use wide horizontal gaps so they read as text.
 
 ## Article reading
 

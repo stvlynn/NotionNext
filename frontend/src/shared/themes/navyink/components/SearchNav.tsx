@@ -29,7 +29,7 @@ export function SearchNav({
           <p className='mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground'>
             {locale.COMMON.TAGS}
           </p>
-          <div className='flex flex-wrap gap-2'>
+          <div className='flex flex-wrap gap-x-4 gap-y-2'>
             {tagOptions.slice(0, 40).map(tag => (
               <TagPill key={tag.name} tag={tag} showCount />
             ))}
@@ -42,9 +42,9 @@ export function SearchNav({
           <p className='mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground'>
             {locale.COMMON.CATEGORY}
           </p>
-          <div className='flex flex-wrap gap-2'>
+          <div className='flex flex-wrap gap-x-4 gap-y-2'>
             {categoryOptions.map(cat => (
-              <TagPill key={cat.name} tag={cat} showCount />
+              <TagPill key={cat.name} tag={cat} kind='category' showCount />
             ))}
           </div>
         </FadeIn>

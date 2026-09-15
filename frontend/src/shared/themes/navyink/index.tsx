@@ -218,11 +218,12 @@ const LayoutCategoryIndex = (props: ThemeLayoutProps) => {
       <h1 className='mb-8 text-2xl font-bold tracking-tight text-foreground'>
         {locale.COMMON.CATEGORY}
       </h1>
-      <div className='flex flex-wrap gap-2'>
+      <div className='flex flex-wrap gap-x-4 gap-y-2'>
         {categoryOptions.map(category => (
           <TagPill
             key={category.name}
             tag={category}
+            kind='category'
             showCount
             href={`/category/${encodeURIComponent(category.name)}`}
           />
@@ -240,7 +241,7 @@ const LayoutTagIndex = (props: ThemeLayoutProps) => {
       <h1 className='mb-8 text-2xl font-bold tracking-tight text-foreground'>
         {locale.COMMON.TAGS}
       </h1>
-      <div className='flex flex-wrap gap-2'>
+      <div className='flex flex-wrap gap-x-4 gap-y-2'>
         {tagOptions.map(tag => (
           <TagPill key={tag.name} tag={tag} showCount />
         ))}
