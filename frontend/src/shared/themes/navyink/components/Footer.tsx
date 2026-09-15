@@ -2,8 +2,9 @@ import { conf } from '../lib/global'
 import * as React from 'react'
 
 import { Separator } from '@/components/ui'
+import { Logo } from './Logo'
 
-/** Minimal footer: wordmark, copyright, and the NotionNext credit line. */
+/** Minimal footer: copyright on one side, the wordmark on the other. */
 export function Footer() {
   const title = conf<string>('TITLE')
   const author = conf<string>('AUTHOR')
@@ -18,10 +19,7 @@ export function Footer() {
         <p>
           © {range} {author || title}
         </p>
-        <p className='inline-flex items-center gap-1'>
-          <span className='inline-block size-3 rounded-[4px] bg-brand' />
-          {title}
-        </p>
+        <Logo compact />
       </div>
     </footer>
   )

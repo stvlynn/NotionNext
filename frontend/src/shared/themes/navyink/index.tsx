@@ -1,6 +1,5 @@
 import Comment from '@/components/Comment'
 import replaceSearchResult from '@/components/Mark'
-import ShareBar from '@/components/ShareBar'
 import SmartLink from '@/components/SmartLink'
 import { conf } from './lib/global'
 import { useThemeGlobal } from './lib/global'
@@ -184,10 +183,7 @@ const LayoutSlug = (props: ThemeLayoutProps) => {
       {showRail && <SectionRail toc={post.toc} />}
 
       <div className='mt-16'>
-        <ShareBar post={post} />
-        <div className='mt-10'>
-          <Comment frontMatter={post} />
-        </div>
+        <Comment frontMatter={post} />
       </div>
     </article>
   )

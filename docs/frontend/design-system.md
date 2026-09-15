@@ -93,13 +93,15 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
   outside the `.theme-navyink` token scope — portaled popup content must carry
   the `theme-navyink` class so the scoped `primary`/`secondary`/`warning`
   overrides still apply.
-- Header wordmark mark: `NAVYINK_LOGO` (default
-  `/themes/navyink/logo.jpg`).
+- Wordmark mark: `NAVYINK_LOGO` (default `/themes/navyink/logo.jpg`).
+  `Logo` renders it in both the header and, via its `compact` variant, the
+  footer, so there is a single source for the mark.
+- Article pages carry no share bar; the post ends with comments.
 
 ## Article reading
 
 `LayoutSlug` renders the post as one `.navyink-article-column` (masthead,
-body, share bar, comments) so every part shares the same side gutters
+body, comments) so every part shares the same side gutters
 (`clamp(0.25rem, 4vw, 2.5rem)`), which keeps the measure near 70 Latin or
 40 CJK characters inside the `max-w-3xl` column.
 
