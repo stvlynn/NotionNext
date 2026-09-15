@@ -11,6 +11,12 @@ export interface CategoryItem {
   count?: number
 }
 
+export interface TocItem {
+  id: string
+  text: string
+  indentLevel: number
+}
+
 export interface Post {
   id: string
   title: string
@@ -25,6 +31,7 @@ export interface Post {
   tagItems?: TagItem[]
   results?: string[]
   password?: string
+  toc?: TocItem[]
 }
 
 export interface ThemeLayoutProps {
