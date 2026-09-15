@@ -1,6 +1,5 @@
 import Comment from '@/components/Comment'
 import replaceSearchResult from '@/components/Mark'
-import NotionPage from '@/components/NotionPage'
 import ShareBar from '@/components/ShareBar'
 import SmartLink from '@/components/SmartLink'
 import { conf } from './lib/global'
@@ -22,6 +21,7 @@ import { cn } from '@/lib/cn'
 import CONFIG from './config'
 import { Style } from './style'
 import { ArchiveGroup } from './components/Archive'
+import { ArticleBody } from './components/ArticleBody'
 import { ArticleInfo } from './components/ArticleInfo'
 import { ArticleLock } from './components/ArticleLock'
 import { Footer } from './components/Footer'
@@ -29,7 +29,7 @@ import { Header } from './components/Header'
 import { FadeIn } from './components/Motion'
 import { PostListPage, PostListScroll } from './components/PostList'
 import { SearchNav } from './components/SearchNav'
-import { SideRight } from './components/SideRight'
+import { SectionRail } from './components/SectionRail'
 import { SlotBar } from './components/SlotBar'
 import { TagPill } from './components/TagPill'
 import type { ThemeLayoutProps } from './types'
@@ -39,7 +39,7 @@ import type { ThemeLayoutProps } from './types'
  * See shared/styles/navy-ink.css for the token layer.
  */
 const LayoutBase = (props: ThemeLayoutProps) => {
-  const { children, slotTop, post, className } = props
+  const { children, slotTop, className } = props
   const { fullWidth } = useThemeGlobal()
   const router = useRouter()
 
@@ -52,7 +52,7 @@ const LayoutBase = (props: ThemeLayoutProps) => {
       <Header />
 
       <main className='min-h-[70vh] pt-16'>
-        <div className='mx-auto flex max-w-5xl justify-center gap-10 px-5 py-10'>
+        <div className='mx-auto flex max-w-5xl justify-center px-5 py-10'>
           <motion.div
             key={router.asPath}
             initial={{ opacity: 0, y: 8 }}
@@ -67,7 +67,6 @@ const LayoutBase = (props: ThemeLayoutProps) => {
             {slotTop}
             {children}
           </motion.div>
-          {!fullWidth && <SideRight post={post} />}
         </div>
       </main>
 
@@ -173,14 +172,18 @@ const LayoutSlug = (props: ThemeLayoutProps) => {
 
   if (!post) return null
 
-  return (
-    <article id='article-wrapper'>
-      <ArticleInfo post={post} />
-      <section className='navyink-article mx-auto max-w-3xl'>
-        <NotionPage post={post} />
-      </section>
+  const showRail = conf('NAVYINK_WIDGET_TOC', true, CONFIG)
 
-      <div className='mx-auto max-w-3xl'>
+  return (
+    <article
+      id='article-wrapper'
+      className='navyink-article-column mx-auto w-full max-w-3xl pt-2 md:pt-6'
+    >
+      <ArticleInfo post={post} />
+      <ArticleBody post={post} />
+      {showRail && <SectionRail toc={post.toc} />}
+
+      <div className='mt-16'>
         <ShareBar post={post} />
         <div className='mt-10'>
           <Comment frontMatter={post} />

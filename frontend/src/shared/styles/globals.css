@@ -26,6 +26,15 @@
   }
 }
 
+/* Font stacks from the legacy config are inlined into `font-sans` /
+   `font-serif` under `@config`, so v4 emits no `--font-*` variables for
+   them. Expose the same stacks as variables for hand-written CSS (for
+   example the navyink article quote). */
+:root {
+  --font-sans: theme(fontFamily.sans);
+  --font-serif: theme(fontFamily.serif);
+}
+
 html {
   overflow-x: hidden;
 }
