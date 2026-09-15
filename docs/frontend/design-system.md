@@ -137,6 +137,16 @@ Two reading aids are theme `lib/` hooks with the pure logic in
   450 ms). Blocks already on screen are never marked, and nothing is marked
   under `prefers-reduced-motion` or without JavaScript, so the resting state
   is always the plain page.
+- Inside a block that has just risen, inline marks make their own entrance
+  200 ms later, once, on an expo-out curve (`--ease-draw`): link and
+  underscore underlines draw from the left (600 ms), highlight spans sweep in
+  (550 ms), inline code chips fade their fill (400 ms), coloured text settles
+  from grey to its colour (500 ms), a quote's rail draws downward and a rule
+  opens from the centre (600 ms). To make these animatable, underscores and
+  highlights are painted as gradients (highlight colours are read into
+  `--navyink-mark` from the `--notion-*_background` variables) and the quote
+  rail is a gradient instead of a border. Animations use `backwards` fill
+  only, so resting styles and hover states win once they end.
 
 ## Motion
 
