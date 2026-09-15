@@ -93,13 +93,18 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
   outside the `.theme-navyink` token scope — portaled popup content must carry
   the `theme-navyink` class so the scoped `primary`/`secondary`/`warning`
   overrides still apply.
-- Header wordmark mark: `NAVYINK_LOGO` (default
-  `/themes/navyink/logo.jpg`).
+- Wordmark mark: `NAVYINK_LOGO` (default `/themes/navyink/logo.jpg`).
+  `Logo` renders it in both the header and, via its `compact` variant, the
+  footer, so there is a single source for the mark.
+- Article pages carry no share bar; the post ends with comments.
+- `TagPill` renders tags and categories as chrome-free muted links, not
+  badges: a tag carries a `#` sigil, a category (`kind='category'`) does not.
+  Rows of them use wide horizontal gaps so they read as text.
 
 ## Article reading
 
 `LayoutSlug` renders the post as one `.navyink-article-column` (masthead,
-body, share bar, comments) so every part shares the same side gutters
+body, comments) so every part shares the same side gutters
 (`clamp(0.25rem, 4vw, 2.5rem)`), which keeps the measure near 70 Latin or
 40 CJK characters inside the `max-w-3xl` column.
 
@@ -137,6 +142,16 @@ Two reading aids are theme `lib/` hooks with the pure logic in
   450 ms). Blocks already on screen are never marked, and nothing is marked
   under `prefers-reduced-motion` or without JavaScript, so the resting state
   is always the plain page.
+- Inside a block that has just risen, inline marks make their own entrance
+  200 ms later, once, on an expo-out curve (`--ease-draw`): link and
+  underscore underlines draw from the left (600 ms), highlight spans sweep in
+  (550 ms), inline code chips fade their fill (400 ms), coloured text settles
+  from grey to its colour (500 ms), a quote's rail draws downward and a rule
+  opens from the centre (600 ms). To make these animatable, underscores and
+  highlights are painted as gradients (highlight colours are read into
+  `--navyink-mark` from the `--notion-*_background` variables) and the quote
+  rail is a gradient instead of a border. Animations use `backwards` fill
+  only, so resting styles and hover states win once they end.
 
 ## Motion
 

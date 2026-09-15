@@ -83,7 +83,7 @@ export function PostCard({ post, index = 0 }: PostCardProps) {
               )}
 
               {post.tagItems && post.tagItems.length > 0 && (
-                <div className='mt-auto flex flex-wrap gap-1.5 pt-2'>
+                <div className='mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-2'>
                   {post.tagItems.slice(0, 3).map(tag => (
                     <TagPill key={tag.name} tag={tag} />
                   ))}

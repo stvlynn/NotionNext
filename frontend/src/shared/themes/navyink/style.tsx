@@ -127,7 +127,9 @@ const Style = () => {
           var(--foreground) 85%,
           var(--muted-foreground)
         );
-        border-left: 2px solid var(--brand);
+        border-left: 0;
+        background: linear-gradient(var(--brand), var(--brand)) left top / 2px
+          100% no-repeat;
         padding: 0.25em 0 0.25em 1.25em;
         margin: 1.75rem 0;
       }
@@ -223,6 +225,68 @@ const Style = () => {
           100% 1px;
       }
 
+      /* Underlined text: the same gradient underline as links, in ink. */
+      #theme-navyink .navyink-article .notion-inline-underscore {
+        text-decoration: none;
+        background-image: linear-gradient(currentColor, currentColor);
+        background-repeat: no-repeat;
+        background-size: 100% 1px;
+        background-position: 0 100%;
+      }
+
+      /* Highlights: paint the Notion colour as a gradient so the mark can
+         sweep in. The colour variables come from notion.css. */
+      #theme-navyink
+        .navyink-article
+        :is(.notion-text, .notion-list, .notion-quote, .notion-callout-text)
+        span[class*='_background'] {
+        background-color: transparent;
+        background-image: linear-gradient(
+          var(--navyink-mark),
+          var(--navyink-mark)
+        );
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: 0 0;
+      }
+      #theme-navyink .navyink-article .notion-red_background {
+        --navyink-mark: var(--notion-red_background);
+      }
+      #theme-navyink .navyink-article .notion-pink_background {
+        --navyink-mark: var(--notion-pink_background);
+      }
+      #theme-navyink .navyink-article .notion-blue_background {
+        --navyink-mark: var(--notion-blue_background);
+      }
+      #theme-navyink .navyink-article .notion-purple_background {
+        --navyink-mark: var(--notion-purple_background);
+      }
+      #theme-navyink .navyink-article .notion-teal_background {
+        --navyink-mark: var(--notion-teal_background);
+      }
+      #theme-navyink .navyink-article .notion-yellow_background {
+        --navyink-mark: var(--notion-yellow_background);
+      }
+      #theme-navyink .navyink-article .notion-orange_background {
+        --navyink-mark: var(--notion-orange_background);
+      }
+      #theme-navyink .navyink-article .notion-brown_background {
+        --navyink-mark: var(--notion-brown_background);
+      }
+      #theme-navyink .navyink-article .notion-gray_background {
+        --navyink-mark: var(--notion-gray_background);
+      }
+      #theme-navyink .navyink-article .notion-green_background {
+        --navyink-mark: var(--notion-green_background);
+      }
+      #theme-navyink .navyink-article .notion-default_background {
+        --navyink-mark: var(--notion-default_background);
+      }
+
+      /* ------------------------------------------------------------------ */
+      /* Entrance motion                                                     */
+      /* ------------------------------------------------------------------ */
+
       /* Blocks below the fold rise into place as they scroll in. The marks
          are set by useRevealOnScroll; without it every block is at rest. */
       #theme-navyink .navyink-article [data-navyink-reveal='out'] {
@@ -235,6 +299,132 @@ const Style = () => {
         transition:
           opacity 0.45s var(--ease-emphasized),
           transform 0.45s var(--ease-emphasized);
+      }
+
+      /* Once a block has risen, its inline marks make their own entrance:
+         underlines draw from the left, highlights sweep in, code chips and
+         colour fade up, the quote rail draws down and the rule opens from
+         the centre. Each plays once, slightly after the block, with an
+         expo-out curve so the motion lands fast and settles softly. The
+         backwards fill alone is used so the resting styles (and hover) win
+         after the animation ends. */
+      #theme-navyink {
+        --ease-draw: cubic-bezier(0.16, 1, 0.3, 1);
+        --draw-delay: 0.2s;
+      }
+      @keyframes navyink-draw-link {
+        from {
+          background-size:
+            0 1px,
+            0 1px;
+        }
+        to {
+          background-size:
+            0 1px,
+            100% 1px;
+        }
+      }
+      @keyframes navyink-draw-underline {
+        from {
+          background-size: 0 1px;
+        }
+        to {
+          background-size: 100% 1px;
+        }
+      }
+      @keyframes navyink-sweep-mark {
+        from {
+          background-size: 0 100%;
+        }
+        to {
+          background-size: 100% 100%;
+        }
+      }
+      @keyframes navyink-fade-chip {
+        from {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+      @keyframes navyink-settle-colour {
+        from {
+          filter: saturate(0);
+          opacity: 0.6;
+        }
+      }
+      @keyframes navyink-draw-rail {
+        from {
+          background-size: 2px 0;
+        }
+        to {
+          background-size: 2px 100%;
+        }
+      }
+      @keyframes navyink-open-rule {
+        from {
+          width: 0;
+        }
+      }
+      #theme-navyink
+        .navyink-article
+        [data-navyink-reveal='in']
+        :is(
+          .notion-text,
+          .notion-list,
+          .notion-quote,
+          .notion-callout-text,
+          .notion-simple-table
+        )
+        a:not(.notion-page-link) {
+        animation: navyink-draw-link 0.6s var(--ease-draw) var(--draw-delay)
+          backwards;
+      }
+      #theme-navyink
+        .navyink-article
+        [data-navyink-reveal='in']
+        .notion-inline-underscore {
+        animation: navyink-draw-underline 0.6s var(--ease-draw)
+          var(--draw-delay) backwards;
+      }
+      #theme-navyink
+        .navyink-article
+        [data-navyink-reveal='in']
+        :is(.notion-text, .notion-list, .notion-quote, .notion-callout-text)
+        span[class*='_background'] {
+        animation: navyink-sweep-mark 0.55s var(--ease-draw) var(--draw-delay)
+          backwards;
+      }
+      #theme-navyink
+        .navyink-article
+        [data-navyink-reveal='in']
+        .notion-inline-code {
+        animation: navyink-fade-chip 0.4s var(--ease-standard) var(--draw-delay)
+          backwards;
+      }
+      #theme-navyink
+        .navyink-article
+        [data-navyink-reveal='in']
+        :is(
+          .notion-gray,
+          .notion-brown,
+          .notion-orange,
+          .notion-yellow,
+          .notion-teal,
+          .notion-blue,
+          .notion-purple,
+          .notion-pink,
+          .notion-red
+        ) {
+        animation: navyink-settle-colour 0.5s var(--ease-standard)
+          var(--draw-delay) backwards;
+      }
+      #theme-navyink .navyink-article .notion-quote[data-navyink-reveal='in'] {
+        animation: navyink-draw-rail 0.6s var(--ease-draw) var(--draw-delay)
+          backwards;
+      }
+      #theme-navyink .navyink-article .notion-hr[data-navyink-reveal='in'] {
+        animation: navyink-open-rule 0.6s var(--ease-draw) var(--draw-delay)
+          backwards;
       }
 
       /* Reduced-motion: collapse enter transforms and card stagger */

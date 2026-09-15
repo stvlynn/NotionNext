@@ -36,7 +36,7 @@ export function ArticleInfo({ post }: { post: Post }) {
       </div>
 
       {post.tagItems && post.tagItems.length > 0 && (
-        <div className='mt-4 flex flex-wrap gap-1.5'>
+        <div className='mt-4 flex flex-wrap gap-x-4 gap-y-1'>
           {post.tagItems.map(tag => (
             <TagPill key={tag.name} tag={tag} />
           ))}

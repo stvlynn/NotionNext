@@ -1,6 +1,5 @@
 import Comment from '@/components/Comment'
 import replaceSearchResult from '@/components/Mark'
-import ShareBar from '@/components/ShareBar'
 import SmartLink from '@/components/SmartLink'
 import { conf } from './lib/global'
 import { useThemeGlobal } from './lib/global'
@@ -184,10 +183,7 @@ const LayoutSlug = (props: ThemeLayoutProps) => {
       {showRail && <SectionRail toc={post.toc} />}
 
       <div className='mt-16'>
-        <ShareBar post={post} />
-        <div className='mt-10'>
-          <Comment frontMatter={post} />
-        </div>
+        <Comment frontMatter={post} />
       </div>
     </article>
   )
@@ -222,11 +218,12 @@ const LayoutCategoryIndex = (props: ThemeLayoutProps) => {
       <h1 className='mb-8 text-2xl font-bold tracking-tight text-foreground'>
         {locale.COMMON.CATEGORY}
       </h1>
-      <div className='flex flex-wrap gap-2'>
+      <div className='flex flex-wrap gap-x-4 gap-y-2'>
         {categoryOptions.map(category => (
           <TagPill
             key={category.name}
             tag={category}
+            kind='category'
             showCount
             href={`/category/${encodeURIComponent(category.name)}`}
           />
@@ -244,7 +241,7 @@ const LayoutTagIndex = (props: ThemeLayoutProps) => {
       <h1 className='mb-8 text-2xl font-bold tracking-tight text-foreground'>
         {locale.COMMON.TAGS}
       </h1>
-      <div className='flex flex-wrap gap-2'>
+      <div className='flex flex-wrap gap-x-4 gap-y-2'>
         {tagOptions.map(tag => (
           <TagPill key={tag.name} tag={tag} showCount />
         ))}

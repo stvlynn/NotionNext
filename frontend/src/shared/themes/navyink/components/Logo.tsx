@@ -3,13 +3,15 @@ import SmartLink from '@/components/SmartLink'
 import * as React from 'react'
 
 import { Avatar, AvatarImage } from '@/components/ui'
+import { cn } from '@/lib/cn'
 
 import CONFIG from '../config'
 
 /**
- * Wordmark. The navyink mark anchors the site title in the header.
+ * Wordmark: the navyink mark plus the site title, linking home. The header
+ * uses the default size; `compact` is the quieter footer variant.
  */
-export function Logo() {
+export function Logo({ compact = false }: { compact?: boolean }) {
   const title = conf<string>('TITLE')
   const logoSrc = conf<string>(
     'NAVYINK_LOGO',
@@ -21,13 +23,28 @@ export function Logo() {
     <SmartLink
       href='/'
       aria-label={title}
-      className='group inline-flex items-center gap-2.5'
+      className={cn(
+        'group inline-flex items-center',
+        compact ? 'gap-2' : 'gap-2.5'
+      )}
     >
       {/* Decorative mark; accessible name comes from the link aria-label. */}
-      <Avatar className='size-5 rounded-sm transition-transform duration-200 group-hover:rotate-12'>
+      <Avatar
+        className={cn(
+          'rounded-sm transition-transform duration-200 group-hover:rotate-12',
+          compact ? 'size-4' : 'size-5'
+        )}
+      >
         <AvatarImage src={logoSrc} alt='' decoding='async' />
       </Avatar>
-      <span className='text-base font-semibold tracking-tight text-foreground'>
+      <span
+        className={cn(
+          'tracking-tight',
+          compact
+            ? 'text-sm transition-colors group-hover:text-foreground'
+            : 'text-base font-semibold text-foreground'
+        )}
+      >
         {title}
       </span>
     </SmartLink>
