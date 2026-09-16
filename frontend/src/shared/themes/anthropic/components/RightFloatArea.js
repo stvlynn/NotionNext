@@ -7,15 +7,15 @@ import { useGlobal } from '@/lib/global'
  */
 export default function RightFloatArea({ floatSlot, triggerThemeTransition }) {
   const [showFloatButton, switchShow] = useState(false)
-  const { isDarkMode, changeDarkMode } = useGlobal()
+  const { isDarkMode, toggleDarkMode } = useGlobal()
 
   const handleDarkModeToggle = useCallback((e) => {
     if (triggerThemeTransition) {
       triggerThemeTransition(e)
     } else {
-      changeDarkMode()
+      toggleDarkMode()
     }
-  }, [triggerThemeTransition, changeDarkMode])
+  }, [triggerThemeTransition, toggleDarkMode])
 
   const scrollListener = useCallback(() => {
     const targetRef =
