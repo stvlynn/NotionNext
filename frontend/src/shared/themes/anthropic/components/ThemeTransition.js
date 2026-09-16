@@ -6,7 +6,7 @@ import { useGlobal } from '@/lib/global'
  * 从点击位置展开圆形遮罩，覆盖全屏后切换主题
  */
 export function useThemeTransition() {
-  const { isDarkMode, changeDarkMode } = useGlobal()
+  const { isDarkMode, toggleDarkMode } = useGlobal()
   const [ripple, setRipple] = useState(null)
   const timeoutRef = useRef(null)
 
@@ -15,7 +15,7 @@ export function useThemeTransition() {
     if (typeof window !== 'undefined') {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       if (prefersReduced) {
-        changeDarkMode()
+        toggleDarkMode()
         return
       }
     }
@@ -57,13 +57,13 @@ export function useThemeTransition() {
 
     // After the expand animation completes (~650ms), toggle theme and remove overlay
     timeoutRef.current = setTimeout(() => {
-      changeDarkMode()
+      toggleDarkMode()
       // Brief delay to let new theme paint, then remove the overlay
       timeoutRef.current = setTimeout(() => {
         setRipple(null)
       }, 100)
     }, 650)
-  }, [isDarkMode, changeDarkMode, ripple])
+  }, [isDarkMode, toggleDarkMode, ripple])
 
   return { ripple, triggerTransition }
 }

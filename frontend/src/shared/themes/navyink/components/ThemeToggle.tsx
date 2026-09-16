@@ -13,7 +13,7 @@ import { Button, Tooltip, TooltipPopup, TooltipTrigger } from '@/components/ui'
  * portaled, so it carries the `theme-navyink` class to pick up scoped tokens.
  */
 export function ThemeToggle({ className }: { className?: string }) {
-  const { isDarkMode, changeDarkMode } = useThemeGlobal()
+  const { isDarkMode, toggleDarkMode } = useThemeGlobal()
   const locale = useLocale()
 
   return (
@@ -25,7 +25,7 @@ export function ThemeToggle({ className }: { className?: string }) {
             size='icon'
             aria-label={locale.NAV.DARK_MODE}
             className={className}
-            onClick={() => changeDarkMode()}
+            onClick={toggleDarkMode}
           />
         }
       >

@@ -12,7 +12,7 @@ import Logo from './Logo'
  */
 const Header = props => {
   const { tags, currentTag, categories, currentCategory, triggerThemeTransition } = props
-  const { locale, isDarkMode, changeDarkMode } = useGlobal()
+  const { locale, isDarkMode, toggleDarkMode } = useGlobal()
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -35,18 +35,18 @@ const Header = props => {
     if (triggerThemeTransition) {
       triggerThemeTransition(e)
     } else {
-      changeDarkMode()
+      toggleDarkMode()
     }
-  }, [triggerThemeTransition, changeDarkMode])
+  }, [triggerThemeTransition, toggleDarkMode])
 
   const handleMobileDarkModeToggle = useCallback((e) => {
     if (triggerThemeTransition) {
       triggerThemeTransition(e)
     } else {
-      changeDarkMode()
+      toggleDarkMode()
     }
     closeMenu()
-  }, [triggerThemeTransition, changeDarkMode])
+  }, [triggerThemeTransition, toggleDarkMode])
 
   // 监听滚动来切换导航栏样式
   useEffect(() => {

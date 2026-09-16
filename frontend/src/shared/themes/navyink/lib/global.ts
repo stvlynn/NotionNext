@@ -43,7 +43,7 @@ export interface Locale {
 export interface ThemeGlobal {
   locale: Locale
   isDarkMode: boolean
-  changeDarkMode: (value?: boolean) => void
+  toggleDarkMode: () => void
   fullWidth: boolean
   NOTION_CONFIG: Record<string, unknown>
 }
