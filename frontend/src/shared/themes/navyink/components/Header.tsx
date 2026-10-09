@@ -59,13 +59,19 @@ export function Header() {
     conf('NAVYINK_MENU_ARCHIVE', true, CONFIG) && {
       href: '/archive',
       label: locale.NAV.ARCHIVE
+    },
+    conf('NAVYINK_MENU_ABOUT', true, CONFIG) && {
+      href: conf<string>('NAVYINK_ABOUT_URL', CONFIG.NAVYINK_ABOUT_URL, CONFIG),
+      label: locale.NAV.ABOUT
     }
   ].filter(Boolean) as NavLink[]
 
   const showSearch = conf('NAVYINK_MENU_SEARCH', true, CONFIG)
 
   const isActive = (href: string) =>
-    href === '/' ? router.asPath === '/' : router.asPath.startsWith(href)
+    href === '/'
+      ? router.asPath === '/'
+      : href.startsWith('/') && router.asPath.startsWith(href)
 
   return (
     <header

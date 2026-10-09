@@ -96,6 +96,11 @@ contract (`LayoutBase`, `LayoutIndex`, `LayoutPostList`, `LayoutSearch`,
 - Wordmark mark: `NAVYINK_LOGO` (default `/themes/navyink/logo.jpg`).
   `Logo` renders it in both the header and, via its `compact` variant, the
   footer, so there is a single source for the mark.
+- The owner's homepage is linked from the blog: an "About" entry
+  (`locale.NAV.ABOUT`) closes the header nav and the author's name in the
+  footer links to the same address. Both read `NAVYINK_ABOUT_URL`
+  (default `https://stv.pm`); `NAVYINK_MENU_ABOUT: false` hides the nav entry.
+  External links are never marked as the active nav item.
 - Article pages carry no share bar; the post ends with comments.
 - `TagPill` renders tags and categories as chrome-free muted links, not
   badges: a tag carries a `#` sigil, a category (`kind='category'`) does not.
