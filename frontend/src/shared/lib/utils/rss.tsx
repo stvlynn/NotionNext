@@ -7,6 +7,7 @@ import { Feed } from 'feed'
 import fs from 'fs'
 import ReactDOMServer from 'react-dom/server'
 import { decryptEmail } from '@/lib/plugins/mailEncrypt'
+import { feedItemIdentity } from '@/lib/utils/feedItem'
 
 type RssConfig = Record<string, unknown>
 type RssBlockMap = Record<string, unknown> & {
@@ -116,11 +117,10 @@ export async function generateRss(props: GenerateRssProps): Promise<void> {
   for (const post of latestPosts || []) {
     const content = await createFeedContent(post)
     feed.addItem({
+      ...feedItemIdentity(`${LINK}/${post.slug}`, new Date(post?.publishDay || 0)),
       title: post.title || '',
-      link: `${LINK}/${post.slug}`,
       description: post.summary || '',
-      content: content || '',
-      date: new Date(post?.publishDay || 0)
+      content: content || ''
     })
   }
 

@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { RssContent, SitePage } from '@/lib/page/runtime'
 import { Feed } from 'feed'
+import { feedItemIdentity } from '@/lib/utils/feedItem'
 
 interface RssCache {
   xml: string | null
@@ -93,10 +94,12 @@ async function generateRssContent(): Promise<RssContent | null> {
 
   for (const post of latestPosts) {
     feed.addItem({
+      ...feedItemIdentity(
+        `${LINK}/${post.slug}`,
+        new Date(post?.publishDay || post?.publishDate || Date.now())
+      ),
       title: post.title,
-      link: `${LINK}/${post.slug}`,
-      description: post.summary || '',
-      date: new Date(post?.publishDay || post?.publishDate || Date.now())
+      description: post.summary || ''
     })
   }
 

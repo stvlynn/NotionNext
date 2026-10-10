@@ -18,6 +18,9 @@ const CONFIG = {
   NAVYINK_MENU_TAG: true,
   NAVYINK_MENU_ARCHIVE: true,
   NAVYINK_MENU_SEARCH: true,
+  // "About" leads to the owner's homepage, which lists the latest posts back
+  NAVYINK_MENU_ABOUT: true,
+  NAVYINK_ABOUT_URL: 'https://stv.pm',
 
   // Post list
   NAVYINK_POST_LIST_COVER: true,

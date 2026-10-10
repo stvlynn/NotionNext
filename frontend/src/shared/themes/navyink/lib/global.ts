@@ -13,6 +13,7 @@ import { useGlobal as useGlobalRaw } from '@/lib/global'
 export interface Locale {
   NAV: {
     INDEX: string
+    ABOUT: string
     ARCHIVE: string
     SEARCH: string
     DARK_MODE?: string
