@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { fetchGlobalAllData } from '@/lib/page/server-data'
 import type { RssContent, SitePage } from '@/lib/page/runtime'
 import { Feed } from 'feed'
-import { feedItemIdentity } from '@/lib/utils/feedItem'
+import { feedItemIdentity, selectFeedPosts } from '@/lib/utils/feedItem'
 
 interface RssCache {
   xml: string | null
@@ -57,15 +57,7 @@ async function generateRssContent(): Promise<RssContent | null> {
 
   const { siteInfo, allPages, NOTION_CONFIG } = props
 
-  // Filter published posts only
-  const latestPosts = allPages
-    .filter((p: SitePage) => p.type === 'Post' && p.status === 'Published')
-    .sort((a: SitePage, b: SitePage) => {
-      const dateA = new Date(a.publishDay || a.publishDate || 0)
-      const dateB = new Date(b.publishDay || b.publishDate || 0)
-      return dateB.getTime() - dateA.getTime()
-    })
-    .slice(0, 20)
+  const latestPosts = selectFeedPosts<SitePage>(allPages)
 
   if (latestPosts.length === 0) {
     return null

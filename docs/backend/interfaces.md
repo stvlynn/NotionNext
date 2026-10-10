@@ -38,6 +38,11 @@ the path to `pages/api/rss.ts`. Both generators build each entry with
 - `id` — the post's absolute URL (required by JSON Feed).
 - `date_published` / `pubDate` — the post's publish date.
 
+Both pick their posts with `selectFeedPosts` (same file): published posts,
+newest **publish date** first, at most `FEED_POST_LIMIT` (20). Feeds never use
+`latestPosts`, which is ordered by last edit time for the "latest posts"
+widget; otherwise an old post edited recently would jump into the feed.
+
 The homepage at https://stv.pm (repository `stvlynn/stv.pm`) reads
 `/rss/feed.json` to list the latest posts and fails its build if `id`, `title`,
 `url` or `date_published` is missing, so keep these fields stable.

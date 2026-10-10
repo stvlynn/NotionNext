@@ -7,7 +7,7 @@ import { Feed } from 'feed'
 import fs from 'fs'
 import ReactDOMServer from 'react-dom/server'
 import { decryptEmail } from '@/lib/plugins/mailEncrypt'
-import { feedItemIdentity } from '@/lib/utils/feedItem'
+import { feedItemIdentity, selectFeedPosts } from '@/lib/utils/feedItem'
 
 type RssConfig = Record<string, unknown>
 type RssBlockMap = Record<string, unknown> & {
@@ -16,11 +16,14 @@ type RssBlockMap = Record<string, unknown> & {
 
 interface RssPost {
   id: string
+  type?: string
+  status?: string
   title?: string
   slug?: string
   summary?: string
   password?: string
   publishDay?: string | number | Date
+  publishDate?: string | number | Date
   blockMap?: RssBlockMap
 }
 
@@ -33,7 +36,8 @@ interface RssSiteInfo {
 interface GenerateRssProps {
   NOTION_CONFIG?: RssConfig
   siteInfo?: RssSiteInfo
-  latestPosts?: RssPost[] | null
+  /** Every page of the site; the feed picks its posts with `selectFeedPosts`. */
+  allPages?: RssPost[] | null
 }
 
 export function shouldGenerateRssForLocale({
@@ -82,7 +86,7 @@ const createFeedContent = async (post: RssPost): Promise<string | undefined> => 
  * @param {*} props
  */
 export async function generateRss(props: GenerateRssProps): Promise<void> {
-  const { NOTION_CONFIG, siteInfo, latestPosts } = props
+  const { NOTION_CONFIG, siteInfo, allPages } = props
   const TITLE = siteInfo?.title || ''
   const DESCRIPTION = siteInfo?.description || ''
   const LINK = siteInfo?.link || ''
@@ -114,7 +118,7 @@ export async function generateRss(props: GenerateRssProps): Promise<void> {
       link: LINK
     }
   })
-  for (const post of latestPosts || []) {
+  for (const post of selectFeedPosts(allPages ?? [])) {
     const content = await createFeedContent(post)
     feed.addItem({
       ...feedItemIdentity(`${LINK}/${post.slug}`, new Date(post?.publishDay || 0)),

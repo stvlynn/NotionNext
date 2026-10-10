@@ -87,9 +87,11 @@ describe('generateRss', () => {
         description: 'desc',
         link: 'https://example.com'
       },
-      latestPosts: [
+      allPages: [
         {
           id: 'post-1',
+          type: 'Post',
+          status: 'Published',
           slug: 'hello',
           title: 'Hello',
           summary: 'Summary',
@@ -111,6 +113,62 @@ describe('generateRss', () => {
       })
     )
     expect(fs.writeFileSync).toHaveBeenCalledTimes(3)
+  })
+
+  it('lists the newest published posts, not the most recently edited ones', async () => {
+    getPostBlocks.mockResolvedValue(null)
+    addItemMock.mockClear()
+
+    await generateRss({
+      NOTION_CONFIG: {},
+      siteInfo: {
+        title: 'site',
+        description: 'desc',
+        link: 'https://example.com'
+      },
+      allPages: [
+        // Edited yesterday, published years ago: must not lead the feed.
+        {
+          id: 'old',
+          type: 'Post',
+          status: 'Published',
+          slug: 'old',
+          title: 'Old',
+          publishDay: '2022-03-01',
+          lastEditedDate: Date.parse('2026-10-09')
+        },
+        {
+          id: 'new',
+          type: 'Post',
+          status: 'Published',
+          slug: 'new',
+          title: 'New',
+          publishDay: '2026-09-20',
+          lastEditedDate: Date.parse('2026-09-20')
+        },
+        {
+          id: 'draft',
+          type: 'Post',
+          status: 'Draft',
+          slug: 'draft',
+          title: 'Draft',
+          publishDay: '2026-10-01'
+        },
+        {
+          id: 'about',
+          type: 'Page',
+          status: 'Published',
+          slug: 'about',
+          title: 'About',
+          publishDay: '2026-10-02'
+        }
+      ]
+    })
+
+    expect(addItemMock.mock.calls.map(([item]) => item.title)).toEqual([
+      'New',
+      'Old'
+    ])
   })
 
   it('generates RSS only for the default locale during multi-locale builds', () => {
