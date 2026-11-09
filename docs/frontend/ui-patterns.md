@@ -19,3 +19,15 @@ If a piece of UI logic already exists (e.g. a date formatter, a collapse compone
 ## Theme awareness
 
 Components must work across the 29 themes under `frontend/src/shared/themes/`. Theme-specific overrides belong in the theme package, not in shared components.
+
+## Notion post embeds
+
+`NotionPage` routes X and Twitter post URLs in generic Notion Embed blocks
+through the same `react-tweet-embed` adapter used for Tweet blocks. Match the
+hostname and status path, keep the numeric post ID as a string, and omit share
+query parameters. The adapter loads X's official widget with `dnt` enabled and
+remounts when the post ID changes. Direct X page iframes are blocked by X's
+`frame-ancestors` policy.
+
+HTML artifacts retain their sandboxed `srcDoc` renderer. Other embeds retain
+their resolved source and configured dimensions.

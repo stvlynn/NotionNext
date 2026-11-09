@@ -145,7 +145,7 @@ const hasCodeBlock = (blockMap: any) => {
   )
 }
 
-const NotionEmbed = ({ block }: any) => {
+export const NotionEmbed = ({ block }: any) => {
   const { recordMap } = useNotionContext()
   const source =
     recordMap?.signed_urls?.[block?.id] ||
@@ -157,6 +157,9 @@ const NotionEmbed = ({ block }: any) => {
     : undefined
 
   if (!srcDoc && (!source || source.startsWith('attachment:'))) return null
+
+  const tweetId = !isHtmlArtifact && getTweetId(source)
+  if (tweetId) return <Tweet id={tweetId} />
 
   const height = block?.format?.block_height || (isHtmlArtifact ? 640 : 480)
   const title =
@@ -186,6 +189,32 @@ const NotionEmbed = ({ block }: any) => {
   )
 }
 
+function getTweetId(source: string): string | undefined {
+  let url: URL
+  try {
+    url = new URL(source)
+  } catch {
+    // Other embed sources are handled by the generic renderer.
+    return undefined
+  }
+
+  if (
+    !['https:', 'http:'].includes(url.protocol) ||
+    ![
+      'x.com',
+      'www.x.com',
+      'twitter.com',
+      'www.twitter.com',
+      'mobile.twitter.com'
+    ].includes(url.hostname)
+  ) {
+    return undefined
+  }
+
+  return url.pathname.match(
+    /^\/(?:[^/]+\/status|i\/web\/status)\/(\d+)(?:\/(?:photo|video)\/\d+)?\/?$/
+  )?.[1]
+}
 
 /**
  * 页面的数据库链接禁止跳转，只能查看
@@ -311,11 +340,9 @@ const PrismMac = dynamic(() => import('@/components/PrismMac'), {
 /**
  * tweet嵌入
  */
-const TweetEmbed = dynamic(
+const TweetEmbed = dynamic<{ tweetId: string; options: { dnt: boolean } }>(
   () => import('react-tweet-embed').then((m: any) => m.default || m),
-  {
-    ssr: false
-  }
+  { ssr: false }
 )
 
 /**
@@ -341,8 +368,8 @@ const Modal = dynamic(
   { ssr: false }
 )
 
-const Tweet = ({ id }: any) => {
-  return <TweetEmbed {...({ tweetId: id } as any)} />
+const Tweet = ({ id }: { id: string }) => {
+  return <TweetEmbed key={id} tweetId={id} options={{ dnt: true }} />
 }
 
 // Custom Quote override: react-notion-x drops quotes without properties.title
