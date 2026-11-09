@@ -19,8 +19,15 @@ jest.mock('react-notion-x', () => ({
   useNotionContext: jest.fn()
 }))
 jest.mock('next/dynamic', () => () => {
-  const Widget = ({ tweetId, options }) => (
-    <div data-testid='tweet' data-id={tweetId} data-dnt={options.dnt} />
+  const Widget = ({ tweetId, options, className }) => (
+    <div
+      data-testid='tweet'
+      data-id={tweetId}
+      data-dnt={options.dnt}
+      data-width={options.width}
+      data-align={options.align}
+      className={className}
+    />
   )
   return Widget
 })
@@ -53,6 +60,9 @@ describe('NotionEmbed', () => {
 
     expect(screen.getByTestId('tweet')).toHaveAttribute('data-id', postId)
     expect(screen.getByTestId('tweet')).toHaveAttribute('data-dnt', 'true')
+    expect(screen.getByTestId('tweet')).toHaveClass('w-full')
+    expect(screen.getByTestId('tweet')).toHaveAttribute('data-width', '550')
+    expect(screen.getByTestId('tweet')).toHaveAttribute('data-align', 'center')
     expect(container.querySelector('iframe')).toBeNull()
   })
 

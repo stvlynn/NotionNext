@@ -29,5 +29,11 @@ query parameters. The adapter loads X's official widget with `dnt` enabled and
 remounts when the post ID changes. Direct X page iframes are blocked by X's
 `frame-ancestors` policy.
 
+The widget container must use `w-full` because Notion's column layout aligns
+children to the start and otherwise allows the container to shrink to the
+widget's minimum width. Set the official widget options to `width: 550` and
+`align: 'center'` so it uses X's maximum supported width on desktop and adapts
+to narrower containers on mobile.
+
 HTML artifacts retain their sandboxed `srcDoc` renderer. Other embeds retain
 their resolved source and configured dimensions.

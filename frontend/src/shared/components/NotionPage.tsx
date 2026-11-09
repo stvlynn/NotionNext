@@ -340,7 +340,11 @@ const PrismMac = dynamic(() => import('@/components/PrismMac'), {
 /**
  * tweet嵌入
  */
-const TweetEmbed = dynamic<{ tweetId: string; options: { dnt: boolean } }>(
+const TweetEmbed = dynamic<{
+  tweetId: string
+  className: string
+  options: { dnt: boolean; width: number; align: 'center' }
+}>(
   () => import('react-tweet-embed').then((m: any) => m.default || m),
   { ssr: false }
 )
@@ -369,7 +373,14 @@ const Modal = dynamic(
 )
 
 const Tweet = ({ id }: { id: string }) => {
-  return <TweetEmbed key={id} tweetId={id} options={{ dnt: true }} />
+  return (
+    <TweetEmbed
+      key={id}
+      tweetId={id}
+      className='w-full'
+      options={{ dnt: true, width: 550, align: 'center' }}
+    />
+  )
 }
 
 // Custom Quote override: react-notion-x drops quotes without properties.title
